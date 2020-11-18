@@ -1,4 +1,11 @@
-<ul class="nav">
+<div class="sidebar" data-image="/assets/img/sidebar-5.jpg">
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <a href="http://www.creative-tim.com" class="simple-text">
+                        Creative Tim
+                    </a>
+                </div>
+                <ul class="nav">
                     <li>
                         <a class="nav-link" href="dashboard.html">
                             <i class="nc-icon nc-chart-pie-35"></i>
@@ -48,3 +55,5 @@
                         </a>
                     </li>
                 </ul>
+                </div>
+        </div>

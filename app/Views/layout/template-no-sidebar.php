@@ -4,7 +4,6 @@
 <?= $this->include('layout/header', $data['title']) ?>
 <body>
     <div class="wrapper">
-        <?= $this->include('layout/sidebar') ?>
         <div class="main-panel">
             <!-- Navbar -->
             <?= $this->include('layout/navbar') ?>
