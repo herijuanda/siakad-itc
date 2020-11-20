@@ -15,12 +15,14 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" href="#">PERSYARATAN</a>
                                     <a class="dropdown-item" href="#">FORMULIR</a>
-                                    <div class="divider"></div>
-                                    <a class="dropdown-item" href="#">PENGUMUMAN</a>
+                                    <!-- <div class="divider"></div> -->
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
+                            <a class="nav-link" href="###">
+                                    <span class="no-icon">PENGUMUMAN</span>
+                                </a>
+                                <a class="nav-link" href="###">
                                     <span class="no-icon">REGISTRASI ULANG</span>
                                 </a>
                             </li>

@@ -2040,7 +2040,8 @@ fieldset[disabled] .form-control {
 }
 
 .navbar .navbar-nav .nav-item .nav-link:hover {
-    color: #1DC7EA;
+    /* color: #1DC7EA; */
+    color: #e92c30;
 }
 
 .navbar .navbar-nav .nav-item .dropdown-menu {

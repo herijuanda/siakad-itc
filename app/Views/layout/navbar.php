@@ -56,7 +56,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#pablo">
-                                    <span class="no-icon">Log out</span>
+                                <span class="no-icon" href="<?= site_url('login/logout') ?>">Keluar</span>
                                 </a>
                             </li>
                         </ul>
