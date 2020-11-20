@@ -2,7 +2,7 @@
                 <div class="container-fluid">
                     <nav>
                         <ul class="footer-menu">
-                            <li>
+                            <!-- <li>
                                 <a href="#">
                                     Home
                                 </a>
@@ -21,14 +21,14 @@
                                 <a href="#">
                                     Blog
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                         <p class="copyright text-center">
                             ©
                             <script>
                                 document.write(new Date().getFullYear())
                             </script>
-                            <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
+                            <a href="http://www.creative-tim.com">Creative Tim</a>
                         </p>
                     </nav>
                 </div>

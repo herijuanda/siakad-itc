@@ -2,19 +2,18 @@
 
 use App\Models\UserModel;
 
-class Home extends BaseController
+class Login extends BaseController
 {
 	public function index()
 	{
 		$model = new UserModel();
-		//$username = 'bxt1';
 		$user = $model->findAll();
 		$data = [
-			'title' => 'Edit Profile',
+			'title' => 'SIAKAD ITC',
 			'user' => $user
 		];
 
-		return view('user', $data);
+		return view('login', $data);
 	}
 
 	//--------------------------------------------------------------------
