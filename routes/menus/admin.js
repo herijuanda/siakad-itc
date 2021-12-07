@@ -16,17 +16,10 @@ module.exports = [
     //     ],
     // },
     {
-        route   : 'manajamen-krs',
-        title   : 'Manajemen KRS',
+        route   : 'data-master',
+        title   : 'Data Master',
         icon    : 'archive',
         sub     : [
-            {
-                route   : 'tahun-ajaran',
-                title   : 'Tahun Ajaran',
-                plugin  : [
-                    
-                ],
-            },
             {
                 route   : 'mata-pelatihan',
                 title   : 'Daftar Mata Pelatihan',

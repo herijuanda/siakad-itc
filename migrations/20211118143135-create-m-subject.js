@@ -8,8 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      semester_id: {
+      study_program_id: {
         type: Sequelize.INTEGER,
+        references: { model: 'm_study_programs', key: 'id' }
       },
       name: {
         type: Sequelize.STRING(60)
@@ -22,7 +23,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('m_subjects', ['semester_id']));
+    }).then(() => queryInterface.addIndex('m_subjects', ['study_program']));    
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('m_subjects');

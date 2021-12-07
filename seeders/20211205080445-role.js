@@ -15,21 +15,25 @@ module.exports = {
     const values = [
       {
         name: 'Superadmin',
+        slug: 'superadmin',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Admin',
+        slug: 'admin',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Instruktur',
+        slug: 'instruktur',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Peserta Didik',
+        slug: 'peserta-didik',
         createdAt: new Date(),
         updatedAt: new Date()
       },

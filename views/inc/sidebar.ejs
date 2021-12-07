@@ -34,7 +34,7 @@
                         <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (route_now === value.route) ? 'show' : '' %> " id="sub_<%= value?.route %>" data-parent="#accordionExample">
                             <% value?.sub.forEach(function(value_sub) { %>
                                 <li class="<%= (route_now === value_sub?.route) ? 'active' : '' %>">
-                                    <a href="<%= value_sub?.route %>"> <%= value_sub?.title %></a> </a>
+                                    <a href="<%= base_url+'/'+session?.role+'/'+value?.route+'/'+value_sub?.route %>"> <%= value_sub?.title %></a> </a>
                                 </li>
                             <% }); %>
                         </ul>
