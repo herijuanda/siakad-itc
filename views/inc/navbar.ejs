@@ -1,0 +1,53 @@
+
+
+    <!--  BEGIN NAVBAR  -->
+    <div class="header-container fixed-top">
+        <header class="header navbar navbar-expand-sm">
+            
+            <ul class="navbar-nav theme-brand flex-row  text-center">
+                <li class="nav-item theme-text">
+                    <a href="<%= base_url %>" target="_blank"class="nav-link" style="font-family: Poppins, sans-serif; font-weight: 500"> SIAKAD </a>
+                </li>
+                <li class="nav-item toggle-sidebar">
+                    <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom">
+                        <i data-feather="menu"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-item flex-row search-ul">
+                
+            </ul>
+
+            <ul class="navbar-item flex-row navbar-dropdown">
+
+
+                <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
+                    <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i data-feather="settings"></i>
+                    </a>
+                    <div class="dropdown-menu position-absolute animated fadeInUp" aria-labelledby="userProfileDropdown">
+                        <div class="dropdown-item">
+                            <a href="{{ url('account') }}">
+                                <i data-feather="lock"></i>
+                                Akun
+                            </a>
+                        </div>
+
+                        <div class="dropdown-item">
+                            <a
+                            onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                <i data-feather="log-out"></i>
+                                Keluar
+                            </a>
+                        </div>
+                        <form id="logout-form" action="<%= base_url+'/logout' %>" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </header>
+    </div>
+    <!--  END NAVBAR  -->

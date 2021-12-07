@@ -1,0 +1,16 @@
+<div class="breadcrumb-five">
+    <ul class="breadcrumb">
+        <li class="active mb-2"><a href="{{ url('dasbor') }}">Dashboard</a>
+        </li>
+        <li class="mb-2"><a href="#">{{ ucwords(@$parent_name) }}</a></li>
+        @if(!empty($page_sub))
+            <li class="active mb-2"><a href="{{ url(strtolower($parent_name).'/'.$page_name) }}">{{ ucwords(@$page_name) }}</a></li>
+            <li class="mb-2"><a href="javscript:void(0);">{{ ucwords(@$page_sub) }}</a></li>
+        @else
+            @if(!empty($page_name))
+                <li class="mb-2"><a href="javscript:void(0);">{{ ucwords(@$page_name) }}</a></li>
+            @endif
+        @endif
+        
+    </ul>
+</div>

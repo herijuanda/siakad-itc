@@ -1,0 +1,52 @@
+
+
+    <!--  BEGIN SIDEBAR  -->
+    <div class="sidebar-wrapper sidebar-theme">
+            
+        <nav id="sidebar">
+            <div class="profile-info">
+                <figure class="user-cover-image"></figure>
+                <div class="user-info">
+                    <img src="<%= base_url %>/assets/images/user-empty.png">
+                    <h6 class="mt-3">Admin</h6>
+                    <!-- <p class="">Project Leader</p> -->
+                </div>
+            </div>
+            <div class="shadow-bottom"></div>
+            <ul class="list-unstyled menu-categories" id="accordionExample">
+
+                    <% routes.forEach(function(value) { %>
+                
+                    <li class="menu <%= ('/admin/'+value.route == route_now ) ? 'active' : '' %>">
+                        <a href="<%= value?.sub ? '#sub_'+value?.route : base_url+'/'+session?.role+'/'+value.route %>" <%= value?.sub ? 'data-toggle=collapse' : '' %> aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="<%= value?.icon %>"></i>
+                                <span><%= value?.title %></span>
+                            </div>
+                            <% if(value?.sub){ %>
+                                <div>
+                                    <i data-feather="chevron-right"></i>
+                                </div>
+                            <% }; %>
+                        </a>
+
+                        <% if(value?.sub){ %>
+                        <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (route_now === value.route) ? 'show' : '' %> " id="sub_<%= value?.route %>" data-parent="#accordionExample">
+                            <% value?.sub.forEach(function(value_sub) { %>
+                                <li class="<%= (route_now === value_sub?.route) ? 'active' : '' %>">
+                                    <a href="<%= value_sub?.route %>"> <%= value_sub?.title %></a> </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                        <% }; %>
+                    </li>
+
+                    <% }); %>
+
+                </ul>
+        </nav>
+
+    </div>
+    <!--  END SIDEBAR  -->
+
+<!-- @endif -->
