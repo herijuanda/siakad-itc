@@ -5,8 +5,12 @@ const model     = require('../../models');
 const routes    = require('../../routes/menus/admin');
 
 module.exports.index = async function(req, res) {
-    // console.log(req);
     helper.auth(req, res);
+    console.log({...routes[2],
+        session: req.session,
+        routes,
+        base_url : helper.base_url(req),
+        route_now : helper.route_now(req),});
     res.render('layouts/app', {
         ...routes[2],
         session: req.session,

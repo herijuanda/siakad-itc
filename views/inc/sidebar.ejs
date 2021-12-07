@@ -17,7 +17,7 @@
 
                     <% routes.forEach(function(value) { %>
                 
-                    <li class="menu <%= ('/admin/'+value.route == route_now ) ? 'active' : '' %>">
+                    <li class="menu <%= (route === value.route ) ? 'active' : '' %>">
                         <a href="<%= value?.sub ? '#sub_'+value?.route : base_url+'/'+session?.role+'/'+value.route %>" <%= value?.sub ? 'data-toggle=collapse' : '' %> aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="<%= value?.icon %>"></i>
@@ -31,9 +31,9 @@
                         </a>
 
                         <% if(value?.sub){ %>
-                        <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (route_now === value.route) ? 'show' : '' %> " id="sub_<%= value?.route %>" data-parent="#accordionExample">
+                        <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (route === value.route) ? 'show' : '' %> " id="sub_<%= value?.route %>" data-parent="#accordionExample">
                             <% value?.sub.forEach(function(value_sub) { %>
-                                <li class="<%= (route_now === value_sub?.route) ? 'active' : '' %>">
+                                <li class="<%= (route_now === '/'+session?.role+'/'+value.route+'/'+value_sub?.route) ? 'active' : '' %>">
                                     <a href="<%= base_url+'/'+session?.role+'/'+value?.route+'/'+value_sub?.route %>"> <%= value_sub?.title %></a> </a>
                                 </li>
                             <% }); %>

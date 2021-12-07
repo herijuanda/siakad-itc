@@ -25,13 +25,13 @@ module.exports = {
       },
       lecturer_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'm_lecturer_id', key: 'id' }
+        references: { model: 'm_lecturers', key: 'id' }
       },
       name: {
         type: Sequelize.STRING(30)
       },
-      active: {
-        type: Sequelize.INTERGER,
+      actived: {
+        type: Sequelize.INTEGER,
         defaultValue: 1
       },
       createdAt: {
@@ -42,13 +42,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('d_classrooms', 
+    }).then(() => { 
+      queryInterface.addIndex('d_classrooms', 
                                     [
                                       'school_year_id', 
                                       'm_study_program_id', 
+                                    ]);
+      queryInterface.addIndex('d_classrooms', 
+                                    [
                                       'subject_id',
                                       'lecturer_id'
-                                    ]));
+                                    ]);
+    });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('d_classrooms');
