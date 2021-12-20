@@ -99,6 +99,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 }
 
 .table .btn {
+    margin: 0px 5px;
     padding: 0.2375rem 1rem !important;
 }
 

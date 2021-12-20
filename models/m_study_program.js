@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   m_study_program.init({
-    semester: DataTypes.STRING
+    name: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'm_study_program',

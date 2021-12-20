@@ -24,7 +24,7 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
 };
 
 module.exports.input_hide = (name, value) => {
-    return '<input id="hidden_'+name+'" ;type="hidden" name="myform['+name+']" value="'+value+'" />';
+    return '<input id="hidden_'+name+'" type="hidden" name="myform_hide['+name+']" value="'+(value || '')+'" />';
 }
 
 module.exports.select = (name, req = null, option = array(), value = array(), name_func = null, classes = null, attribute = null) => {
@@ -63,4 +63,16 @@ module.exports.select = (name, req = null, option = array(), value = array(), na
     result += '</select>';
 
     return result;
+}
+
+module.exports.submit = (value = 'Simpan', icon = 'save') => {
+    //return '<input type="submit" name="submit" class="md-btn md-btn-primary" value="'.$value.'" />';
+    return '<button id="submit" type="submit" name="submit" value="'+value+'" class="btn btn-success submit-fn mt-2">'+
+            '<i data-feather="'+icon+'"></i>'+
+            ' <b>'+value+'</b>'+
+        '</button>';
+}
+
+module.exports.cancel = () => {
+    return '<button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>';
 }

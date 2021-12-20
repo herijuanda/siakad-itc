@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@
     <!-- Styles Custom HTML -->
     <!--  -->
 </head>
-<body >
+<body class="    ">>
     
     <!-- BEGIN LOADER -->
     <div id="load_screen"> <div class="loader"> <div class="loader-content">
@@ -40,9 +40,7 @@
         <!--  BEGIN CONTENT PART  -->
         <div id="content" class="main-content">
 
-            <%- include('../pages/'+route+'/index'); %>
-
-            <!-- @yield('content') -->
+            <%- include('../pages/'+path+'/index'); %>
             
         </div>
         <!--  END CONTENT PART  -->
@@ -52,7 +50,7 @@
 
     <%- include('../inc/modal'); %>
     <%- include('../inc/scripts'); %>
-    <%- include('../pages/'+route+'/script') %>
+    <%- include('../pages/'+path+'/script') %>
 
 </body>
 </html>

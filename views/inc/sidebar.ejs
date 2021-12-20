@@ -15,35 +15,35 @@
             <div class="shadow-bottom"></div>
             <ul class="list-unstyled menu-categories" id="accordionExample">
 
-                    <% routes.forEach(function(value) { %>
-                
-                    <li class="menu <%= (route === value.route ) ? 'active' : '' %>">
-                        <a href="<%= value?.sub ? '#sub_'+value?.route : base_url+'/'+session?.role+'/'+value.route %>" <%= value?.sub ? 'data-toggle=collapse' : '' %> aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <i data-feather="<%= value?.icon %>"></i>
-                                <span><%= value?.title %></span>
-                            </div>
-                            <% if(value?.sub){ %>
-                                <div>
-                                    <i data-feather="chevron-right"></i>
-                                </div>
-                            <% }; %>
-                        </a>
-
+                <% routes.forEach(function(value) { %>
+            
+                <li class="menu <%= (module === value.module ) ? 'active' : '' %>">
+                    <a href="<%= value?.sub ? '#sub_'+value?.module : base_url+'/'+session?.role+'/'+value.route %>" <%= value?.sub ? 'data-toggle=collapse' : '' %> aria-expanded="<%= (module === value.module ) ? 'true' : 'false' %>" class="dropdown-toggle">
+                        <div class="">
+                            <i data-feather="<%= value?.icon %>"></i>
+                            <span><%= value?.title %></span>
+                        </div>
                         <% if(value?.sub){ %>
-                        <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (route === value.route) ? 'show' : '' %> " id="sub_<%= value?.route %>" data-parent="#accordionExample">
-                            <% value?.sub.forEach(function(value_sub) { %>
-                                <li class="<%= (route_now === '/'+session?.role+'/'+value.route+'/'+value_sub?.route) ? 'active' : '' %>">
-                                    <a href="<%= base_url+'/'+session?.role+'/'+value?.route+'/'+value_sub?.route %>"> <%= value_sub?.title %></a> </a>
-                                </li>
-                            <% }); %>
-                        </ul>
+                            <div>
+                                <i data-feather="chevron-right"></i>
+                            </div>
                         <% }; %>
-                    </li>
+                    </a>
 
-                    <% }); %>
+                    <% if(value?.sub){ %>
+                    <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (module === value.module) ? 'show' : '' %> " id="sub_<%= value?.module %>" data-parent="#accordionExample">
+                        <% value?.sub.forEach(function(value_sub) { %>
+                            <li class="<%= (route_now === '/'+session?.role+'/'+value.route+'/'+value_sub?.route) ? 'active' : '' %>">
+                                <a href="<%= base_url+'/'+session?.role+'/'+value?.route+'/'+value_sub?.route %>"> <%= value_sub?.title %></a> </a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                    <% }; %>
+                </li>
 
-                </ul>
+                <% }); %>
+
+            </ul>
         </nav>
 
     </div>

@@ -31,3 +31,15 @@ module.exports.datatables = function(req, res, count, results) {
         "data"              : results.rows
     });
 };
+
+module.exports.validator = (body) => {
+    const arr = [];
+
+    for (const key in body) {
+        if(body[key] === ''){
+            arr.push(key);
+        }
+    }
+    
+    return arr;
+}

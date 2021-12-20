@@ -1,0 +1,56 @@
+<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+    <%- form.input_hide('id', data?.id) %>
+    <%- form.input_hide('role_id', 3) %>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-12 mb-4">
+                <%- form.input('name as nama', '*', data?.nama) %>
+            </div>
+            <!-- <div class="col-md-6 mb-4">
+                <%- form.input('position as Jabatan', '*', data?.m_lecturer?.position, 'text', 'mylecturer') %>
+            </div> -->
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-4">
+                <%- form.input('year_of_entry as tahun_masuk', '*', data?.m_lecturer?.year_of_entry, 'number', 'mylecturer') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('last_education as pendidikan_terakhir', '*', data?.m_lecturer?.last_education, 'text', 'mylecturer') %>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-4">
+                <%- form.input('email', '*', data?.nama) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('username', '*', data?.nama) %>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-4">
+                <%- form.input('password', '*', '', 'password') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('konfirmasi_password', '*', '', 'password') %>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>
+        <button id="submit" type="submit" name="submit" value="Simpan" class="btn btn-success submit-fn mt-2">
+            <i data-feather="save"></i>
+            <b>Simpan</b>
+        </button>
+    </div>
+</form>
+
+<script>
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
+    });
+
+    feather.replace();
+</script>

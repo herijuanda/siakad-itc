@@ -1,5 +1,7 @@
 <script type="text/javascript">
 
+    const path = '<%=path%>';
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -9,7 +11,7 @@
     /*  add data */
     $(document).on('click', '.add', function () {
 
-        $.post(url+'/form', function (data) {
+        $.post(url+'/form', { path }, function (data) {
             $("#modal-label").html('Form Tambah');
             $("#show-modal").html(data);
         });
@@ -20,7 +22,7 @@
         
         var id  = $(this).data('id');
 
-        $.post(url+'/form', { id: id }, function (data) {
+        $.post(url+'/form', { id, path }, function (data) {
             $("#modal-label").html('Form Edit');
             $("#show-modal").html(data);
         });
@@ -28,38 +30,36 @@
 
     /* submit form */
     $(document).on('click', '#submit', function () {
-        alert('haii');
         $.ajax({
             url  : url+'/process',
             data : $('#form').serialize(),
             type : "post", 
             success: function(response){
-                switch (response?.code) {
-                    case 200:
-                        if(response?.id === null)
-                            $('#form')[0].reset();
+                if(response?.id === null)
+                    $('#form')[0].reset();
 
-                        $('#alert').html(alert_success(response?.msg));
-                        $('#zero-config').dataTable().api().ajax.reload();
-                        break;
-                    case 422:
-                        let msg = '';
-                        for (var prop in response?.msg) {
-                            msg += '<br>- '+response?.msg[prop][0];
-                        }
+                $('#alert').html(alert_success(response?.message));
+                $('#zero-config').dataTable().api().ajax.reload();
+            },
+            error: function (data, response) {
+                const errors = data?.responseJSON?.errors;
+                switch (data.status) {
+                    case 400:
+                        let result = '';
 
-                        $('#alert').html(alert_warning(msg));
+                        errors.forEach(function(v) {
+                            result += '<br>- '+v+' belum diisi';
+                        });
+
+                        $('#alert').html(alert_warning(result));
                         break;
                     case 500:
-                        $('#alert').html(alert_error(response?.msg));
+                        $('#alert').html(alert_error(errors));
                         break;
                     default:
-                        $('#alert').html(alert_warning('Data Belum Lengkap'));
+                        $('#alert').html(alert_error('Saat proses data'));
                         break;
                 }
-            },
-            error: function (data) {
-                $('#alert').html(alert_error('proses data'));
             }
         });
                 
@@ -88,33 +88,22 @@
             if (result.value) {
 
                 $.ajax({
-                    url  : url+'/destroy',
+                    url  : url+'/delete',
                     data : {id:id},
                     type : "post", 
                     success: function(response){
-                        switch (response?.code) {
-                            case 200:
-                                swalWithBootstrapButtons(
-                                    'Terhapus!',
-                                    'Data telah terhapus.',
-                                    'success'
-                                )
-                                
-                                $('#zero-config').dataTable().api().ajax.reload();
-                                break;
-                            default:
-                                swalWithBootstrapButtons(
-                                    'Gagal',
-                                    'Dalam memproses hapus data, data masih ada. :)',
-                                    'error'
-                                )
-                                break;
-                        }
+                        swalWithBootstrapButtons(
+                            'Terhapus!',
+                            'Data telah terhapus.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
                     },
                     error: function (data) {
                         swalWithBootstrapButtons(
                             'Gagal',
-                            'Terjadi Kesalah Sistem. :)',
+                            'Dalam memproses hapus data, data masih ada. :)',
                             'error'
                         )
                     }
@@ -146,35 +135,27 @@
             type: 'POST',
         },
         columns: [
-            // {
-            //     data: 'DT_RowIndex',
-            //     targets: [0, -1],
-            //     searchable: false,
-            //     orderable: false,
-            //     className: 'text-center',
-            //     width: 30,
-            // },
-            { data: 'id', sortable: false, 
+            { 
+                data: 'id', 
+                sortable: false, 
+                width: 40,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }  
             },
             {data: 'name'},
-            {data: 'username'},
-            {data: 'email'},
-            { data: null, sortable: false, 
-                render: function (data, type, row, meta) {
-                    return data?.role?.name;
-                }  
-            },
-            { data: null, sortable: false, 
+            { 
+                data: null, 
+                sortable: false, 
+                orderable: false, 
+                className: 'text-center', 
+                'bSortable' : false,
                 render: function (data, type, row, meta) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
-                    return '';
+                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
+                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
                 }  
             },
-            // {data: 'role_id'},
-            // {data: 'action', name: 'action', orderable: false, 'bSortable' : false,className: 'text-center'},
         ],
     });
 

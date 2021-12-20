@@ -1,0 +1,124 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    $(document).on('click', '.delete', function () {
+        
+        var id  = $(this).data('id');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+            title: 'Apakah Anda Yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tidak, batal!',
+            reverseButtons: true,
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+
+                $.ajax({
+                    url  : url+'/destroy',
+                    data : {id:id},
+                    type : "post", 
+                    success: function(response){
+                        switch (response?.code) {
+                            case 200:
+                                swalWithBootstrapButtons(
+                                    'Terhapus!',
+                                    'Data telah terhapus.',
+                                    'success'
+                                )
+                                
+                                $('#zero-config').dataTable().api().ajax.reload();
+                                break;
+                            default:
+                                swalWithBootstrapButtons(
+                                    'Gagal',
+                                    'Dalam memproses hapus data, data masih ada. :)',
+                                    'error'
+                                )
+                                break;
+                        }
+                    },
+                    error: function (data) {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Terjadi Kesalah Sistem. :)',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons(
+                    'Dibatalkan',
+                    'Data masih aman :)',
+                    'error'
+                )
+            }
+        })
+    });
+
+    $('#zero-config').DataTable({
+        oLanguage: {
+            sUrl: "<%= base_url + '/indonesian.json' %>",
+        },
+        stripeClasses: [],
+        lengthMenu: [5, 10, 20, 50],
+        pageLength: 10 ,
+        serverSide: true,
+        processing: true,
+        ajax: {
+            url: "<%= base_url + route_now %>",
+            type: 'POST',
+        },
+        columns: [
+            // {
+            //     data: 'DT_RowIndex',
+            //     targets: [0, -1],
+            //     searchable: false,
+            //     orderable: false,
+            //     className: 'text-center',
+            //     width: 30,
+            // },
+            { data: 'id', sortable: false, 
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }  
+            },
+            {data: 'name'},
+            {data: 'username'},
+            {data: 'email'},
+            // { data: null, sortable: false, 
+            //     render: function (data, type, row, meta) {
+            //         return data?.role?.name;
+            //     }  
+            // },
+            { data: null, sortable: false, 
+                render: function (data, type, row, meta) {
+                    // return meta.row + meta.settings._iDisplayStart + 1;
+                    return '';
+                }  
+            },
+            // {data: 'role_id'},
+            // {data: 'action', name: 'action', orderable: false, 'bSortable' : false,className: 'text-center'},
+        ],
+    });
+
+</script>

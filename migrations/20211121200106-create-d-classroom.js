@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'm_school_years', key: 'id' }
       },
-      m_study_program_id: {
+      study_program_id: {
         type: Sequelize.INTEGER,
         references: { model: 'm_study_programs', key: 'id' }
       },
@@ -46,7 +46,7 @@ module.exports = {
       queryInterface.addIndex('d_classrooms', 
                                     [
                                       'school_year_id', 
-                                      'm_study_program_id', 
+                                      'study_program_id', 
                                     ]);
       queryInterface.addIndex('d_classrooms', 
                                     [

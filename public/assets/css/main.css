@@ -2018,13 +2018,13 @@ textarea[readonly] {
 .table > tbody > tr > td {
     vertical-align: middle;
     color: #515365;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
 }
 .table > thead > tr > th {
     color: #d84a49;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
 }

@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   d_timetable.init({
+    code: DataTypes.STRING,
     school_year_id: DataTypes.INTEGER,
-    semester_id: DataTypes.INTEGER,
+    study_program_id: DataTypes.INTEGER,
     subject_id: DataTypes.INTEGER,
     lecturer_id: DataTypes.INTEGER,
-    code: DataTypes.STRING,
-    classroom: DataTypes.STRING
+    name: DataTypes.STRING,
+    classroom: DataTypes.STRING,
+    actived: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'd_timetable',
