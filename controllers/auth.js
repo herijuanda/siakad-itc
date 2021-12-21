@@ -16,6 +16,24 @@ module.exports.login = async function(req, res) {
         res.redirect(`/${req.session?.role}/dasbor`);
     }
 
+    // model.user.hasOne(model.m_lecturer, { foreignKey: 'id' });
+    const user = await model.user.findOne({
+        attributes: ['id', 'role_id'],
+        // include: [
+        //     { 
+        //         attributes: [ 
+        //             'position', 
+        //             'last_education', 
+        //             'year_of_entry' 
+        //         ],
+        //         model: model.m_lecturer,
+        //     },
+        // ],
+        where: { 
+            username: req.body.username,
+        },
+    });    
+
     req.session = {
         id      : 1,
         role    : 'admin', 

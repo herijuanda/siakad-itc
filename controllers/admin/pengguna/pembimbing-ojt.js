@@ -8,7 +8,7 @@ module.exports.index = async function(req, res) {
     helper.auth(req, res);
     // res.json(routes[2].sub[0]);
     res.render('layouts/app', {
-        ...routes[2].sub[0],
+        ...routes[2].sub[1],
         session: req.session,
         routes,
         base_url : helper.base_url(req),
@@ -36,7 +36,7 @@ module.exports.data = async function(req, res) {
         //     },
         // ],
         where: {
-            role_id: 3,
+            role_id: 5,
         },
         // where: {
         //     role_id : {
@@ -93,7 +93,7 @@ module.exports.form = async function(req, res) {
     }
 
     res.render('pages/'+req?.body?.path+'/form', {
-        roles: await model.role.findAll(),
+        // roles: await model.role.findAll(),
         form,
         data,
         // role_value
@@ -131,8 +131,6 @@ module.exports.process = async function(req, res) {
                 ]
             },
         });
-
-        console.log('haiii', exist);
 
         if(exist > 0){
             return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });

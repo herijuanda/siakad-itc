@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   m_school_year.init({
     year: DataTypes.STRING,
-    aktif: DataTypes.INTEGER
+    // aktif: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'm_school_year',

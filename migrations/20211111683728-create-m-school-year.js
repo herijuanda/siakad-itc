@@ -11,9 +11,9 @@ module.exports = {
       year: {
         type: Sequelize.STRING
       },
-      aktif: {
-        type: Sequelize.INTEGER
-      },
+      // aktif: {
+      //   type: Sequelize.INTEGER
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -1,0 +1,28 @@
+<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+    <%- form.input_hide('id', data?.id) %>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-12 mb-4">
+                <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <%- form.input('name as nama', '*', data?.name) %>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <%- form.cancel() %>
+        <%- form.submit(data?.id ? 'Perbarui' : undefined) %>
+    </div>
+</form>
+
+<script>
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
+    });
+
+    feather.replace();
+</script>

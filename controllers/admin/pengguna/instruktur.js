@@ -93,7 +93,7 @@ module.exports.form = async function(req, res) {
     }
 
     res.render('pages/'+req?.body?.path+'/form', {
-        roles: await model.role.findAll(),
+        // roles: await model.role.findAll(),
         form,
         data,
         // role_value
@@ -101,11 +101,17 @@ module.exports.form = async function(req, res) {
 };
 
 module.exports.process = async function(req, res) {
+    const bcrypt = require('bcrypt');
+    const salt = bcrypt.genSaltSync(10);
+
     helper.auth(req, res);
 
     try {
         const id = req.body?.myform_hide?.id;
-        const myform = req.body?.myform;
+        const myform = {
+            ...req.body?.myform,
+            role_id: req.body?.myform_hide?.role_id, 
+        };
         const mylecturer = req.body?.mylecturer;
 
         const errors = helper.validator(myform);
@@ -118,6 +124,8 @@ module.exports.process = async function(req, res) {
         }
 
         delete myform.konfirmasi_password;
+
+        myform.password = bcrypt.hashSync(myform.password, salt);
 
         const exist = await model.user.count({
             where: {
@@ -132,10 +140,8 @@ module.exports.process = async function(req, res) {
             },
         });
 
-        console.log('haiii', exist);
-
         if(exist > 0){
-            return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
+            return res.status(500).json({ errors: 'Email atau Username Sudah Ada.' });
         }
 
         let result = {};
@@ -152,6 +158,8 @@ module.exports.process = async function(req, res) {
 
         if(result){
             let lecturer = {};
+
+            console.log('haiii', result?.id);
 
             if(id === '') {
                 lecturer = await model.m_lecturer.create({...mylecturer, user_id: result?.id});

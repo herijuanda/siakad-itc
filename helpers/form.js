@@ -27,7 +27,7 @@ module.exports.input_hide = (name, value) => {
     return '<input id="hidden_'+name+'" type="hidden" name="myform_hide['+name+']" value="'+(value || '')+'" />';
 }
 
-module.exports.select = (name, req = null, option = array(), value = array(), name_func = null, classes = null, attribute = null) => {
+module.exports.select = (name, req = null, option = array(), value = {}, name_func = null, classes = null, attribute = null) => {
 
     if(req)
         req    = '<span class="req">*</span>';
@@ -47,17 +47,15 @@ module.exports.select = (name, req = null, option = array(), value = array(), na
         '<label for="'+name+'" class="uk-form-label">'+label+req+'</label>'+
         '<select name="'+name_func+'['+name+']" id="select_'+name+'" '+(!req ? '' : 'required')+' class="form-control js-states select '+classes+'" '+attribute+' >';
 
-    if(value && value.constructor === Array){
-        if(!empty(value['key']))
-            result += '<option selected="selected" value="'+value['key']+'">'+value['value']+'</option>';
-        else
-            result += '<option value="">Pilih '+label+' ...</option>';
+    if(value?.key !== undefined){
+        result += '<option selected="selected" value="'+value?.key+'">'+value?.value+'</option>';
     } else {
         result += '<option value="">Pilih '+label+' ...</option>';
     }
 
     option.forEach(function(v) {
-        result += '<option value="'+v?.id+'">'+v?.name+'</option>';
+        if(v?.id !== value?.key)
+            result += '<option value="'+v?.id+'">'+v?.name+'</option>';
     });
 
     result += '</select>';

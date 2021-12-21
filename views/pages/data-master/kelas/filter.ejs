@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-sm-12  mb-3">
+        <div class="widget-content widget-content-area br-6">
+            <div class="p-4 ">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <%- form.select('school_year_id as tahun_ajaran', '*', school_year) %>
+                    </div>
+                    <div class="col-md-4">
+                        <%- form.select('study_program_id as prodi', '*', study_program) %>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
+    });
+</script>

@@ -8,7 +8,10 @@ const routes    = require('../../../routes/menus/admin');
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
     res.render('layouts/app', {
-        ...routes[1].sub[0],
+        ...routes[1].sub[2],
+        form,
+        school_year: await model.m_school_year.findAll(),
+        study_program: await model.m_study_program.findAll(),
         session: req.session,
         routes,
         base_url : helper.base_url(req),
@@ -24,11 +27,40 @@ module.exports.data = async function(req, res) {
     const datatableObj = await sequelizeDatatable(req.body);
     // const count = await model.study_program.count();
     const count = await model.m_study_program.count();
-    const results = await model.m_study_program.findAndCountAll({
+    
+    model.d_classroom.hasOne(model.m_lecturer, 
+        { 
+            sourceKey: 'lecturer_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_lecturer.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+    const results = await model.d_classroom.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
-        // where: {
-        //     role_id: 4,
-        // },
+        include: [
+            { 
+                attributes: [ 'id' ],
+                model: model.m_lecturer,
+                include: [
+                    { 
+                        attributes: [ 'name' ],
+                        model: model.user,
+                    },
+                ],
+            },
+        ],
+        order: [
+            ['name', 'ASC'],
+        ],
+        where: {
+            actived: 1,
+        },
         // where: {
         //     role_id : {
         //         [Op.not]: 1,
@@ -43,15 +75,34 @@ module.exports.form = async function(req, res) {
     helper.auth(req, res);
 
     let data = {};
+    let study_program_value = {};
     let role_value = null;
     if(req.body?.id){
-        data = await model.m_study_program.findOne({
+        model.m_subject.hasOne(model.m_study_program, { foreignKey: 'id' });
+
+        data = await model.m_subject.findOne({
             attributes: ['id', 'name'],
+            include: [
+                { 
+                    attributes: [ 'id', 'name' ],
+                    model: model.m_study_program,
+                },
+            ],
             where: { id: req.body.id },
         });
     }
 
+    if(data){
+        study_program_value = {
+            key   : data?.m_study_program?.id,
+            value : data?.m_study_program?.name,
+        };
+    }
+
     res.render('pages/'+req?.body?.path+'/form', {
+        school_year: await model.m_school_year.findAll(),
+        study_program: await model.m_study_program.findAll(),
+        study_program_value,
         form,
         data,
         role_value
@@ -73,9 +124,9 @@ module.exports.process = async function(req, res) {
         let result = {};
 
         if(id === '') {
-            result = await model.m_study_program.create(myform);
+            result = await model.m_subject.create(myform);
         }else{
-            result = await model.m_study_program.update(myform, {
+            result = await model.m_subject.update(myform, {
                 where: {
                     id: id
                 }

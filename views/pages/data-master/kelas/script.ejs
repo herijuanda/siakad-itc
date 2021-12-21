@@ -22,7 +22,7 @@
         
         var id  = $(this).data('id');
 
-        $.post(url+'/form', { id: id }, function (data) {
+        $.post(url+'/form', { id, path }, function (data) {
             $("#modal-label").html('Form Edit');
             $("#show-modal").html(data);
         });
@@ -88,33 +88,22 @@
             if (result.value) {
 
                 $.ajax({
-                    url  : url+'/destroy',
+                    url  : url+'/delete',
                     data : {id:id},
                     type : "post", 
                     success: function(response){
-                        switch (response?.code) {
-                            case 200:
-                                swalWithBootstrapButtons(
-                                    'Terhapus!',
-                                    'Data telah terhapus.',
-                                    'success'
-                                )
-                                
-                                $('#zero-config').dataTable().api().ajax.reload();
-                                break;
-                            default:
-                                swalWithBootstrapButtons(
-                                    'Gagal',
-                                    'Dalam memproses hapus data, data masih ada. :)',
-                                    'error'
-                                )
-                                break;
-                        }
+                        swalWithBootstrapButtons(
+                            'Terhapus!',
+                            'Data telah terhapus.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
                     },
                     error: function (data) {
                         swalWithBootstrapButtons(
                             'Gagal',
-                            'Terjadi Kesalah Sistem. :)',
+                            'Dalam memproses hapus data, data masih ada. :)',
                             'error'
                         )
                     }
@@ -146,22 +135,21 @@
             type: 'POST',
         },
         columns: [
-            // {
-            //     data: 'DT_RowIndex',
-            //     targets: [0, -1],
-            //     searchable: false,
-            //     orderable: false,
-            //     className: 'text-center',
-            //     width: 30,
-            // },
-            { data: 'id', sortable: false, 
+            { 
+                data: 'id', 
+                sortable: false, 
+                width: 40,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }  
             },
+            {data: 'code'},
             {data: 'name'},
-            {data: 'username'},
-            {data: 'email'},
+            { data: null, sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.m_lecturer?.user?.name;
+                }  
+            },
             { 
                 data: null, 
                 sortable: false, 
@@ -171,11 +159,9 @@
                 render: function (data, type, row, meta) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
                     return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Non Aktifkan</button>';
+                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
                 }  
             },
-            // {data: 'role_id'},
-            // {data: 'action', name: 'action', orderable: false, 'bSortable' : false,className: 'text-center'},
         ],
     });
 

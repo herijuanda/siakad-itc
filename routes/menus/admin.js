@@ -36,7 +36,7 @@ module.exports = [
             {
                 module  : 'data-master',
                 route   : 'mata-pelatihan',
-                path    : 'data-master/prodi',
+                path    : 'data-master/mata-pelatihan',
                 title   : 'Daftar Mata Pelatihan',
                 plugin  : [
                     'datatables',
@@ -46,11 +46,11 @@ module.exports = [
             {
                 module  : 'data-master',
                 route   : 'kelas',
-                path    : 'data-master/prodi',
+                path    : 'data-master/kelas',
                 title   : 'Daftar Kelas',
                 plugin  : [
                     'datatables',
-                    // 'select2',
+                    'select2',
                 ],
             },
         ]
