@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('m_subjects', ['study_program_id']));    
+    });    
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('m_subjects');

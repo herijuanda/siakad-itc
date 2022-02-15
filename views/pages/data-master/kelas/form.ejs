@@ -3,11 +3,23 @@
     <div class="modal-body">
         <div id="alert"></div>
         <div class="form-row">
-            <div class="col-md-12 mb-4">
+            <div class="col-md-6 mb-4">
+                <%- form.select('school_year_id as tahun_ajaran', '*', school_year, school_year_value) %>
+            </div>
+            <div class="col-md-6 mb-4">
                 <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
             </div>
-            <div class="col-md-12 mb-4">
-                <%- form.input('name as nama', '*', data?.name) %>
+            <div class="col-md-6 mb-4">
+                <%- form.select('subject_id as mata_pelatihan', '*', [], subject_value, null, null, 'disabled') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.select('lecturer_id as dosen', '*', lecturer, lecturer_value) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('code as kode', '*', data?.code) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('name as nama_kelas', '*', data?.name) %>
             </div>
         </div>
     </div>

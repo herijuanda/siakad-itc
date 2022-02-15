@@ -9,7 +9,7 @@ module.exports.index = async function(req, res) {
     helper.auth(req, res);
     res.render('layouts/app', {
         ...routes[1].sub[1],
-        session: req.session,
+        session : req.session,
         routes,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
@@ -89,8 +89,6 @@ module.exports.form = async function(req, res) {
             value : data?.m_study_program?.name,
         };
     }
-
-    console.log('haiii', study_program_value);
 
     res.render('pages/'+req?.body?.path+'/form', {
         study_program: await model.m_study_program.findAll(),

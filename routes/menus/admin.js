@@ -31,6 +31,7 @@ module.exports = [
                 plugin  : [
                     'datatables',
                     'select2',
+                    'input_number',
                 ],
             },
             {
@@ -100,5 +101,5 @@ module.exports = [
                 ],
             },
         ]
-    }
+    },
 ];

@@ -20,6 +20,16 @@
 
 <script src="<%= base_url %>/plugins/highlight/highlight.pack.js"></script>
 
+<% if(plugin?.includes('input_number')) { %>
+  <script src="<%= base_url %>/plugins/input-number/jquery.mask.min.js"></script>
+
+  <script>
+      $(document).ready(function(){
+          $(".input_number").mask("000.000.000.000.000.000", {reverse:true});
+      });
+  </script>
+<% } %>
+
 <% if(plugin?.includes('datatables')) { %>
   <script src="<%= base_url %>/plugins/table/datatable/datatables.js"></script>
 <% } %>
@@ -47,6 +57,7 @@
 
 <% if(plugin?.includes('flatpickr')) { %>
   <script src="<%= base_url %>/plugins/flatpickr/flatpickr.js"></script>
+  <!-- <script src="<%= base_url %>/plugins/flatpickr/custom-flatpickr.js"></script> -->
 <% } %>
 
 <% if(plugin?.includes('textarea')) { %>

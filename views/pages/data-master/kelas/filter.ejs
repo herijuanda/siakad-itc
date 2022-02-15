@@ -3,11 +3,11 @@
         <div class="widget-content widget-content-area br-6">
             <div class="p-4 ">
                 <div class="form-row">
-                    <div class="col-md-4">
-                        <%- form.select('school_year_id as tahun_ajaran', '*', school_year) %>
+                    <div class="col-md-3">
+                        <%- form.select('school_year_id as tahun_ajaran', '*', school_year, {}, null, 'filter') %>
                     </div>
                     <div class="col-md-4">
-                        <%- form.select('study_program_id as prodi', '*', study_program) %>
+                        <%- form.select('study_program_id as prodi', '*', study_program, {}, null, 'filter') %>
                     </div>  
                 </div>
             </div>

@@ -8,6 +8,8 @@
         }
     });
 
+    $(".filter").select2();
+
     /*  add data */
     $(document).on('click', '.add', function () {
 
@@ -144,6 +146,7 @@
                 }  
             },
             {data: 'code'},
+            {data: 'name'},
             {data: 'name'},
             { data: null, sortable: false, 
                 render: function (data, type, row, meta) {

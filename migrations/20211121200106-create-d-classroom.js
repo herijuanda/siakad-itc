@@ -42,18 +42,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => { 
-      queryInterface.addIndex('d_classrooms', 
-                                    [
-                                      'school_year_id', 
-                                      'study_program_id', 
-                                    ]);
-      queryInterface.addIndex('d_classrooms', 
-                                    [
-                                      'subject_id',
-                                      'lecturer_id'
-                                    ]);
     });
+    // }).then(() => { 
+    //   queryInterface.addIndex('d_classrooms', 
+    //                                 [
+    //                                   'school_year_id', 
+    //                                   'study_program_id',
+    //                                 ]);
+    //   queryInterface.addIndex('d_classrooms', 
+    //                                 [
+    //                                   'subject_id',
+    //                                   'lecturer_id'
+    //                                 ]);
+    // });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('d_classrooms');

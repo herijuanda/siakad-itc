@@ -1,0 +1,85 @@
+<div class="form-container outer">
+    <div class="form-form">
+        <div class="form-form-wrap">
+            <div class="form-container">
+                <div class="form-content">
+                    <img class="login-logo mx-auto mb-1 d-none d-sm-block" src="" />
+                    <div>
+                        <h4 class="mb-2">Selamat Datang, SIAKAD ITC</h4>
+                        <h6>Daftarkan Akun Anda Disini</h6>
+                    </div>
+                    
+                    <!-- @include('sweet::alert')-->
+
+                    <form method="POST" id="loginform" action="<%= base_url+'/daftar/proses' %>" class="text-left mt-5">
+                        <div class="form">
+
+                            <div class="form-row">
+                                <div class="col-md-6 mb-4">
+                                    <%- form.select('study_program_id as prodi', '*', study_program) %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('name as nama', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('place_of_birth as tempat_lahir', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input_date('date_of_birth as tangal_lahir', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- 
+                                        form.select('genre_id as jenis_kelamin', '*', [
+                                            {
+                                                id: 1,
+                                                dataValues: {
+                                                    name: 'Laki - laki'
+                                                },
+                                            },
+                                            {
+                                                id: 2,
+                                                dataValues: {
+                                                    name: 'Perempuan'
+                                                },
+                                            },
+                                        ]) 
+                                    %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('religion as agama', '*') %>
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <%- form.input_date('address as alamat', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('postal_code as kode_pos', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('phone_number as nomor_handphone', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('parent_name as Nama Orang Tua (Ayah / Ibu)', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('parent_job as Pekerjaan Orang Tua (Ayah / Ibu)', '*') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('email', '*', '','email') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('password', '*', '', 'password') %>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex justify-content-between">
+                                <div class="text-right action-register">
+                                    <a href="<%= base_url %>" class="btn shadow-none">KEMBALI</a>
+                                    <button type="submit" class="btn btn-primary shadow-none" value="">DAFTAR</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>                    
+            </div>
+        </div>
+    </div>
+</div>

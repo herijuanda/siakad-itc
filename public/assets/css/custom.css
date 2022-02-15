@@ -149,7 +149,7 @@ label {
 
 @media (min-width: 576px) {
     .modal-dialog {
-        max-width: 650px !important;
+        max-width: 500px !important;
     }
 }
 
@@ -198,4 +198,13 @@ input[readonly], select[readonly], textarea[readonly]{
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     background-color: #e11d47;
+}
+
+#daftar{
+    font-size: 15px;
+    color: #007bff;
+    text-decoration: underline;
+    letter-spacing: 0.0312rem;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
 }

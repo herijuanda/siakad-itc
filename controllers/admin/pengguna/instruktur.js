@@ -9,7 +9,7 @@ module.exports.index = async function(req, res) {
     // res.json(routes[2].sub[0]);
     res.render('layouts/app', {
         ...routes[2].sub[0],
-        session: req.session,
+        session : req.session,
         routes,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
@@ -158,8 +158,6 @@ module.exports.process = async function(req, res) {
 
         if(result){
             let lecturer = {};
-
-            console.log('haiii', result?.id);
 
             if(id === '') {
                 lecturer = await model.m_lecturer.create({...mylecturer, user_id: result?.id});

@@ -1,5 +1,6 @@
 const helper    = require('../helpers');
 const model     = require('../models');
+const form      = require('../helpers/form');
 
 module.exports.index = async function(req, res) {
     if(req?.session?.id) {
@@ -8,6 +9,7 @@ module.exports.index = async function(req, res) {
 
     res.render('layouts/auth', {
         base_url : helper.base_url(req),
+        view : 'login',
     });
 };
 
@@ -44,6 +46,25 @@ module.exports.login = async function(req, res) {
     }else{
         alert('Gagal Masuk');
         res.redirect('/');
+    }
+};
+
+module.exports.register = async function(req, res) {
+    if(req?.session?.id) {
+        res.redirect(`/${req?.session?.role}/dasbor`);
+    }
+
+    res.render('layouts/auth', {
+        base_url  : helper.base_url(req),
+        study_program: await model.m_study_program.findAll(),
+        view  : 'register',
+        form,
+    });
+};
+
+module.exports.register_proccess = async function(req, res) {
+    if(req?.session?.id) {
+        res.redirect(`/${req.session?.role}/dasbor`);
     }
 };
 

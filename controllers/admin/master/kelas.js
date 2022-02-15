@@ -10,7 +10,7 @@ module.exports.index = async function(req, res) {
     res.render('layouts/app', {
         ...routes[1].sub[2],
         form,
-        school_year: await model.m_school_year.findAll(),
+        school_year: await model.m_school_year.findAll({ attributes: ['id', ['year', 'name']] }),
         study_program: await model.m_study_program.findAll(),
         session: req.session,
         routes,
@@ -78,14 +78,52 @@ module.exports.form = async function(req, res) {
     let study_program_value = {};
     let role_value = null;
     if(req.body?.id){
-        model.m_subject.hasOne(model.m_study_program, { foreignKey: 'id' });
+        model.d_classroom.hasOne(model.m_school_year, 
+            { 
+                sourceKey: 'school_year_id', 
+                foreignKey: 'id' 
+            }
+        );
 
-        data = await model.m_subject.findOne({
+        model.d_classroom.hasOne(model.m_study_program, 
+            { 
+                sourceKey: 'study_program_id', 
+                foreignKey: 'id' 
+            }
+        );
+
+        model.d_classroom.hasOne(model.m_subject, 
+            { 
+                sourceKey: 'subject_id', 
+                foreignKey: 'id' 
+            }
+        );
+
+        model.d_classroom.hasOne(model.m_lecturer, 
+            { 
+                sourceKey: 'lecturer_id', 
+                foreignKey: 'id' 
+            }
+        );
+
+        data = await model.d_classroom.findOne({
             attributes: ['id', 'name'],
             include: [
                 { 
+                    attributes: [ 'id', ['year', 'name'] ],
+                    model: model.m_school_year,
+                },
+                { 
                     attributes: [ 'id', 'name' ],
                     model: model.m_study_program,
+                },
+                { 
+                    attributes: [ 'id', 'name' ],
+                    model: model.m_subject,
+                },
+                { 
+                    attributes: [ 'id', 'name' ],
+                    model: model.m_lecturer,
                 },
             ],
             where: { id: req.body.id },
@@ -93,16 +131,35 @@ module.exports.form = async function(req, res) {
     }
 
     if(data){
+        school_year_value = {
+            key   : data?.m_school_year?.id,
+            value : data?.m_school_year?.dataValues?.name,
+        };
+
         study_program_value = {
             key   : data?.m_study_program?.id,
             value : data?.m_study_program?.name,
         };
+
+        subject_value = {
+            key   : data?.m_subject?.id,
+            value : data?.m_subject?.name,
+        };
+
+        lecturer_value = {
+            key   : data?.m_lecturer?.id,
+            value : data?.m_lecturer?.name,
+        };
     }
 
     res.render('pages/'+req?.body?.path+'/form', {
-        school_year: await model.m_school_year.findAll(),
+        school_year: await model.m_school_year.findAll({ attributes: ['id', ['year', 'name']] }),
         study_program: await model.m_study_program.findAll(),
+        lecturer: await model.m_lecturer.findAll(),
+        school_year_value,
         study_program_value,
+        subject_value,
+        lecturer_value,
         form,
         data,
         role_value

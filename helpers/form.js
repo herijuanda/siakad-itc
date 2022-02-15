@@ -23,6 +23,31 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
     return result;
 };
 
+module.exports.input_date = (name, req = null, value = null, type = 'text', name_func = null) => {
+
+    if(req)
+        req    = '<span classes="req">*</span>';
+
+    if(value)
+        value  = 'value="'+value+'"';
+
+    if(!name_func)
+        name_func = 'myform';
+
+    if (name.indexOf(' as ') > -1) {
+        arr_name   = name.split(' as ');
+        name       = arr_name[0];
+        label      = arr_name[1].replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+    } else {
+        label      = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+    }
+
+    let result =  ''+
+        '<label id="label_'+name+'">'+label+''+req+'</label>'+
+        '<input id="input_'+name+'" placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control flatpickr flatpickr-input active"/>';
+    return result;
+};
+
 module.exports.input_hide = (name, value) => {
     return '<input id="hidden_'+name+'" type="hidden" name="myform_hide['+name+']" value="'+(value || '')+'" />';
 }
@@ -55,7 +80,7 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
 
     option.forEach(function(v) {
         if(v?.id !== value?.key)
-            result += '<option value="'+v?.id+'">'+v?.name+'</option>';
+            result += '<option value="'+v?.id+'">'+v?.dataValues?.name+'</option>';
     });
 
     result += '</select>';

@@ -5,7 +5,6 @@ const model     = require('../../../models');
 const routes    = require('../../../routes/menus/admin');
 
 module.exports.index = async function(req, res) {
-    console.log('haiii');
     res.render('layouts/app', {
         ...routes[2].sub[2],
         session: req.session,

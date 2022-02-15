@@ -19,21 +19,11 @@ module.exports.index = async function(req, res) {
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
     const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
     const datatableObj = await sequelizeDatatable(req.body);
-    // const count = await model.study_program.count();
     const count = await model.m_study_program.count();
     const results = await model.m_study_program.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
-        // where: {
-        //     role_id: 4,
-        // },
-        // where: {
-        //     role_id : {
-        //         [Op.not]: 1,
-        //     }
-        // }
     });
 
     return helper.datatables(req, res, count, results);
@@ -46,7 +36,7 @@ module.exports.form = async function(req, res) {
     let role_value = null;
     if(req.body?.id){
         data = await model.m_study_program.findOne({
-            attributes: ['id', 'name'],
+            attributes: ['id', 'name', 'cost'],
             where: { id: req.body.id },
         });
     }
