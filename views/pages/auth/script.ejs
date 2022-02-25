@@ -1,0 +1,137 @@
+<script type="text/javascript">
+
+$(document).on('click', '#submit-login', function () {
+        $.ajax({
+            url  : url+'/process',
+            data : $('#form').serialize(),
+            type : "post", 
+            success: function(response){
+                if(response?.id === null)
+                    $('#form')[0].reset();
+
+                $('#alert').html(alert_success(response?.message));
+                $('#zero-config').dataTable().api().ajax.reload();
+            },
+            error: function (data, response) {
+                const errors = data?.responseJSON?.errors;
+                switch (data.status) {
+                    case 400:
+                        let result = '';
+                        const arrLabel = {
+                            study_program_id: 'Prodi',
+                            name: 'Nama',
+                            place_of_birth: 'Tempat Lahir',
+                            date_of_birth: 'Tanggal Lahir',
+                            genre_id: 'Jenis Kelamin',
+                            religion: 'Agama',
+                            address: 'Alamat',
+                            postal_code: 'Kode Pos',
+                            phone_number: 'Nomor HP',
+                            parent_name: 'Nama Orang Tua',
+                            parent_job: 'Pekerjaan Orang Tua',
+                            email: 'Email',
+                            password: 'Password',
+                            password_confirmation: 'Konfirmasi Password',
+                        };
+
+                        errors.forEach(function(v) {
+                            result += '<br>- <b>'+(arrLabel[v] || v)+'</b> belum diisi';
+                        });
+
+                        $('#alert').html(alert_warning(result));
+                        break;
+                    case 422:
+                        $('#alert').html(alert_warning(errors));
+                        break;
+                    case 500:
+                        $('#alert').html(alert_error(errors));
+                        break;
+                    default:
+                        $('#alert').html(alert_error('Saat proses data'));
+                        break;
+                }
+            }
+        });
+                
+    });
+
+    $(document).on('click', '#submit', function () {
+        $.ajax({
+            url  : url+'/process',
+            data : $('#form').serialize(),
+            type : "post", 
+            success: function(response){
+                if(response?.id === null)
+                    $('#form')[0].reset();
+
+                $('#alert').html(alert_success(response?.message));
+                $('#zero-config').dataTable().api().ajax.reload();
+            },
+            error: function (data, response) {
+                const errors = data?.responseJSON?.errors;
+                switch (data.status) {
+                    case 400:
+                        let result = '';
+                        const arrLabel = {
+                            study_program_id: 'Prodi',
+                            name: 'Nama',
+                            place_of_birth: 'Tempat Lahir',
+                            date_of_birth: 'Tanggal Lahir',
+                            genre_id: 'Jenis Kelamin',
+                            religion: 'Agama',
+                            address: 'Alamat',
+                            postal_code: 'Kode Pos',
+                            phone_number: 'Nomor HP',
+                            parent_name: 'Nama Orang Tua',
+                            parent_job: 'Pekerjaan Orang Tua',
+                            email: 'Email',
+                            password: 'Password',
+                            password_confirmation: 'Konfirmasi Password',
+                        };
+
+                        errors.forEach(function(v) {
+                            result += '<br>- <b>'+(arrLabel[v] || v)+'</b> belum diisi';
+                        });
+
+                        $('#alert').html(alert_warning(result));
+                        break;
+                    case 422:
+                        $('#alert').html(alert_warning(errors));
+                        break;
+                    case 500:
+                        $('#alert').html(alert_error(errors));
+                        break;
+                    default:
+                        $('#alert').html(alert_error('Saat proses data'));
+                        break;
+                }
+            }
+        });
+                
+    });
+
+    function alert_success(text) {
+        Swal.fire(
+            'Berhasil!',
+            text,
+            'success'
+        );
+    }
+
+    function alert_warning(text){
+        Swal.fire(
+            'Peringatan!',
+            text,
+            'warning'
+        );
+    }
+
+    function alert_error(text){
+        Swal.fire(
+            'Gagal!',
+            text,
+            'error'
+        );
+    }
+
+</script>

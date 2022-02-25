@@ -8,18 +8,15 @@
                         <h4 class="mb-2">Selamat Datang, SIAKAD ITC</h4>
                         <h6>Daftarkan Akun Anda Disini</h6>
                     </div>
-                    
-                    <!-- @include('sweet::alert')-->
 
-                    <form method="POST" id="loginform" action="<%= base_url+'/daftar/proses' %>" class="text-left mt-5">
+                    <form id="form" class="simple-example text-left" action="javascript:void(0);" novalidate>
                         <div class="form">
-
                             <div class="form-row">
                                 <div class="col-md-6 mb-4">
                                     <%- form.select('study_program_id as prodi', '*', study_program) %>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <%- form.input('name as nama', '*') %>
+                                    <%- form.input('name as nama', '*', '', 'text', 'myuser') %>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <%- form.input('place_of_birth as tempat_lahir', '*') %>
@@ -48,10 +45,10 @@
                                 <div class="col-md-6 mb-4">
                                     <%- form.input('religion as agama', '*') %>
                                 </div>
-                                <div class="col-md-12 mb-4">
+                                <div class="col-md-9 mb-4">
                                     <%- form.input_date('address as alamat', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-3 mb-4">
                                     <%- form.input('postal_code as kode_pos', '*') %>
                                 </div>
                                 <div class="col-md-6 mb-4">
@@ -64,16 +61,20 @@
                                     <%- form.input('parent_job as Pekerjaan Orang Tua (Ayah / Ibu)', '*') %>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <%- form.input('email', '*', '','email') %>
+                                    <%- form.input('email', '*', '', 'email', 'myuser') %>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <%- form.input('password', '*', '', 'password') %>
+                                    <%- form.input('password', '*', '', 'password', 'myuser') %>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'notused') %>
                                 </div>
                             </div>
+                            <div id="alert"></div>
                             <div class="d-sm-flex justify-content-between">
                                 <div class="text-right action-register">
                                     <a href="<%= base_url %>" class="btn shadow-none">KEMBALI</a>
-                                    <button type="submit" class="btn btn-primary shadow-none" value="">DAFTAR</button>
+                                    <button id="submit" type="submit" class="btn btn-primary shadow-none" value="">DAFTAR</button>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,6 @@ module.exports = function(app) {
     app.post('/login', auth.login);
     app.post('/logout', auth.logout);
     
-    app.get('/daftar', auth.register);
-    app.get('/daftar/proses', auth.register_proccess);
+    app.get('/register', auth.register);
+    app.post('/register/process', auth.register_proccess);
 };

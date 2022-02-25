@@ -20,7 +20,8 @@
     <!-- END GLOBAL MANDATORY STYLES -->
     
     <link rel="stylesheet" type="text/css" href="<%= base_url %>/assets/css/forms/switches.css">
-    <script src="<%= base_url %>/assets/js/sweetalert.min.js"></script>
+    <!-- <script src="<%= base_url %>/assets/js/sweetalert.min.js"></script> -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <% if(view === 'register'){ %>
         <link href="<%= base_url %>/assets/css/authentication/register.css" rel="stylesheet" type="text/css" />
@@ -54,6 +55,12 @@
             });
         </script>
     <% } %>
+
+    <script>
+        const url = '<%= base_url+"/register" %>';
+    </script>
+
+    <%- include('../pages/auth/script'); %>
 
     
 </body>
