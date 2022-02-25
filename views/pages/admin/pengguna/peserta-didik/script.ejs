@@ -89,34 +89,43 @@
             type: 'POST',
         },
         columns: [
-            // {
-            //     data: 'DT_RowIndex',
-            //     targets: [0, -1],
-            //     searchable: false,
-            //     orderable: false,
-            //     className: 'text-center',
-            //     width: 30,
-            // },
             { data: 'id', sortable: false, 
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }  
             },
-            {data: 'name'},
-            {data: 'email'},
-            {data: 'email'},
-            {data: 'email'},
-            {data: 'email'},
-            {data: 'email'},
-            // { data: null, sortable: false, 
-            //     render: function (data, type, row, meta) {
-            //         return data?.role?.name;
-            //     }  
-            // },
             { data: null, sortable: false, 
                 render: function (data, type, row, meta) {
+                    return data?.user?.name;
+                }  
+            },
+            {data: 'register_number'},
+            { data: null, sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.user?.email;
+                }  
+            },
+            { data: null, sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.m_study_program?.name;
+                }  
+            },
+            { data: null, sortable: false, 
+                render: function (data, type, row, meta) {
+                    return 'Aktif';
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                orderable: false, 
+                className: 'text-center', 
+                'bSortable' : false,
+                render: function (data, type, row, meta) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
-                    return '';
+                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
+                        // '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>'+
+                        '<button class="btn btn-outline-danger deactived" data-id="'+data?.id+'">Non Aktifkan</button>';
                 }  
             },
             // {data: 'role_id'},

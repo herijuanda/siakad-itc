@@ -17,30 +17,39 @@ module.exports.index = async function(req, res) {
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
     const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
     const datatableObj = await sequelizeDatatable(req.body);
     const count = await model.user.count();
-    
-    // model.user.hasOne(model.role, { foreignKey: 'id' });
-    const results = await model.user.findAndCountAll({
+
+    model.m_learner.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_learner.hasOne(model.m_study_program, 
+        { 
+            sourceKey: 'study_program_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    const results = await model.m_learner.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
-        // include: [
-        //     { 
-        //         attributes: [ 'id' ],
-        //         model: model.role,
-        //         where: { slug: 'peserta-didik' },
-        //         // required: false,
-        //     },
-        // ],
-        where: {
-            role_id: 4,
-        },
-        // where: {
-        //     role_id : {
-        //         [Op.not]: 1,
-        //     }
-        // }
+        attributes: [ 'id', 'register_number' ],
+        include: [
+            { 
+                attributes: [ 'name', 'email' ],
+                model: model.user,
+                required: true,
+            },
+            { 
+                attributes: [ 'name' ],
+                model: model.m_study_program,
+                required: true,
+            },
+        ],
     });
 
     return helper.datatables(req, res, count, results);

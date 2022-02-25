@@ -208,3 +208,7 @@ input[readonly], select[readonly], textarea[readonly]{
     font-family: "Quicksand", sans-serif;
     font-weight: bold;
 }
+
+/* .table td, .table th{
+    border-bottom: none;
+} */

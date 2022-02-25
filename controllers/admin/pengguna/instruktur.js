@@ -24,7 +24,7 @@ module.exports.data = async function(req, res) {
     const datatableObj = await sequelizeDatatable(req.body);
     const count = await model.user.count();
     
-    model.user.hasOne(model.role, { foreignKey: 'id' });
+    // model.user.hasOne(model.role, { foreignKey: 'id' });
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         // include: [

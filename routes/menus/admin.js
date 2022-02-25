@@ -2,7 +2,7 @@ module.exports = [
     {
         module  : 'dasbor',
         route   : 'dasbor',
-        path    : 'dasbor',
+        path    : 'admin/dasbor',
         title   : 'Dasbor',
         icon    : 'grid',
         plugin  : [
@@ -26,7 +26,7 @@ module.exports = [
             {
                 module  : 'data-master',
                 route   : 'prodi',
-                path    : 'data-master/prodi',
+                path    : 'admin/data-master/prodi',
                 title   : 'Daftar Prodi',
                 plugin  : [
                     'datatables',
@@ -37,7 +37,7 @@ module.exports = [
             {
                 module  : 'data-master',
                 route   : 'mata-pelatihan',
-                path    : 'data-master/mata-pelatihan',
+                path    : 'admin/data-master/mata-pelatihan',
                 title   : 'Daftar Mata Pelatihan',
                 plugin  : [
                     'datatables',
@@ -47,7 +47,7 @@ module.exports = [
             {
                 module  : 'data-master',
                 route   : 'kelas',
-                path    : 'data-master/kelas',
+                path    : 'admin/data-master/kelas',
                 title   : 'Daftar Kelas',
                 plugin  : [
                     'datatables',
@@ -73,7 +73,7 @@ module.exports = [
             {
                 module  : 'pengguna',
                 route   : 'instruktur',
-                path    : 'pengguna/instruktur',
+                path    : 'admin/pengguna/instruktur',
                 title   : 'Instruktur',
                 plugin  : [
                     'datatables',
@@ -83,7 +83,7 @@ module.exports = [
             {
                 module  : 'pengguna',
                 route   : 'pembimbing-ojt',
-                path    : 'pengguna/pembimbing-ojt',
+                path    : 'admin/pengguna/pembimbing-ojt',
                 title   : 'Pembimbing OJT',
                 plugin  : [
                     'datatables',
@@ -93,7 +93,7 @@ module.exports = [
             {
                 module  : 'pengguna',
                 route   : 'peserta-didik',
-                path    : 'pengguna/peserta-didik',
+                path    : 'admin/pengguna/peserta-didik',
                 title   : 'Peserta Didik',
                 plugin  : [
                     'datatables',
