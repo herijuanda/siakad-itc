@@ -8,71 +8,14 @@
         }
     });
     
-    $(document).on('click', '.delete', function () {
+    $(document).on('click', '.edit', function () {
         
         var id  = $(this).data('id');
 
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success btn-rounded',
-            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
-            buttonsStyling: false,
-        })
-
-        swalWithBootstrapButtons({
-            title: 'Apakah Anda Yakin?',
-            text: "Anda tidak akan dapat mengembalikan ini!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tidak, batal!',
-            reverseButtons: true,
-            padding: '2em'
-        }).then(function(result) {
-            if (result.value) {
-
-                $.ajax({
-                    url  : url+'/destroy',
-                    data : {id:id},
-                    type : "post", 
-                    success: function(response){
-                        switch (response?.code) {
-                            case 200:
-                                swalWithBootstrapButtons(
-                                    'Terhapus!',
-                                    'Data telah terhapus.',
-                                    'success'
-                                )
-                                
-                                $('#zero-config').dataTable().api().ajax.reload();
-                                break;
-                            default:
-                                swalWithBootstrapButtons(
-                                    'Gagal',
-                                    'Dalam memproses hapus data, data masih ada. :)',
-                                    'error'
-                                )
-                                break;
-                        }
-                    },
-                    error: function (data) {
-                        swalWithBootstrapButtons(
-                            'Gagal',
-                            'Terjadi Kesalah Sistem. :)',
-                            'error'
-                        )
-                    }
-                });
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons(
-                    'Dibatalkan',
-                    'Data masih aman :)',
-                    'error'
-                )
-            }
-        })
+        $.post(url+'/form', { id, path }, function (data) {
+            $("#modal-label").html('Form Edit');
+            $("#show-modal").html(data);
+        });
     });
 
     $('#zero-config').DataTable({
@@ -94,25 +37,24 @@
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }  
             },
+            { data: 'name' },
             { data: null, sortable: false, 
                 render: function (data, type, row, meta) {
-                    return data?.user?.name;
+                    return data?.m_learner?.register_number;
                 }  
             },
-            {data: 'register_number'},
+            { data: 'email' },
             { data: null, sortable: false, 
                 render: function (data, type, row, meta) {
-                    return data?.user?.email;
-                }  
-            },
-            { data: null, sortable: false, 
-                render: function (data, type, row, meta) {
-                    return data?.m_study_program?.name;
+                    return data?.m_learner?.m_study_program?.name;
                 }  
             },
             { data: null, sortable: false, 
                 render: function (data, type, row, meta) {
-                    return 'Aktif';
+                    if(data?.status)
+                        return '<span class="text-success">Aktif</span>';
+                    else
+                        return '<span class="text-danger">Tidak Aktif</span>';
                 }  
             },
             { 
@@ -122,10 +64,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data, type, row, meta) {
-                    // return meta.row + meta.settings._iDisplayStart + 1;
-                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        // '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>'+
-                        '<button class="btn btn-outline-danger deactived" data-id="'+data?.id+'">Non Aktifkan</button>';
+                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.register_number ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.register_number ? 'Edit' : 'Aktivasi')+'</button>';
                 }  
             },
             // {data: 'role_id'},

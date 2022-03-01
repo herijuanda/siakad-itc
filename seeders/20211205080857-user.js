@@ -18,7 +18,7 @@ module.exports = {
       name: 'Superadmin',
       username: 'superadmin',
       email: 'superadmin@siakad.com',
-      password: '$2b$10$AwxeFFKQeaZyAmz4SbUWCur7yWz49OVExtucKJBFgx/De.BX3Ykrq',
+      password: '$2y$10$VerQyWU6c8EWhNthk1gtnuvYvOdwiB/cyj8Vl36s4JZVI7xPwMcNq',
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -27,7 +27,7 @@ module.exports = {
       name: 'Admin',
       username: 'admin',
       email: 'admin@siakad.com',
-      password: '$2b$10$AwxeFFKQeaZyAmz4SbUWCur7yWz49OVExtucKJBFgx/De.BX3Ykrq',
+      password: '$2y$10$VerQyWU6c8EWhNthk1gtnuvYvOdwiB/cyj8Vl36s4JZVI7xPwMcNq',
       createdAt: new Date(),
       updatedAt: new Date()
     },

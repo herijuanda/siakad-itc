@@ -22,7 +22,7 @@
         
         var id  = $(this).data('id');
 
-        $.post(url+'/form', { id: id }, function (data) {
+        $.post(url+'/form', { id, path }, function (data) {
             $("#modal-label").html('Form Edit');
             $("#show-modal").html(data);
         });

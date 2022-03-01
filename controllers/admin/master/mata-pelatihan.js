@@ -62,7 +62,8 @@ module.exports.form = async function(req, res) {
 
     let data = {};
     let study_program_value = {};
-    let role_value = null;
+    // let role_value = null;
+
     if(req.body?.id){
         model.m_subject.hasOne(model.m_study_program, 
             { 
@@ -95,7 +96,7 @@ module.exports.form = async function(req, res) {
         study_program_value,
         form,
         data,
-        role_value
+        // role_value
     });
 };
 

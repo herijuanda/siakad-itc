@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-$(document).on('click', '#submit-login', function () {
+    $(document).on('click', '#submit-login', function () {
         $.ajax({
             url  : url+'/login',
             data : $('#form').serialize(),
@@ -41,9 +41,7 @@ $(document).on('click', '#submit-login', function () {
             data : $('#form').serialize(),
             type : "post", 
             success: function(response){
-                if(response?.id === null)
-                    $('#form')[0].reset();
-
+                $('#form')[0].reset();
                 $('#alert').html(alert_success(response?.message));
                 $('#zero-config').dataTable().api().ajax.reload();
             },

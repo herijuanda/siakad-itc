@@ -1,7 +1,7 @@
 module.exports.input = (name, req = null, value = null, type = 'text', name_func = null,  classes = null, attribute = null) => {
 
     if(req)
-        req    = '<span classes="req">*</span>';
+        req    = '<span class="req">*</span>';
 
     if(value)
         value  = 'value="'+value+'"';
@@ -18,7 +18,7 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
     }
 
     let result =  ''+
-        '<label id="label_'+name+'">'+label+''+req+'</label>'+
+        '<label id="label_'+name+'">'+label+''+(req || '')+'</label>'+
         '<input id="input_'+name+'" placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control '+(classes || '')+'" '+value+' '+(req ? 'required' : '')+' '+(attribute || '')+'/>';
     return result;
 };
@@ -26,7 +26,7 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
 module.exports.input_date = (name, req = null, value = null, type = 'text', name_func = null) => {
 
     if(req)
-        req    = '<span classes="req">*</span>';
+        req    = '<span class="req">*</span>';
 
     if(value)
         value  = 'value="'+value+'"';

@@ -30,17 +30,19 @@ module.exports = function(app) {
     app.post('/admin/pengguna/instruktur', instruktur.data);
     app.post('/admin/pengguna/instruktur/form', instruktur.form);
     app.post('/admin/pengguna/instruktur/process', instruktur.process);
-    app.post('/admin/pengguna/instruktur/delete', instruktur.process);
+    app.post('/admin/pengguna/instruktur/delete', instruktur.delete);
 
     const pembimbing_ojt = require('../../controllers/admin/pengguna/pembimbing-ojt');
     app.get('/admin/pengguna/pembimbing-ojt', pembimbing_ojt.index);
     app.post('/admin/pengguna/pembimbing-ojt', pembimbing_ojt.data);
     app.post('/admin/pengguna/pembimbing-ojt/form', pembimbing_ojt.form);
     app.post('/admin/pengguna/pembimbing-ojt/process', pembimbing_ojt.process);
-    app.post('/admin/pengguna/pembimbing-ojt/delete', pembimbing_ojt.process);
+    app.post('/admin/pengguna/pembimbing-ojt/delete', pembimbing_ojt.delete);
 
 
     const peserta_didik = require('../../controllers/admin/pengguna/peserta-didik');
     app.get('/admin/pengguna/peserta-didik', peserta_didik.index);
     app.post('/admin/pengguna/peserta-didik', peserta_didik.data);
+    app.post('/admin/pengguna/peserta-didik/form', peserta_didik.form);
+    app.post('/admin/pengguna/peserta-didik/process', peserta_didik.process);
 };

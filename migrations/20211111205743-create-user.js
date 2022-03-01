@@ -14,14 +14,15 @@ module.exports = {
       name: {
         type: Sequelize.STRING(60)
       },
-      username: {
-        type: Sequelize.STRING(50)
-      },
       email: {
         type: Sequelize.STRING(60)
       },
       password: {
         type: Sequelize.STRING(60)
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

@@ -1,0 +1,83 @@
+<form id="form" class="simple-example text-left" action="javascript:void(0);" novalidate>
+    <%- form.input_hide('id', data?.id) %>
+    <%- form.input_hide('role_id', 5) %>
+    <div id="alert"></div>
+    <div class="modal-body">
+        <div class="form-row">
+            <div class="col-md-6 mb-4">
+                <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('name as nama', '*', data?.name, 'text', 'myuser') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('place_of_birth as tempat_lahir', '*', data?.m_learner?.place_of_birth) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input_date('date_of_birth as tangal_lahir', '*', data?.m_learner?.place_of_birth) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- 
+                    form.select('gender_id as jenis_kelamin', '*', [
+                        {
+                            id: 1,
+                            dataValues: {
+                                name: 'Laki - laki'
+                            },
+                        },
+                        {
+                            id: 2,
+                            dataValues: {
+                                name: 'Perempuan'
+                            },
+                        },
+                    ], gender_value) 
+                %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('religion as agama', '*', data?.m_learner?.religion) %>
+            </div>
+            <div class="col-md-9 mb-4">
+                <%- form.input_date('address as alamat', '*', data?.m_learner?.address) %>
+            </div>
+            <div class="col-md-3 mb-4">
+                <%- form.input('postal_code as kode_pos', '*', data?.m_learner?.postal_code) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('phone_number as nomor_handphone', '*', data?.m_learner?.phone_number) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('parent_name as Nama Orang Tua (Ayah / Ibu)', '*', data?.m_learner?.parent_name) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('parent_job as Pekerjaan Orang Tua (Ayah / Ibu)', '*', data?.m_learner?.parent_job) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('email', '*', data?.email, 'email', 'myuser', null, 'readonly') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('password', null, '', 'password', 'myuser') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('password_confirmation as konfirmasi_password', null, '', 'password', 'notused') %>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>
+        <button id="submit" type="submit" name="submit" value="Simpan" class="btn btn-success submit-fn mt-2">
+            <i data-feather="save"></i>
+            <b>Simpan</b>
+        </button>
+    </div>
+</form>
+
+<script>
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
+    });
+
+    feather.replace();
+</script>

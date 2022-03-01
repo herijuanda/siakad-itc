@@ -1,10 +1,10 @@
 module.exports = function(app) {
-    const auth = require('../../controllers/auth');
-    app.get('/', auth.index);
-    app.post('/login', auth.login);
-    app.post('/logout', auth.logout);
-    app.get('/logout', auth.logout);
+    const login = require('../../controllers/auth/login');
+    app.get('/', login.index);
+    app.post('/login', login.process);
+    app.post('/logout', login.logout);
     
-    app.get('/register', auth.register);
-    app.post('/register/process', auth.register_proccess);
+    const register = require('../../controllers/auth/register');
+    app.get('/register', register.index);
+    app.post('/register/process', register.process);
 };

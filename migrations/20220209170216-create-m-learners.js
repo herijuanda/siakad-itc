@@ -23,9 +23,9 @@ module.exports = {
       register_number: {
         type: Sequelize.STRING(20)
       },
-      name: {
-        type: Sequelize.STRING(60)
-      },
+      // name: {
+      //   type: Sequelize.STRING(60)
+      // },
       place_of_birth: {
         type: Sequelize.STRING(40)
       },
