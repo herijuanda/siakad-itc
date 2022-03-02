@@ -1,6 +1,6 @@
 <form id="form" class="simple-example text-left" action="javascript:void(0);" novalidate>
     <%- form.input_hide('id', data?.id) %>
-    <%- form.input_hide('role_id', 5) %>
+    <%- form.input_hide('school_year_id', data?.m_learner?.school_year_id) %>
     <div id="alert"></div>
     <div class="modal-body">
         <div class="form-row">
@@ -14,7 +14,7 @@
                 <%- form.input('place_of_birth as tempat_lahir', '*', data?.m_learner?.place_of_birth) %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input_date('date_of_birth as tangal_lahir', '*', data?.m_learner?.place_of_birth) %>
+                <%- form.input_date('date_of_birth as tangal_lahir', '*', data?.m_learner?.date_of_birth) %>
             </div>
             <div class="col-md-6 mb-4">
                 <%- 
@@ -38,7 +38,7 @@
                 <%- form.input('religion as agama', '*', data?.m_learner?.religion) %>
             </div>
             <div class="col-md-9 mb-4">
-                <%- form.input_date('address as alamat', '*', data?.m_learner?.address) %>
+                <%- form.input('address as alamat', '*', data?.m_learner?.address) %>
             </div>
             <div class="col-md-3 mb-4">
                 <%- form.input('postal_code as kode_pos', '*', data?.m_learner?.postal_code) %>
@@ -55,19 +55,21 @@
             <div class="col-md-6 mb-4">
                 <%- form.input('email', '*', data?.email, 'email', 'myuser', null, 'readonly') %>
             </div>
+            <% if(data?.m_learner?.register_number){ %>
             <div class="col-md-6 mb-4">
                 <%- form.input('password', null, '', 'password', 'myuser') %>
             </div>
             <div class="col-md-6 mb-4">
                 <%- form.input('password_confirmation as konfirmasi_password', null, '', 'password', 'notused') %>
             </div>
+            <% } %>
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>
         <button id="submit" type="submit" name="submit" value="Simpan" class="btn btn-success submit-fn mt-2">
-            <i data-feather="save"></i>
-            <b>Simpan</b>
+            <i data-feather="<%= data?.register_number ? 'save' : 'check' %>"></i>
+            <b><%= data?.register_number ? 'Simpan' : 'Aktifkan' %></b>
         </button>
     </div>
 </form>
@@ -77,6 +79,11 @@
         allowClear: true,
         tags: true,
         dropdownParent: $('#modal'),
+    });
+
+    flatpickr(document.getElementById('input_date_of_birth'),{
+        // enableTime: true,
+        dateFormat: "d-m-Y",
     });
 
     feather.replace();

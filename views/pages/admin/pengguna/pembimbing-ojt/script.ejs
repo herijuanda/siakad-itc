@@ -53,6 +53,9 @@
 
                         $('#alert').html(alert_warning(result));
                         break;
+                    case 422:
+                        $('#alert').html(alert_warning(errors));
+                        break;
                     case 500:
                         $('#alert').html(alert_error(errors));
                         break;
@@ -146,22 +149,26 @@
             type: 'POST',
         },
         columns: [
-            // {
-            //     data: 'DT_RowIndex',
-            //     targets: [0, -1],
-            //     searchable: false,
-            //     orderable: false,
-            //     className: 'text-center',
-            //     width: 30,
-            // },
-            { data: 'id', sortable: false, 
+            {   
+                data: null, 
+                visible: false,
+            },
+            {   
+                data: 'id', 
+                sortable: false, 
+                className: 'text-center', 
                 render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {data: 'name'},
-            {data: 'username'},
-            {data: 'email'},
+            {
+                data: 'name',
+                sortable: false, 
+            },
+            {
+                data: 'email',
+                sortable: false, 
+            },
             { 
                 data: null, 
                 sortable: false, 
@@ -171,11 +178,9 @@
                 render: function (data, type, row, meta) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
                     return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
+                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Non Aktifkan</button>';
                 }  
             },
-            // {data: 'role_id'},
-            // {data: 'action', name: 'action', orderable: false, 'bSortable' : false,className: 'text-center'},
         ],
     });
 

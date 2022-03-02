@@ -4,35 +4,19 @@
     <div class="modal-body">
         <div id="alert"></div>
         <div class="form-row">
-            <div class="col-md-12 mb-4">
-                <%- form.input('name as nama', '*', data?.nama) %>
-            </div>
-            <!-- <div class="col-md-6 mb-4">
-                <%- form.input('position as Jabatan', '*', data?.m_lecturer?.position, 'text', 'mylecturer') %>
-            </div> -->
-        </div>
-        <div class="form-row">
             <div class="col-md-6 mb-4">
-                <%- form.input('year_of_entry as tahun_masuk', '*', data?.m_lecturer?.year_of_entry, 'number', 'mylecturer') %>
+                <%- form.input('name as nama', '*', data?.name) %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('last_education as pendidikan_terakhir', '*', data?.m_lecturer?.last_education, 'text', 'mylecturer') %>
+                <%- form.input('email', '*', data?.email, 'text', null, null, data?.id ? 'readonly' : null) %>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-6 mb-4">
-                <%- form.input('email', '*', data?.nama) %>
+                <%- form.input('password', '*', '', 'password', 'mypassword') %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('username', '*', data?.nama) %>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6 mb-4">
-                <%- form.input('password', '*', '', 'password') %>
-            </div>
-            <div class="col-md-6 mb-4">
-                <%- form.input('konfirmasi_password', '*', '', 'password') %>
+                <%- form.input('konfirmasi_password', '*', '', 'password', 'mypassword') %>
             </div>
         </div>
     </div>

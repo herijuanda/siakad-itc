@@ -1,16 +1,11 @@
-<div class="breadcrumb-five">
-    <ul class="breadcrumb">
-        <li class="active mb-2"><a href="{{ url('dasbor') }}">Dashboard</a>
-        </li>
-        <li class="mb-2"><a href="#">{{ ucwords(@$parent_name) }}</a></li>
-        @if(!empty($page_sub))
-            <li class="active mb-2"><a href="{{ url(strtolower($parent_name).'/'.$page_name) }}">{{ ucwords(@$page_name) }}</a></li>
-            <li class="mb-2"><a href="javscript:void(0);">{{ ucwords(@$page_sub) }}</a></li>
-        @else
-            @if(!empty($page_name))
-                <li class="mb-2"><a href="javscript:void(0);">{{ ucwords(@$page_name) }}</a></li>
-            @endif
-        @endif
-        
-    </ul>
+<div class="col-xl-6 col-lg-6 col-sm-12 text-left p-2">
+    <nav class="breadcrumb-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<%= base_url %>"><i data-feather="home"></i></a></li>
+            <% if(route !== module){ %> 
+                <li class="breadcrumb-item"><a href="javascript:void(0);"><%= module.replace(/-/g, ' ').toUpperCase(); %></a></li>
+            <% } %> 
+            <li class="breadcrumb-item active" aria-current="page"><%= title.toUpperCase() %></li>
+        </ol>
+    </nav>
 </div>

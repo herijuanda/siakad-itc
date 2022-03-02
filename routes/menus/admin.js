@@ -78,6 +78,7 @@ module.exports = [
                 plugin  : [
                     'datatables',
                     'select2',
+                    'flatpickr',
                 ],
             },
             {
@@ -88,6 +89,7 @@ module.exports = [
                 plugin  : [
                     'datatables',
                     'select2',
+                    // 'flatpickr',
                 ],
             },
             {
@@ -98,6 +100,7 @@ module.exports = [
                 plugin  : [
                     'datatables',
                     'select2',
+                    'flatpickr',
                 ],
             },
         ]

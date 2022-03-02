@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       role_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'roles', key: 'id' }
       },
       name: {
         type: Sequelize.STRING(60)
@@ -32,7 +33,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    }).then(() => queryInterface.addIndex('users', ['role_id']));
+    });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('users');

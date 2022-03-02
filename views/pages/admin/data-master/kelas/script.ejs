@@ -10,6 +10,14 @@
 
     $(".filter").select2();
 
+    $(document).on("change","#select_filter_school_year_id",function (){
+        $('#zero-config').dataTable().api().ajax.reload();
+    });
+
+    $(document).on("change","#select_filter_study_program_id",function (){
+        $('#zero-config').dataTable().api().ajax.reload();
+    });
+
     /*  add data */
     $(document).on('click', '.add', function () {
 
@@ -27,6 +35,18 @@
         $.post(url+'/form', { id, path }, function (data) {
             $("#modal-label").html('Form Edit');
             $("#show-modal").html(data);
+        });
+    });
+
+    $('#select_subject_id').prop('disabled', true);
+
+    $(document).on('change', '#select_study_program_id', function () {
+        
+        var id  = $(this).val();
+
+        $.post(url+'/select-subject', { id } , function (data) {
+            $('#select_subject_id').prop('disabled', false);
+            $("#select_subject_id").html(data?.results);
         });
     });
 
@@ -54,6 +74,9 @@
                         });
 
                         $('#alert').html(alert_warning(result));
+                        break;
+                    case 422:
+                        $('#alert').html(alert_warning(errors));
                         break;
                     case 500:
                         $('#alert').html(alert_error(errors));
@@ -135,20 +158,57 @@
         ajax: {
             url: "<%= base_url + route_now %>",
             type: 'POST',
+            data: function (d) {
+                d.school_year_id    = $('#select_filter_school_year_id').val();
+                d.study_program_id    = $('#select_filter_study_program_id').val();
+            }
         },
         columns: [
+            {   
+                data: null, 
+                visible: false,
+            },
             { 
                 data: 'id', 
                 sortable: false, 
+                className: 'text-center', 
                 width: 40,
                 render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {data: 'code'},
-            {data: 'name'},
-            {data: 'name'},
-            { data: null, sortable: false, 
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.m_school_year?.year;
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.m_study_program?.name;
+                }  
+            },
+            {
+                data: 'code',
+                sortable: false, 
+            },
+            {
+                data: 'name',
+                sortable: false, 
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data, type, row, meta) {
+                    return data?.m_subject?.name;
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
                 render: function (data, type, row, meta) {
                     return data?.m_lecturer?.user?.name;
                 }  
@@ -160,9 +220,18 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data, type, row, meta) {
-                    // return meta.row + meta.settings._iDisplayStart + 1;
-                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
+                    return '<div class="dropdown custom-dropdown">'+
+                        '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>'+
+                        '</a>'+
+                        '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">'+
+                            '<a class="dropdown-item" href="javascript:void(0);">Mahasiswa</a>'+
+                            '<a class="dropdown-item" href="javascript:void(0);">Atur Jadwal</a>'+
+                            '<a class="dropdown-item" href="javascript:void(0);">Edit</a>'+
+                            '<a class="dropdown-item" href="javascript:void(0);">Non Aktifkan</a>'+
+                            '<a class="dropdown-item" href="javascript:void(0);">Hapus</a>'+
+                        '</div>'+
+                    '</div>';
                 }  
             },
         ],

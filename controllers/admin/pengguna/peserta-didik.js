@@ -28,12 +28,21 @@ module.exports.data = async function(req, res) {
         }
     );
 
+    model.m_learner.hasOne(model.m_school_year, 
+        { 
+            sourceKey: 'school_year_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     model.m_learner.hasOne(model.m_study_program, 
         { 
             sourceKey: 'study_program_id', 
             foreignKey: 'id' 
         }
     );
+
+    console.log('haiii', helper.dt_clean_params(datatableObj));
 
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
@@ -44,6 +53,11 @@ module.exports.data = async function(req, res) {
                 model: model.m_learner,
                 required: true,
                 include: [
+                    { 
+                        attributes: [ 'year' ],
+                        model: model.m_school_year,
+                        required: false,
+                    },
                     { 
                         attributes: [ 'name' ],
                         model: model.m_study_program,
@@ -79,24 +93,12 @@ module.exports.form = async function(req, res) {
             }
         );
 
-        // model.m_learner.hasOne(model.m_school_year, 
-        //     { 
-        //         sourceKey: 'school_year_id', 
-        //         foreignKey: 'id' 
-        //     }
-        // );
-        
         data = await model.user.findOne({
             include: [
                 { 
                     model: model.m_learner,
                     required: true,
                     include: [
-                        // { 
-                        //     attributes: [ 'year' ],
-                        //     model: model.m_school_year,
-                        //     required: false,
-                        // },
                         { 
                             attributes: [ 'id', 'name' ],
                             model: model.m_study_program,
@@ -125,8 +127,6 @@ module.exports.form = async function(req, res) {
         }
     }
 
-    console.log('haiii', study_program_value);
-
     res.render('pages/'+req?.body?.path+'/form', {
         study_program: await model.m_study_program.findAll(),
         study_program_value,
@@ -137,80 +137,67 @@ module.exports.form = async function(req, res) {
 };
 
 module.exports.process = async function(req, res) {
-    const bcrypt = require('bcrypt');
-    const salt = bcrypt.genSaltSync(10);
-
     helper.auth(req, res);
 
     try {
-        const id = req.body?.myform_hide?.id;
-        const myform = {
-            ...req.body?.myform,
-            role_id: req.body?.myform_hide?.role_id, 
-        };
-        const mylecturer = req.body?.mylecturer;
+        const myform_hide = req.body?.myform_hide;
+        const myform = req.body?.myform;
+        const myuser = req.body?.myuser;
+        const notused = req.body?.notused;
 
-        const errors = helper.validator(myform);
+        const validator = { ...myform_hide, ...myform, ...myuser};
+
+        if(myform_hide?.id) {
+            delete validator.password;
+        }
+
+        const errors = helper.validator(validator);
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors });
         }
 
-        if(myform?.password !== myform?.konfirmasi_password){
-            return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
+        if(myuser?.password){
+            if(myuser?.password !== notused?.password_confirmation) {
+                return res.status(422).json({ errors: 'Konfirmasi Password Tidak Cocok' });
+            }
+
+            myuser = {
+                ...myuser,
+                password: password.hash(myuser?.password),
+            }
         }
 
-        delete myform.konfirmasi_password;
+        await model.user.update({ ...myuser, status: true }, { where: { id: myform_hide?.id } });
 
-        myform.password = bcrypt.hashSync(myform.password, salt);
-
-        const exist = await model.user.count({
-            where: {
-                [Op.or]: [
-                  {
-                    username: myform?.username
-                  },
-                  {
-                    email: myform?.email
-                  }
-                ]
+        const last_data = await model.m_learner.findOne({
+            attributes: ['register_number'],
+            where: { 
+                school_year_id : myform_hide?.school_year_id,
+                register_number: { [Op.not]: null },
             },
+            order: [
+                ['id', 'DESC'],
+            ],
         });
 
-        if(exist > 0){
-            return res.status(500).json({ errors: 'Email atau Username Sudah Ada.' });
+        let register_number = 1;
+
+        if(last_data){
+            register_number = Number(last_data?.register_number);
+            register_number++;
         }
 
-        let result = {};
+        const data = await model.m_learner.update({
+            ...myform, 
+            register_number: register_number.toString().padStart(5, "0"),
+            date_of_birth: helper.date_format(myform?.date_of_birth),
+        }, { where: { user_id: myform_hide?.id } });
 
-        if(id === '') {
-            result = await model.user.create(myform);
+        if(data){
+            return res.status(200).json({ message: myuser?.name+' Berhasil di Simpan', results: data  })   
         }else{
-            result = await model.user.update(myform, {
-                where: {
-                    id: id
-                }
-            });
+            return res.status(200).json({ message: myuser?.name+' Berhasil di Simpan, tapi data detailnya tidak kesimpan', results: data  })   
         }
-
-        if(result){
-            let lecturer = {};
-
-            if(id === '') {
-                lecturer = await model.m_lecturer.create({...mylecturer, user_id: result?.id});
-            }else{
-                lecturer = await model.m_lecturer.update(mylecturer, { 
-                    where: {
-                        user_id: id
-                    }
-                });
-            }
-
-            if(lecturer){
-                return res.status(200).json({ message: 'Berhasil di Simpan' })
-            }
-        }
-
-        throw Error();
         
     } catch (error) {
         console.log('error', error);

@@ -21,6 +21,7 @@ module.exports = function(app) {
     app.get('/admin/data-master/kelas', kelas.index);
     app.post('/admin/data-master/kelas', kelas.data);
     app.post('/admin/data-master/kelas/form', kelas.form);
+    app.post('/admin/data-master/kelas/select-subject', kelas.select_subject);
     app.post('/admin/data-master/kelas/process', kelas.process);
     app.post('/admin/data-master/kelas/delete', kelas.delete);
 

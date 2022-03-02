@@ -27,6 +27,27 @@ module.exports.data = async function(req, res) {
     const datatableObj = await sequelizeDatatable(req.body);
     // const count = await model.study_program.count();
     const count = await model.m_study_program.count();
+
+    model.d_classroom.hasOne(model.m_school_year, 
+        { 
+            sourceKey: 'school_year_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.d_classroom.hasOne(model.m_study_program, 
+        { 
+            sourceKey: 'study_program_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.d_classroom.hasOne(model.m_subject, 
+        { 
+            sourceKey: 'subject_id', 
+            foreignKey: 'id' 
+        }
+    );
     
     model.d_classroom.hasOne(model.m_lecturer, 
         { 
@@ -41,9 +62,47 @@ module.exports.data = async function(req, res) {
             foreignKey: 'id' 
         }
     );
+
+    // console.log('haiii', helper.dt_clean_params(datatableObj));
+
+    let filter = {};
+
+    if(req.body?.school_year_id){
+        filter = { school_year_id: req.body?.school_year_id };
+    }
+    
+    if(req.body?.study_program_id){
+        filter = { 
+            ...filter,
+            study_program_id: req.body?.study_program_id 
+        };
+    }
+
     const results = await model.d_classroom.findAndCountAll({
-        ...helper.dt_clean_params(datatableObj),
+        ...{
+            ...helper.dt_clean_params(datatableObj),
+            where: { 
+                ...helper.dt_clean_params(datatableObj)?.where,
+                ...filter,
+                actived: 1,
+            }
+        },
         include: [
+            { 
+                attributes: [ 'year' ],
+                model: model.m_school_year,
+                required: true,
+            },
+            { 
+                attributes: [ 'name' ],
+                model: model.m_study_program,
+                required: true,
+            },
+            { 
+                attributes: [ 'name' ],
+                model: model.m_subject,
+                required: true,
+            },
             { 
                 attributes: [ 'id' ],
                 model: model.m_lecturer,
@@ -58,9 +117,9 @@ module.exports.data = async function(req, res) {
         order: [
             ['name', 'ASC'],
         ],
-        where: {
-            actived: 1,
-        },
+        // where: {
+        //     actived: 1,
+        // },
         // where: {
         //     role_id : {
         //         [Op.not]: 1,
@@ -155,7 +214,12 @@ module.exports.form = async function(req, res) {
     res.render('pages/'+req?.body?.path+'/form', {
         school_year: await model.m_school_year.findAll({ attributes: ['id', ['year', 'name']] }),
         study_program: await model.m_study_program.findAll(),
-        lecturer: await model.m_lecturer.findAll(),
+        lecturer: await model.user.findAll({
+            attributes: [ 'id', 'name' ],
+            where: { 
+                role_id: 3
+            }
+        }),
         school_year_value,
         study_program_value,
         subject_value,
@@ -180,10 +244,23 @@ module.exports.process = async function(req, res) {
 
         let result = {};
 
+        const lecturer = await model.m_lecturer.findOne({
+            attributes: [ 'id' ],
+            where: { 
+                user_id : myform?.lecturer_id,
+            },
+        });
+
+        if (!lecturer?.id) {
+            return res.status(422).json({ errors: 'Dosen tidak ditemukan' });
+        }
+
+        myform.lecturer_id = lecturer?.id; 
+
         if(id === '') {
-            result = await model.m_subject.create(myform);
+            result = await model.d_classroom.create(myform);
         }else{
-            result = await model.m_subject.update(myform, {
+            result = await model.d_classroom.update(myform, {
                 where: {
                     id: id
                 }
@@ -222,5 +299,31 @@ module.exports.delete = async function(req, res) {
         
     } catch (error) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};
+
+module.exports.select_subject = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+
+        const results = await model.m_subject.findAll({
+            attributes: [ 'id', 'name' ],
+            where: {
+                study_program_id: id
+            }
+        });
+
+        let data = '<option>Pilih Mata Pelatihan</option>';
+        
+        results.forEach(function(v) {
+            data += '<option value="'+v?.id+'">'+v?.name+'</option>';
+        });
+            
+        return res.status(200).json({ results: data  })
+        
+    } catch (error) {
+        res.status(500).json({ errors: error });
     }
 };

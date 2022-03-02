@@ -44,7 +44,7 @@ module.exports.input_date = (name, req = null, value = null, type = 'text', name
 
     let result =  ''+
         '<label id="label_'+name+'">'+label+''+req+'</label>'+
-        '<input id="input_'+name+'" placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control flatpickr flatpickr-input active"/>';
+        '<input id="input_'+name+'" '+value+' placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control flatpickr flatpickr-input active"/>';
     return result;
 };
 
@@ -70,7 +70,7 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
 
     let result = ''+
         '<label for="'+name+'" class="uk-form-label">'+label+req+'</label>'+
-        '<select name="'+name_func+'['+name+']" id="select_'+name+'" '+(!req ? '' : 'required')+' class="form-control js-states select '+classes+'" '+attribute+' >';
+        '<select name="'+name_func+'['+name+']" id="select_'+name+'" '+(!req ? '' : 'required')+' class="form-control js-states '+(classes || 'select')+'" '+attribute+' >';
 
     if(value?.key !== undefined){
         result += '<option selected="selected" value="'+value?.key+'">'+value?.value+'</option>';

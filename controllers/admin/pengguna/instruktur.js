@@ -1,4 +1,4 @@
-const { Op }    = require("sequelize");
+// const { Op }    = require("sequelize");
 const helper    = require('../../../helpers');
 const form      = require('../../../helpers/form');
 const model     = require('../../../models');
@@ -25,24 +25,23 @@ module.exports.data = async function(req, res) {
     const count = await model.user.count();
     
     // model.user.hasOne(model.role, { foreignKey: 'id' });
+
+    model.user.hasOne(model.m_lecturer, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'user_id' 
+        }
+    );
+
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
-        // include: [
-        //     { 
-        //         attributes: [ 'id' ],
-        //         model: model.role,
-        //         where: { slug: 'instruktur' },
-        //         // required: false,
-        //     },
-        // ],
-        where: {
-            role_id: 3,
-        },
-        // where: {
-        //     role_id : {
-        //         [Op.not]: 1,
-        //     }
-        // }
+        include: [
+            { 
+                attributes: [ 'last_education', 'year_of_entry' ],
+                model: model.m_lecturer,
+                required: true,
+            },
+        ],
     });
 
     return helper.datatables(req, res, count, results);
@@ -54,14 +53,19 @@ module.exports.form = async function(req, res) {
     let data = {};
     // let role_value = null;
     if(req.body?.id){
-        model.user.hasOne(model.m_lecturer, { foreignKey: 'user_id' });
+        model.user.hasOne(model.m_lecturer, 
+            { 
+                sourceKey: 'id', 
+                foreignKey: 'user_id' 
+            }
+        );
         
         data = await model.user.findOne({
-            attributes: ['id', 'name'],
+            attributes: ['id', 'name', 'email'],
             include: [
                 { 
                     attributes: [ 
-                        'position', 
+                        // 'position', 
                         'last_education', 
                         'year_of_entry' 
                     ],
@@ -101,53 +105,70 @@ module.exports.form = async function(req, res) {
 };
 
 module.exports.process = async function(req, res) {
-    const bcrypt = require('bcrypt');
-    const salt = bcrypt.genSaltSync(10);
+    const password  = require("node-php-password");
 
     helper.auth(req, res);
 
     try {
         const id = req.body?.myform_hide?.id;
-        const myform = {
+        let myform = {
             ...req.body?.myform,
             role_id: req.body?.myform_hide?.role_id, 
         };
-        const mylecturer = req.body?.mylecturer;
+        const mylecturer = req.body?.mylecturer; 
+        const mypassword = req.body?.mypassword;
 
-        const errors = helper.validator(myform);
+        let validator = {
+            ...myform,
+            ...mylecturer,
+        };
+
+        if(!id){
+            validator = {
+                ...validator,
+                ...mypassword,
+            }
+        }
+
+        const errors = helper.validator(validator);
+        
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors });
         }
 
-        if(myform?.password !== myform?.konfirmasi_password){
-            return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
+        myform = {
+            ...myform,
+            ...mypassword,
+        };
+
+        if(myform?.password){
+            if(myform?.password !== myform?.konfirmasi_password){
+                return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
+            }
+
+            myform.password = password.hash(myform?.password);
+        }else{
+            delete myform.password;
         }
 
         delete myform.konfirmasi_password;
 
-        myform.password = bcrypt.hashSync(myform.password, salt);
-
-        const exist = await model.user.count({
-            where: {
-                [Op.or]: [
-                  {
-                    username: myform?.username
-                  },
-                  {
+        if(!id){
+            const exist = await model.user.count({
+                where: {
                     email: myform?.email
-                  }
-                ]
-            },
-        });
-
-        if(exist > 0){
-            return res.status(500).json({ errors: 'Email atau Username Sudah Ada.' });
+                },
+            });
+    
+            if(exist > 0){
+                return res.status(422).json({ errors: 'Email Sudah Ada.' });
+            }
         }
 
         let result = {};
 
         if(id === '') {
-            result = await model.user.create(myform);
+            result = await model.user.create({...myform, status: 1});
         }else{
             result = await model.user.update(myform, {
                 where: {
@@ -196,6 +217,30 @@ module.exports.delete = async function(req, res) {
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Hapus' })
+        }
+
+        throw Error();
+        
+    } catch (error) {
+        res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};
+
+module.exports.status = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+        const value = req.body?.value;
+
+        result = await model.user.update({ status: value }, {
+            where: {
+                id: id
+            }
+        });
+
+        if(result){
+            return res.status(200).json({ message: 'Berhasil di ubah status' })
         }
 
         throw Error();

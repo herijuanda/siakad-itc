@@ -8,6 +8,7 @@
         }
     });
     
+    /* edit data */
     $(document).on('click', '.edit', function () {
         
         var id  = $(this).data('id');
@@ -17,6 +18,42 @@
             $("#show-modal").html(data);
         });
     });
+
+    /* submit form */
+    $(document).on('click', '#submit', function () {
+        $.ajax({
+            url  : url+'/process',
+            data : $('#form').serialize(),
+            type : "post", 
+            success: function(response){
+                $('#alert').html(alert_success(response?.message));
+                $('#submit').html('<i data-feather="save"></i><b>Simpan</b>');
+                $('#zero-config').dataTable().api().ajax.reload();
+            },
+            error: function (data, response) {
+                const errors = data?.responseJSON?.errors;
+                switch (data.status) {
+                    case 400:
+                        let result = '';
+
+                        errors.forEach(function(v) {
+                            result += '<br>- '+v+' belum diisi';
+                        });
+
+                        $('#alert').html(alert_warning(result));
+                        break;
+                    case 500:
+                        $('#alert').html(alert_error(errors));
+                        break;
+                    default:
+                        $('#alert').html(alert_error('Saat proses data'));
+                        break;
+                }
+            }
+        });
+                
+    });
+
 
     $('#zero-config').DataTable({
         oLanguage: {
@@ -32,24 +69,53 @@
             type: 'POST',
         },
         columns: [
-            { data: 'id', sortable: false, 
+            {   
+                data: null, 
+                visible: false,
+            },
+            {   
+                data: 'id', 
+                sortable: false, 
+                className: 'text-center', 
                 render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            { data: 'name' },
-            { data: null, sortable: false, 
+            {   
+                data: 'name', 
+                sortable: false 
+            },
+            {   data: null, 
+                sortable: false, 
                 render: function (data, type, row, meta) {
-                    return data?.m_learner?.register_number;
+                    if(data?.m_learner?.register_number){
+                        return data?.m_learner?.m_school_year?.year+data?.m_learner?.register_number;
+                    }
+
+                    return '-';
                 }  
             },
-            { data: 'email' },
-            { data: null, sortable: false, 
+            {   
+                data: 'email', 
+                sortable: false 
+            },
+            {   data: null, 
+                sortable: false, 
+                // className: 'text-center', 
+                render: function (data, type, row, meta) {
+                    return data?.m_learner?.m_school_year?.year;
+                }  
+            },
+            {   
+                data: null, 
+                sortable: false, 
                 render: function (data, type, row, meta) {
                     return data?.m_learner?.m_study_program?.name;
                 }  
             },
-            { data: null, sortable: false, 
+            { 
+                data: null, 
+                sortable: false, 
                 render: function (data, type, row, meta) {
                     if(data?.status)
                         return '<span class="text-success">Aktif</span>';
