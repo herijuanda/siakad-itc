@@ -172,7 +172,7 @@
                 data: 'id', 
                 sortable: false, 
                 className: 'text-center', 
-                width: 40,
+                width: 60,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
@@ -180,14 +180,14 @@
             { 
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_school_year?.year;
                 }  
             },
             { 
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_study_program?.name;
                 }  
             },
@@ -202,15 +202,26 @@
             { 
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_subject?.name;
                 }  
             },
             { 
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_lecturer?.user?.name;
+                }  
+            },
+            { 
+                data: 'actived', 
+                sortable: false, 
+                render: function (data) {
+                    if(data){
+                        return '<span class="text-success">Aktif</span>';
+                    }
+
+                    return '<span class="text-danger">Tidak Aktif</span>';
                 }  
             },
             { 
@@ -219,17 +230,17 @@
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return '<div class="dropdown custom-dropdown">'+
                         '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
                             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>'+
                         '</a>'+
                         '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">'+
-                            '<a class="dropdown-item" href="javascript:void(0);">Mahasiswa</a>'+
-                            '<a class="dropdown-item" href="javascript:void(0);">Atur Jadwal</a>'+
-                            '<a class="dropdown-item" href="javascript:void(0);">Edit</a>'+
+                            '<a class="dropdown-item" href="<%= base_url + route_now %>/peserta-didik?id='+data?.id+'">Peserta Didik</a>'+
+                            '<a class="dropdown-item" href="<%= base_url + route_now %>/jadwal?id='+data?.id+'">Atur Jadwal</a>'+
+                            '<a class="dropdown-item edit" href="javascript:void(0);" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</a>'+
                             '<a class="dropdown-item" href="javascript:void(0);">Non Aktifkan</a>'+
-                            '<a class="dropdown-item" href="javascript:void(0);">Hapus</a>'+
+                            '<a class="dropdown-item text-danger delete" data-id="'+data?.id+'" href="javascript:void(0);">Hapus</a>'+
                         '</div>'+
                     '</div>';
                 }  

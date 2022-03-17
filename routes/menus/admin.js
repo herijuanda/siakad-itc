@@ -106,3 +106,31 @@ module.exports = [
         ]
     },
 ];
+
+module.exports.detail = {
+    kelas : [
+        {
+            module  : 'data-master',
+            parent  : 'kelas',
+            route   : false,
+            path    : 'admin/data-master/kelas/detail/peserta-didik',
+            title   : 'Peserta Didik',
+            plugin  : [
+                'datatables',
+                'select2',
+            ],
+        },
+        {
+            module  : 'data-master',
+            parent  : 'kelas',
+            route   : false,
+            path    : 'admin/data-master/kelas/detail/jadwal',
+            title   : 'Penjadwalan',
+            plugin  : [
+                'datatables',
+                'select2',
+                'flatpickr',
+            ],
+        }
+    ],
+}

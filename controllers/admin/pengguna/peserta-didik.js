@@ -1,8 +1,10 @@
-const { Op }    = require("sequelize");
-const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
-const model     = require('../../../models');
-const routes    = require('../../../routes/menus/admin');
+const { Op }        = require("sequelize");
+const helper        = require('../../../helpers');
+const form          = require('../../../helpers/form');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/admin');
+const datatables    = require('node-sequelize-datatable'); 
+
 
 module.exports.index = async function(req, res) {
     res.render('layouts/app', {
@@ -16,10 +18,9 @@ module.exports.index = async function(req, res) {
 
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
-    const sequelizeDatatable = require('node-sequelize-datatable'); 
     
-    const datatableObj = await sequelizeDatatable(req.body);
-    const count = await model.user.count();
+    const datatableObj = await datatables(req.body);
+    const count = await model.m_learner.count();
 
     model.user.hasOne(model.m_learner, 
         { 
@@ -41,8 +42,6 @@ module.exports.data = async function(req, res) {
             foreignKey: 'id' 
         }
     );
-
-    console.log('haiii', helper.dt_clean_params(datatableObj));
 
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),

@@ -25,6 +25,20 @@ module.exports = function(app) {
     app.post('/admin/data-master/kelas/process', kelas.process);
     app.post('/admin/data-master/kelas/delete', kelas.delete);
 
+    const kelas_peserta_didik = require('../../controllers/admin/master/kelas/peserta-didik');
+    app.get('/admin/data-master/kelas/peserta-didik', kelas_peserta_didik.index);
+    app.post('/admin/data-master/kelas/peserta-didik', kelas_peserta_didik.data);
+    app.post('/admin/data-master/kelas/peserta-didik/form', kelas_peserta_didik.form);
+    app.post('/admin/data-master/kelas/peserta-didik/process', kelas_peserta_didik.process);
+    app.post('/admin/data-master/kelas/peserta-didik/delete', kelas_peserta_didik.delete);
+
+    const kelas_jadwal = require('../../controllers/admin/master/kelas/jadwal');
+    app.get('/admin/data-master/kelas/jadwal', kelas_jadwal.index);
+    app.post('/admin/data-master/kelas/jadwal', kelas_jadwal.data);
+    app.post('/admin/data-master/kelas/jadwal/form', kelas_jadwal.form);
+    app.post('/admin/data-master/kelas/jadwal/process', kelas_jadwal.process);
+    app.post('/admin/data-master/kelas/jadwal/delete', kelas_jadwal.delete);
+
     // PENGGUNA
     const instruktur = require('../../controllers/admin/pengguna/instruktur');
     app.get('/admin/pengguna/instruktur', instruktur.index);

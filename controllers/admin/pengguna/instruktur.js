@@ -1,8 +1,9 @@
 // const { Op }    = require("sequelize");
-const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
-const model     = require('../../../models');
-const routes    = require('../../../routes/menus/admin');
+const helper        = require('../../../helpers');
+const form          = require('../../../helpers/form');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/admin');
+const datatables    = require('node-sequelize-datatable'); 
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -18,13 +19,9 @@ module.exports.index = async function(req, res) {
 
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
-    const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
-    const datatableObj = await sequelizeDatatable(req.body);
-    const count = await model.user.count();
-    
-    // model.user.hasOne(model.role, { foreignKey: 'id' });
+    const datatableObj = await datatables(req.body);
+    const count = await model.m_lecturer.count();
 
     model.user.hasOne(model.m_lecturer, 
         { 
@@ -76,31 +73,12 @@ module.exports.form = async function(req, res) {
                 id: req.body.id 
             },
         });
-        // model.user.hasOne(model.role, { foreignKey: 'id' });
-        // data = model.user.findAll({
-        //     include: [
-        //         { 
-        //             attributes: [ 'name' ],
-        //             model: model.role,
-        //         },
-        //     ],
-        //     where: { id: req.body.id }
-        // });
-        
-        // if(!isEmtpy(data)){
-        //     role_value = {
-        //         key   : data?.role?.id,
-        //         value : data?.role?.name,
-        //     };
-        // }
         
     }
 
     res.render('pages/'+req?.body?.path+'/form', {
-        // roles: await model.role.findAll(),
         form,
         data,
-        // role_value
     });
 };
 

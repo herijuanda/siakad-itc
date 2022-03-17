@@ -1,9 +1,9 @@
-const { Op }    = require("sequelize");
-const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
-const model     = require('../../../models');
-const routes    = require('../../../routes/menus/admin');
-// const { body, validationResult } = require('express-validator');
+// const { Op }    = require("sequelize");
+const helper        = require('../../../helpers');
+const form          = require('../../../helpers/form');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/admin');
+const datatables    = require('node-sequelize-datatable'); 
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -21,12 +21,9 @@ module.exports.index = async function(req, res) {
 
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
-    const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
-    const datatableObj = await sequelizeDatatable(req.body);
-    // const count = await model.study_program.count();
-    const count = await model.m_study_program.count();
+    const datatableObj = await datatables(req.body);
+    const count = await model.d_classroom.count();
 
     model.d_classroom.hasOne(model.m_school_year, 
         { 
@@ -115,6 +112,9 @@ module.exports.data = async function(req, res) {
             },
         ],
         order: [
+            [model.m_school_year, 'id', 'ASC'],
+            [model.m_study_program, 'id', 'ASC'],
+            [model.m_subject, 'id', 'ASC'],
             ['name', 'ASC'],
         ],
         // where: {
@@ -136,6 +136,14 @@ module.exports.form = async function(req, res) {
     let data = {};
     let study_program_value = {};
     let role_value = null;
+
+    model.m_lecturer.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     if(req.body?.id){
         model.d_classroom.hasOne(model.m_school_year, 
             { 
@@ -166,7 +174,7 @@ module.exports.form = async function(req, res) {
         );
 
         data = await model.d_classroom.findOne({
-            attributes: ['id', 'name'],
+            attributes: ['id', 'code', 'name'],
             include: [
                 { 
                     attributes: [ 'id', ['year', 'name'] ],
@@ -181,8 +189,14 @@ module.exports.form = async function(req, res) {
                     model: model.m_subject,
                 },
                 { 
-                    attributes: [ 'id', 'name' ],
+                    attributes: [ 'id' ],
                     model: model.m_lecturer,
+                    include: [
+                        { 
+                            attributes: [ 'name' ],
+                            model: model.user,
+                        },
+                    ]
                 },
             ],
             where: { id: req.body.id },
@@ -207,18 +221,27 @@ module.exports.form = async function(req, res) {
 
         lecturer_value = {
             key   : data?.m_lecturer?.id,
-            value : data?.m_lecturer?.name,
+            value : data?.m_lecturer?.user?.name,
         };
     }
 
     res.render('pages/'+req?.body?.path+'/form', {
         school_year: await model.m_school_year.findAll({ attributes: ['id', ['year', 'name']] }),
         study_program: await model.m_study_program.findAll(),
-        lecturer: await model.user.findAll({
-            attributes: [ 'id', 'name' ],
-            where: { 
-                role_id: 3
-            }
+        // lecturer: await model.user.findAll({
+        //     attributes: [ 'id', 'name' ],
+        //     where: { 
+        //         role_id: 3
+        //     }
+        // }),
+        lecturer: await model.m_lecturer.findAll({
+            attributes: [ 'id' ],
+            include: [
+                { 
+                    attributes: [ 'name' ],
+                    model: model.user,
+                },
+            ],
         }),
         school_year_value,
         study_program_value,
@@ -243,19 +266,6 @@ module.exports.process = async function(req, res) {
         }
 
         let result = {};
-
-        const lecturer = await model.m_lecturer.findOne({
-            attributes: [ 'id' ],
-            where: { 
-                user_id : myform?.lecturer_id,
-            },
-        });
-
-        if (!lecturer?.id) {
-            return res.status(422).json({ errors: 'Dosen tidak ditemukan' });
-        }
-
-        myform.lecturer_id = lecturer?.id; 
 
         if(id === '') {
             result = await model.d_classroom.create(myform);
@@ -288,6 +298,12 @@ module.exports.delete = async function(req, res) {
         const result = await model.m_study_program.destroy({
             where: {
                 id: id
+            }
+        });
+
+        await model.d_classroom_learner.destroy({
+            where: {
+                classroom_id: id
             }
         });
 

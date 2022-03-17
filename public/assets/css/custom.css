@@ -221,3 +221,17 @@ input[readonly], select[readonly], textarea[readonly]{
     background-color: #e9ecef !important;
     opacity: 1;
 }
+
+.widget-content-basic{
+    padding: 20px !important;
+}
+
+.breadcrumb-one .breadcrumb-item a {
+    color: #3b3f5c;
+    font-weight: 500;
+}
+
+#info-detail td {
+    color: #333;
+    padding: 0px 13px;
+}

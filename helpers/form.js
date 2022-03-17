@@ -80,7 +80,9 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
 
     option.forEach(function(v) {
         if(v?.id !== value?.key)
-            result += '<option value="'+v?.id+'">'+v?.dataValues?.name+'</option>';
+            result += '<option value="'+v?.id+'">' +
+            ( v?.user ? v?.user?.name : v?.dataValues?.name ) +
+            '</option>';
     });
 
     result += '</select>';

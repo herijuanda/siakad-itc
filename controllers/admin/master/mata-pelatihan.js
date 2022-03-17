@@ -1,9 +1,9 @@
-const { Op }    = require("sequelize");
-const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
-const model     = require('../../../models');
-const routes    = require('../../../routes/menus/admin');
-// const { body, validationResult } = require('express-validator');
+// const { Op }    = require("sequelize");
+const helper        = require('../../../helpers');
+const form          = require('../../../helpers/form');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/admin');
+const datatables    = require('node-sequelize-datatable'); 
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -18,12 +18,9 @@ module.exports.index = async function(req, res) {
 
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
-    const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
-    const datatableObj = await sequelizeDatatable(req.body);
-    // const count = await model.study_program.count();
-    const count = await model.m_study_program.count();
+    const datatableObj = await datatables(req.body);
+    const count = await model.m_subject.count();
     
     model.m_subject.hasOne(model.m_study_program, 
         { 

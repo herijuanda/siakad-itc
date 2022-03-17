@@ -175,7 +175,7 @@
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
                     return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
                         '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Non Aktifkan</button>';

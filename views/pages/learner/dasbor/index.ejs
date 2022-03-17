@@ -18,7 +18,7 @@
                         </tr>
                         <tr>
                             <td>NIM</td>
-                            <td>: <%= data?.register_number || '-' %></td>
+                            <td>: <%= data?.register_number ? data?.m_school_year?.year+data?.register_number : '-' %></td>
                         </tr>
                         <tr>
                             <td>Email</td>
@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td>Tahun Ajaran </td>
-                            <td>: 2021</td>
+                            <td>: <%= data?.m_school_year?.year  %></td>
                         </tr>
                         <tr>
                             <td>Prodi</td>

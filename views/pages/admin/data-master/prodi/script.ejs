@@ -146,7 +146,7 @@
                 data: 'id', 
                 sortable: false, 
                 className: 'text-center', 
-                width: 40,
+                width: 60,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
@@ -165,7 +165,7 @@
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     // return meta.row + meta.settings._iDisplayStart + 1;
                     return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
                         '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';

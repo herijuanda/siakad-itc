@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-sm-12  mb-3">
+        <div class="widget-content widget-content-area br-6">
+            <div class="p-4 ">
+                <div class="form-row">
+                    <div class="col-md-4 col-sm-6">
+                        <table id="info-detail" >
+                            <tr>
+                                <td>Nama Kelas</td>
+                                <td>: <b><%= data?.name %></b></td>
+                            </tr>
+                            <tr>
+                                <td>Tahun Ajaran</td>
+                                <td>: <b><%= data?.m_school_year?.year %></b></td>
+                            </tr>
+                            <tr>
+                                <td>Prodi</td>
+                                <td>: <b><%= data?.m_study_program?.name %></b></td>
+                            </tr>
+                        </table> 
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <table id="info-detail" >
+                            <tr>
+                                <td>Mata Pelatihan</td>
+                                <td>: <b><%= data?.m_subject?.name %></b></td>
+                            </tr>
+                            <tr>
+                                <td>Instruktur</td>
+                                <td>: <b><%= data?.m_lecturer?.user?.name %></b></td>
+                            </tr>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

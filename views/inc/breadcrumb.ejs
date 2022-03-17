@@ -2,9 +2,15 @@
     <nav class="breadcrumb-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<%= base_url %>"><i data-feather="home"></i></a></li>
+            
             <% if(route !== module){ %> 
-                <li class="breadcrumb-item"><a href="javascript:void(0);"><%= module.replace(/-/g, ' ').toUpperCase(); %></a></li>
+                <li class="breadcrumb-item"><%= module.replace(/-/g, ' ').toUpperCase(); %></li>
             <% } %> 
+            
+            <% if (!route){ %> 
+                <li class="breadcrumb-item"><a href="<%= base_url + '/' + session?.role_slug + '/' + module + (parent !== module ? '/' + parent : '') %>"><%= parent.toUpperCase(); %></a></li>
+            <% } %> 
+            
             <li class="breadcrumb-item active" aria-current="page"><%= title.toUpperCase() %></li>
         </ol>
     </nav>

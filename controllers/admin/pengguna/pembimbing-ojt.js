@@ -1,8 +1,9 @@
 // const { Op }    = require("sequelize");
-const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
-const model     = require('../../../models');
-const routes    = require('../../../routes/menus/admin');
+const helper        = require('../../../helpers');
+const form          = require('../../../helpers/form');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/admin');
+const datatables    = require('node-sequelize-datatable'); 
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -17,11 +18,13 @@ module.exports.index = async function(req, res) {
 
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
-    const sequelizeDatatable = require('node-sequelize-datatable'); 
-    // const datatable = require('sequelize-datatables');
     
-    const datatableObj = await sequelizeDatatable(req.body);
-    const count = await model.user.count();
+    const datatableObj = await datatables(req.body);
+    const count = await model.user.count({
+        where: {
+            role_id: 5,
+        },
+    });
     
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
@@ -37,7 +40,6 @@ module.exports.form = async function(req, res) {
     helper.auth(req, res);
 
     let data = {};
-    // let role_value = null;
     if(req.body?.id){
         
         data = await model.user.findOne({

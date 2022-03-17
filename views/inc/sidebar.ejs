@@ -33,7 +33,7 @@
                     <% if(value?.sub){ %>
                     <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled <%= (module === value.module) ? 'show' : '' %> " id="sub_<%= value?.module %>" data-parent="#accordionExample">
                         <% value?.sub.forEach(function(value_sub) { %>
-                            <li class="<%= (route_now === '/'+session?.role_slug+'/'+value.route+'/'+value_sub?.route) ? 'active' : '' %>">
+                            <li class="<%= (!route ? (value_sub.route === parent ? 'active' : '')  : (route_now === '/'+session?.role_slug+'/'+value.route+'/'+value_sub?.route) ? 'active' : '') %>">
                                 <a href="<%= base_url+'/'+session?.role_slug+'/'+value?.route+'/'+value_sub?.route %>"> <%= value_sub?.title %></a> </a>
                             </li>
                         <% }); %>

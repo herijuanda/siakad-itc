@@ -87,7 +87,7 @@
             },
             {   data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     if(data?.m_learner?.register_number){
                         return data?.m_learner?.m_school_year?.year+data?.m_learner?.register_number;
                     }
@@ -102,21 +102,21 @@
             {   data: null, 
                 sortable: false, 
                 // className: 'text-center', 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_learner?.m_school_year?.year;
                 }  
             },
             {   
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return data?.m_learner?.m_study_program?.name;
                 }  
             },
             { 
                 data: null, 
                 sortable: false, 
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     if(data?.status)
                         return '<span class="text-success">Aktif</span>';
                     else
@@ -129,7 +129,7 @@
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
-                render: function (data, type, row, meta) {
+                render: function (data) {
                     return '<button class="edit btn btn-outline-'+(data?.m_learner?.register_number ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.register_number ? 'Edit' : 'Aktivasi')+'</button>';
                 }  
             },
