@@ -77,7 +77,7 @@ module.exports.process = async function(req, res) {
                 user_id: user?.id,
                 school_year_id: school_year?.id,
                 // register_number: register_number.toString().padStart(5, "0"),
-                date_of_birth: helper.date_format(myform?.date_of_birth),
+                date_of_birth: helper.date(myform?.date_of_birth),
             });
 
             if(data){

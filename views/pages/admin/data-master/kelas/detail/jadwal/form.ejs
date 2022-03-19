@@ -5,7 +5,7 @@
         <div id="alert"></div>
         <div class="form-row">
             <div class="col-md-12 mb-4">
-                <%- form.input_date('timetable as jadwal', '*', data?.timetable) %>
+                <%- form.input_date('timetable as jadwal', '*', moment.utc(data?.timetable).format('DD-MM-YYYY, H:mm')) %>
             </div>
             <div class="col-md-12 mb-4">
                 <%- form.input('room as ruangan', '*', data?.room) %>
@@ -21,7 +21,7 @@
 <script>
     flatpickr(document.getElementById('input_timetable'), {
         enableTime: true,
-        dateFormat: "Y-m-d H:i",
+        dateFormat: "d-m-Y, H:i",
     });
 
     feather.replace();

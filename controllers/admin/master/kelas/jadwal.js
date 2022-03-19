@@ -4,6 +4,7 @@ const form          = require('../../../../helpers/form');
 const model         = require('../../../../models');
 const routes        = require('../../../../routes/menus/admin');
 const datatables    = require('node-sequelize-datatable'); 
+const moment        = require('moment');  
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -122,6 +123,7 @@ module.exports.form = async function(req, res) {
         classroom_id: req?.body?.classroom_id,
         form,
         data,
+        moment: moment,
         // role_value
     });
 };
@@ -134,6 +136,7 @@ module.exports.process = async function(req, res) {
         const myform = {
             ...req.body?.myform,
             classroom_id: req.body?.myform_hide?.classroom_id,
+            timetable: moment.utc(helper.datetime(req.body?.myform?.timetable)).format(),
         };
 
         const errors = helper.validator(myform);
@@ -144,9 +147,9 @@ module.exports.process = async function(req, res) {
         let result = {};
 
         if(id === '') {
-            result = await model.d_classroom_learner.create(myform);
+            result = await model.d_classroom_timetable.create(myform);
         }else{
-            result = await model.d_classroom_learner.update(myform, {
+            result = await model.d_classroom_timetable.update(myform, {
                 where: {
                     id: id
                 }
@@ -171,7 +174,7 @@ module.exports.delete = async function(req, res) {
     try {
         const id = req.body?.id;
 
-        const result = await model.d_classroom_learner.destroy({
+        const result = await model.d_classroom_timetable.destroy({
             where: {
                 id: id
             }

@@ -52,7 +52,15 @@ module.exports.validator = (body) => {
     return arr;
 }
 
-module.exports.date_format = function(data) {
+module.exports.date = function(data) {
     const value = data?.split('-');
     return value?.[2]+'-'+value?.[1]+'-'+value?.[0];
+};
+
+module.exports.datetime = function(data) {
+    const value = data.split(', ');
+    const date  = value?.[0].split('-');
+    const time  = value?.[1].split(':');
+    
+    return date?.[2]+'-'+date?.[1]+'-'+date?.[0]+' '+time?.[0]+':'+time?.[1]+':00.000000';
 };

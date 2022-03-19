@@ -169,7 +169,14 @@
                 data: 'timetable', 
                 sortable: false, 
                 render: function (data) {
-                    return data?.timetable;
+                    return moment.utc(data).format('dddd, D MMMM YYYY');
+                }  
+            },
+            { 
+                data: 'timetable', 
+                sortable: false, 
+                render: function (data) {
+                    return moment.utc(data).format('HH.mm');
                 }  
             },
             {

@@ -46,7 +46,12 @@
   <script src="<%= base_url %>/plugins/select2/select2.min.js"></script>
 <% } %>
 
-<% if(plugin?.includes('account_settings')) { %>
+<% if(plugin?.includes('moment')) { %>
+  <script src="<%= base_url %>/plugins/moment/index.js"></script>
+  <script src="<%= base_url %>/plugins/moment/locales.js"></script>
+  <script>
+      moment.locale('id');
+  </script>
 <% } %>
 
 <% if(plugin?.includes('dropify')) { %>

@@ -130,6 +130,7 @@ module.exports.detail = {
                 'datatables',
                 'select2',
                 'flatpickr',
+                'moment',
             ],
         }
     ],

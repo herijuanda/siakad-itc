@@ -189,7 +189,7 @@ module.exports.process = async function(req, res) {
         const data = await model.m_learner.update({
             ...myform, 
             register_number: register_number.toString().padStart(5, "0"),
-            date_of_birth: helper.date_format(myform?.date_of_birth),
+            date_of_birth: helper.date(myform?.date_of_birth),
         }, { where: { user_id: myform_hide?.id } });
 
         if(data){

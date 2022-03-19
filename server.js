@@ -30,6 +30,7 @@ app.set('view engine', 'ejs');
 require('./routes/data/auth')(app);
 require('./routes/data/admin')(app);
 require('./routes/data/learner')(app);
+require('./routes/data/lecturer')(app);
 
 
 app.listen(8080);
