@@ -1,0 +1,49 @@
+<div class="layout-px-spacing">
+    <div class="row layout-top-spacing">
+
+        <!-- <div class="col-md-12 text-center mb-4" style="font-family: Poppins, sans-serif; font-weight: 500">
+            <div class="p-2 rounded">
+                <h4 class="mb-1">Selamat Datang, <%= session?.name %></h4>
+                <p class="mb-0">Perbaharui selalu data pribadi Anda ya.</p>
+            </div>
+        </div> -->
+        <div class="col-lg-7  mb-3">
+            <div class="widget-content widget-content-area br-6">
+                <div class="p-4 ">
+                    <h4 class="mb-3">Biodata Pribadi</h4>
+                    <table class="table">
+                        <tr>
+                            <td>Nama</td>
+                            <td>: <%= data?.user?.name %></td>
+                        </tr>
+                        <tr>
+                            <td>NIM</td>
+                            <td>: <%= data?.register_number ? data?.m_school_year?.year+data?.register_number : '-' %></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>: <%= data?.user?.email %></td>
+                        </tr>
+                        <tr>
+                            <td>Tahun Ajaran </td>
+                            <td>: <%= data?.m_school_year?.year  %></td>
+                        </tr>
+                        <tr>
+                            <td>Prodi</td>
+                            <td>: <%= data?.m_study_program?.name %></td>
+                        </tr>
+                        <tr>
+                            <td>Tempat, Tanggal Lahir</td>
+                            <td>: <%= data?.place_of_birth+', '+data?.date_of_birth %></td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td>: <%= data?.address %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
