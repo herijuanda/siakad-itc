@@ -16,7 +16,6 @@ module.exports = {
     {
       role_id: 1,
       name: 'Superadmin',
-      username: 'superadmin',
       email: 'superadmin@siakad.com',
       password: '$2y$10$VerQyWU6c8EWhNthk1gtnuvYvOdwiB/cyj8Vl36s4JZVI7xPwMcNq',
       createdAt: new Date(),
@@ -25,7 +24,6 @@ module.exports = {
     {
       role_id: 2,
       name: 'Admin',
-      username: 'admin',
       email: 'admin@siakad.com',
       password: '$2y$10$VerQyWU6c8EWhNthk1gtnuvYvOdwiB/cyj8Vl36s4JZVI7xPwMcNq',
       createdAt: new Date(),
