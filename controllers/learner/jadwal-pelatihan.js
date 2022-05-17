@@ -66,7 +66,7 @@ module.exports.index = async function(req, res) {
     );
 
     const data = await model.d_classroom_timetable.findAll({
-        attributes: [ 'time_first', 'time_last' ],
+        attributes: [ 'time_first', 'time_last', 'room' ],
         include: [
             { 
                 attributes: [ 'indonesian' ],

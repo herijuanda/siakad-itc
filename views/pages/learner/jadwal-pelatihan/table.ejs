@@ -4,7 +4,8 @@
             <th>Waktu</th>
             <th>Mata Pelatihan</th>
             <th>Kode Kelas</th>
-            <th>Nama Kelas</th>
+            <th>Kelas</th>
+            <th>Ruangan</th>
             <th>Instruktur</th>
         </tr>
     </thead>
@@ -12,7 +13,7 @@
         <% data.forEach(function(value, i){ %>
             <% if(value?.m_day?.indonesian != data?.[(i-1)]?.m_day?.indonesian) { %> 
                 <tr bgcolor="#f1f2f3">
-                    <td colspan="5">
+                    <td colspan="6">
                         <b>
                             <%= value?.m_day?.indonesian%>
                         </b>
@@ -24,6 +25,7 @@
                 <td><%= value?.d_classroom?.m_subject?.name || '-' %></td>
                 <td><%= value?.d_classroom?.code || '-' %></td>
                 <td><%= value?.d_classroom?.name || '-' %></td>
+                <td><%= value?.room || '-' %></td>
                 <td><%= value?.d_classroom?.m_lecturer?.user?.name || '-' %></td>
             </tr>
         <% }); %>
