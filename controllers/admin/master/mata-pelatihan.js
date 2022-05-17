@@ -39,6 +39,7 @@ module.exports.data = async function(req, res) {
         ],
         order: [
             ['study_program_id', 'ASC'],
+            ['step', 'ASC'],
             ['id', 'ASC'],
         ],
         // where: {
@@ -70,7 +71,7 @@ module.exports.form = async function(req, res) {
         );
 
         data = await model.m_subject.findOne({
-            attributes: ['id', 'name'],
+            attributes: ['id', 'name', 'step'],
             include: [
                 { 
                     attributes: [ 'id', 'name' ],

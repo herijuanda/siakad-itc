@@ -4,10 +4,13 @@
             <div class="p-4 ">
                 <div class="form-row">
                     <div class="col-md-3">
-                        <%- form.select('filter_school_year_id as tahun_ajaran', '', school_year, {}, null, 'filter') %>
+                        <%- form.select('filter_school_year_id as tahun_ajaran', '', school_year, {}, 'filter', 'filter') %>
                     </div>
                     <div class="col-md-4">
-                        <%- form.select('filter_study_program_id as prodi', '', study_program, {}, null, 'filter') %>
+                        <%- form.select('filter_study_program_id as prodi', '', study_program, {}, 'filter', 'filter') %>
+                    </div>  
+                    <div class="col-md-3">
+                        <%- form.select('filter_step as tahap', '', [{ id: 1, dataValues: { name: 1 } }, { id: 2, dataValues: { name: 2 }}], {}, 'filter', 'filter') %>
                     </div>  
                 </div>
             </div>

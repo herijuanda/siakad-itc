@@ -96,9 +96,10 @@ module.exports.data = async function(req, res) {
                 required: true,
             },
             { 
-                attributes: [ 'name' ],
+                attributes: [ 'name', 'step' ],
                 model: model.m_subject,
                 required: true,
+                where: req.body?.step ? { step: req.body?.step } : {},
             },
             { 
                 attributes: [ 'id' ],
@@ -114,6 +115,7 @@ module.exports.data = async function(req, res) {
         order: [
             [model.m_school_year, 'id', 'ASC'],
             [model.m_study_program, 'id', 'ASC'],
+            [model.m_subject, 'step', 'ASC'],
             [model.m_subject, 'id', 'ASC'],
             ['name', 'ASC'],
         ],
@@ -185,7 +187,7 @@ module.exports.form = async function(req, res) {
                     model: model.m_study_program,
                 },
                 { 
-                    attributes: [ 'id', 'name' ],
+                    attributes: [ 'id', 'name', 'step' ],
                     model: model.m_subject,
                 },
                 { 
@@ -295,13 +297,19 @@ module.exports.delete = async function(req, res) {
     try {
         const id = req.body?.id;
 
-        const result = await model.m_study_program.destroy({
+        const result = await model.d_classroom.destroy({
             where: {
                 id: id
             }
         });
 
         await model.d_classroom_learner.destroy({
+            where: {
+                classroom_id: id
+            }
+        });
+
+        await model.d_classroom_timetable.destroy({
             where: {
                 classroom_id: id
             }
@@ -323,11 +331,13 @@ module.exports.select_subject = async function(req, res) {
 
     try {
         const id = req.body?.id;
+        const step = req.body?.step;
 
         const results = await model.m_subject.findAll({
             attributes: [ 'id', 'name' ],
             where: {
-                study_program_id: id
+                study_program_id: id,
+                step,
             }
         });
 

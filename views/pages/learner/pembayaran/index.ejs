@@ -14,7 +14,7 @@
                                     Total Biaya
                                 </td>
                                 <th>
-                                    Rp. 1.000.000,-
+                                    <%= form.rupiah().format(learner_cost?.m_study_program?.cost) + ',-' %>
                                 </th>
                             </tr>
                             <tr>
@@ -22,7 +22,7 @@
                                     Sudah Bayar
                                 </td>
                                 <td>
-                                    Rp. 800.000,-
+                                    <%= form.rupiah().format(learner_payment) + ',-' %>
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                     Sisa Bayar
                                 </td>
                                 <td>
-                                    Rp. 200.000,-
+                                    <%= form.rupiah().format((learner_cost?.m_study_program?.cost - learner_payment)) + ',-' %>
                                 </td>
                             </tr>
                             <tr>
@@ -38,7 +38,7 @@
                                     Status
                                 </td>
                                 <th>
-                                    Belum Lunas
+                                    <%= learner_cost?.m_study_program?.cost > (learner_cost?.m_study_program?.cost - learner_payment) ? 'Belum Lunas' : 'Lunas' %>
                                 </th>
                             </tr>
                         </table>

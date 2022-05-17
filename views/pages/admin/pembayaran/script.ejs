@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
-    const path  = '<%=path%>';
+    const path = '<%=path%>';
+    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
 
     $.ajaxSetup({
         headers: {
@@ -8,20 +9,31 @@
         }
     });
 
+    $(".filter").select2();
+
+    $(document).on("change","#select_learner_id",function (){
+        $('#zero-config').dataTable().api().ajax.reload();
+    });
+
     /*  add data */
     $(document).on('click', '.add', function () {
 
-        $.post(url+'/form', { 
-            path, 
-            classroom_id: '<%= data?.id %>',
-            school_year_id: '<%= data?.m_school_year?.id %>',
-            study_program_id: '<%= data?.m_study_program?.id %>',
-        }, function (data) {
+        $.post(url+'/form', { path }, function (data) {
             $("#modal-label").html('Form Tambah');
             $("#show-modal").html(data);
         });
     });
 
+    /*  edit data */
+    $(document).on('click', '.edit', function () {
+        
+        var id  = $(this).data('id');
+
+        $.post(url+'/form', { id, path }, function (data) {
+            $("#modal-label").html('Form Edit');
+            $("#show-modal").html(data);
+        });
+    });
     /* submit form */
     $(document).on('click', '#submit', function () {
         $.ajax({
@@ -131,7 +143,7 @@
             url: "<%= base_url + route_now %>",
             type: 'POST',
             data: function (d) {
-                d.id = '<%= data?.id %>';
+                d.learner_id = $('#select_learner_id').val();
             }
         },
         columns: [
@@ -141,21 +153,11 @@
             },
             { 
                 data: 'id', 
-                className: 'text-center', 
                 sortable: false, 
+                className: 'text-center', 
                 width: 60,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
-                }  
-            },
-            {   data: null, 
-                sortable: false, 
-                render: function (data) {
-                    if(data?.m_learner?.register_number){
-                        return data?.m_learner?.m_school_year?.year+data?.m_learner?.register_number;
-                    }
-
-                    return '-';
                 }  
             },
             { 
@@ -166,13 +168,31 @@
                 }  
             },
             { 
+                data: 'value', 
+                sortable: false, 
+                render: function (data) {
+                    return rupiah.format(data);
+                }  
+            },
+            { 
+                data: 'datetime', 
+                render: function (data) {
+                    return moment(data, "DD-MM-YYYY, H:mm").format("LLLL");
+                }  
+            },
+            {
+                data: 'description',
+                sortable: false, 
+            },
+            { 
                 data: null, 
                 sortable: false, 
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
+                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
+                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
                 }  
             },
         ],

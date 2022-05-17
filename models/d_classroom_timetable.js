@@ -15,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   };
   d_classroom_timetable.init({
     classroom_id: DataTypes.INTEGER,
-    timetable: DataTypes.DATE,
+    day_id: DataTypes.INTEGER,
+    time_first: DataTypes.TIME,
+    time_last: DataTypes.TIME,
     room: DataTypes.STRING,
   }, {
     sequelize,

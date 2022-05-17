@@ -1,30 +1,20 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Hari, Tanggal</th>
+            <th>Tanggal</th>
             <th>Waktu</th>
             <th>Nilai (Rp.)</th>
             <th>Keterangan</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Senin, 06 Februari 2022</td>
-            <td>08:30</td>
-            <td>500.000,-</td>
-            <td>Pembayaran Masuk</td>
-        </tr>
-        <tr>
-            <td>Rabu, 28 Maret 2022</td>
-            <td>10:30</td>
-            <td>300.000,-</td>
-            <td>Pembayaran Sebagian</td>
-        </tr>
-        <tr>
-            <td>Senin, 10 Juni 2022</td>
-            <td>14:00</td>
-            <td>200.000,-</td>
-            <td>Pelunasan</td>
-        </tr>
+        <% data.forEach(function(value, i){ %>
+            <tr>
+                <td><%= moment(value?.datetime, "DD-MM-YYYY, H:mm").locale('id').format("LL") %></td>
+                <td><%= moment(value?.datetime, "DD-MM-YYYY, H:mm").locale('id').format("LT") %></td>
+                <td><%= form.rupiah().format(value?.value) + ',-' %></td>
+                <td><%= value?.description %></td>
+            </tr>
+        <% }); %>
     </tbody>
 </table>

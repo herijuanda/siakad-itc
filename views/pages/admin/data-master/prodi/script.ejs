@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
     const path = '<%=path%>';
+    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
 
     $.ajaxSetup({
         headers: {
@@ -155,9 +156,12 @@
                 data: 'name',
                 sortable: false, 
             },
-            {
-                data: 'cost',
+            { 
+                data: 'cost', 
                 sortable: false, 
+                render: function (data) {
+                    return rupiah.format(data)+',-';
+                }  
             },
             { 
                 data: null, 

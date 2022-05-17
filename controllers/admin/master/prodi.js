@@ -52,7 +52,10 @@ module.exports.process = async function(req, res) {
 
     try {
         const id = req.body?.myform_hide?.id;
-        const myform = req.body?.myform;
+        const myform = {
+            ...req.body?.myform,
+            cost: req.body?.myform?.cost.replace(/\./ig, ''),
+        };
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {

@@ -100,6 +100,13 @@ module.exports.data = async function(req, res) {
         }
     );
 
+    model.m_learner.hasOne(model.m_school_year, 
+        { 
+            sourceKey: 'school_year_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     model.m_learner.hasOne(model.user, 
         { 
             sourceKey: 'user_id', 
@@ -111,10 +118,15 @@ module.exports.data = async function(req, res) {
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'id' ],
+                attributes: [ 'id', 'register_number' ],
                 model: model.m_learner,
                 required: true,
                 include: [
+                    { 
+                        attributes: [ 'year' ],
+                        model: model.m_school_year,
+                        required: false,
+                    },
                     { 
                         attributes: [ 'name' ],
                         model: model.user,
@@ -191,7 +203,14 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors });
         }
 
-        const learner_exist = await model.d_classroom_learner.count({ where: { learner_id: myform?.learner_id } });
+        const learner_exist = await model.d_classroom_learner.count(
+                                        { 
+                                            where: { 
+                                                classroom_id: myform?.classroom_id,
+                                                learner_id: myform?.learner_id 
+                                            } 
+                                        }
+                                    );
             
         if(learner_exist > 0){
             return res.status(422).json({ errors: 'Telah Terdaftar di Kelas ini.' });

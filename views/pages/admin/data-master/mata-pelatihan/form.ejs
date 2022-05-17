@@ -3,8 +3,11 @@
     <div class="modal-body">
         <div id="alert"></div>
         <div class="form-row">
-            <div class="col-md-12 mb-4">
+            <div class="col-md-7 mb-4">
                 <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
+            </div>
+            <div class="col-md-5 mb-4">
+                <%- form.select('step as tahap', '*', [ { id: 1, dataValues: { name: 1 } }, { id: 2, dataValues: { name: 2 }}], data?.step ? { key: data?.step, value: data?.step } : {}) %>
             </div>
             <div class="col-md-12 mb-4">
                 <%- form.input('name as nama', '*', data?.name) %>

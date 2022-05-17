@@ -4,10 +4,16 @@
         <div id="alert"></div>
         <div class="form-row">
             <div class="col-md-12 mb-4">
-                <%- form.input('name as nama', '*', data?.name) %>
+                <%- form.select('learner_id as peserta_didik', '*', learner, learner_value) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('value as nilai', '*', data?.value, 'text', null,  'input_number') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input_date('datetime as waktu', '*', data?.datetime ? moment.utc(data?.datetime).format('DD-MM-YYYY, H:mm') : null) %>
             </div>
             <div class="col-md-12 mb-4">
-                <%- form.input('cost as biaya', '*', data?.cost, 'text', null,  'input_number') %>
+                <%- form.input('description as keterangan', '*', data?.description) %>
             </div>
         </div>
     </div>
@@ -22,6 +28,12 @@
         allowClear: true,
         tags: true,
         dropdownParent: $('#modal'),
+    });
+
+    flatpickr(document.getElementById('input_datetime'), {
+        enableTime: true,
+        dateFormat: "d-m-Y, H:i",
+        time_24hr: true,
     });
 
     $(document).ready(function(){

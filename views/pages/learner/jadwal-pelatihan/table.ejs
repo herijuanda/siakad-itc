@@ -1,7 +1,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Tanggal / Waktu</th>
+            <th>Waktu</th>
             <th>Mata Pelatihan</th>
             <th>Kode Kelas</th>
             <th>Nama Kelas</th>
@@ -9,7 +9,25 @@
         </tr>
     </thead>
     <tbody>
-        <tr bgcolor="#f1f2f3">
+        <% data.forEach(function(value, i){ %>
+            <% if(value?.m_day?.indonesian != data?.[(i-1)]?.m_day?.indonesian) { %> 
+                <tr bgcolor="#f1f2f3">
+                    <td colspan="5">
+                        <b>
+                            <%= value?.m_day?.indonesian%>
+                        </b>
+                    </td>
+                </tr>
+            <% } %> 
+            <tr>
+                <td><%= moment(value?.time_first, "HH:mm:ss").locale("id").format("LT") + ' s/d ' + moment(value?.time_last, "HH:mm:ss").locale("id").format("LT") %></td>
+                <td><%= value?.d_classroom?.m_subject?.name || '-' %></td>
+                <td><%= value?.d_classroom?.code || '-' %></td>
+                <td><%= value?.d_classroom?.name || '-' %></td>
+                <td><%= value?.d_classroom?.m_lecturer?.user?.name || '-' %></td>
+            </tr>
+        <% }); %>
+        <!-- <tr bgcolor="#f1f2f3">
             <td colspan="5"><b>Senin, 06 Maret 2022</b></td>
         </tr>
         <tr>
@@ -80,6 +98,6 @@
             <td>P002</td>
             <td>Kelas A</td>
             <td>Burhan</td>
-        </tr>
+        </tr> -->
     </tbody>
 </table>

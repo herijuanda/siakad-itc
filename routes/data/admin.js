@@ -54,10 +54,19 @@ module.exports = function(app) {
     app.post('/admin/pengguna/pembimbing-ojt/process', pembimbing_ojt.process);
     app.post('/admin/pengguna/pembimbing-ojt/delete', pembimbing_ojt.delete);
 
-
     const peserta_didik = require('../../controllers/admin/pengguna/peserta-didik');
     app.get('/admin/pengguna/peserta-didik', peserta_didik.index);
     app.post('/admin/pengguna/peserta-didik', peserta_didik.data);
     app.post('/admin/pengguna/peserta-didik/form', peserta_didik.form);
     app.post('/admin/pengguna/peserta-didik/process', peserta_didik.process);
+
+
+    // PEMBAYARAN
+
+    const pembayaran = require('../../controllers/admin/pembayaran');
+    app.get('/admin/pembayaran', pembayaran.index);
+    app.post('/admin/pembayaran', pembayaran.data);
+    app.post('/admin/pembayaran/form', pembayaran.form);
+    app.post('/admin/pembayaran/process', pembayaran.process);
+    app.post('/admin/pembayaran/delete', pembayaran.delete);
 };

@@ -7,7 +7,11 @@
             <div class="widget-content widget-content-area widget-content-basic br-6">
                 <h5>Jadwal Pelatihan Berdasarkan Peserta Terkait.</h5>
                 <div class="table-responsive mb-4 mt-4">
-                    <%- include('table') %>
+                    <% if(data?.length > 0) { %> 
+                        <%- include('table') %>
+                    <% } else { %> 
+                        Data Tidak Ada ...
+                    <% } %> 
                 </div>
             </div>
         </div>

@@ -151,14 +151,20 @@
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {
-                data: 'name',
-                sortable: false, 
-            },
-            { data: null, sortable: false, 
+            { 
+                data: null, sortable: false, 
                 render: function (data) {
                     return data?.m_study_program?.name;
                 }  
+            },
+            {
+                data: 'step',
+                className: 'text-center', 
+                sortable: false, 
+            },
+            {
+                data: 'name',
+                sortable: false, 
             },
             { 
                 data: null, 

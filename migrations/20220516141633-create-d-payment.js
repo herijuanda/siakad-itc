@@ -1,22 +1,28 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('m_subjects', {
+    await queryInterface.createTable('d_payments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      study_program_id: {
+      learner_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'm_study_programs', key: 'id' }
+        references: { model: 'd_classrooms', key: 'id' }
       },
-      step: {
-        type: Sequelize.INTEGER,
+      value: {
+        type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING(60)
+      datetime: {
+        type: Sequelize.DATE
+      },
+      description: {
+        type: Sequelize.TEXT
+      },
+      file_payment: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -26,9 +32,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });    
+    });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('m_subjects');
+    await queryInterface.dropTable('d_payments');
   }
 };

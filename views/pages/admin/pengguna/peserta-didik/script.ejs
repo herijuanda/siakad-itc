@@ -81,10 +81,6 @@
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {   
-                data: 'name', 
-                sortable: false 
-            },
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
@@ -94,6 +90,10 @@
 
                     return '-';
                 }  
+            },
+            {   
+                data: 'name', 
+                sortable: false 
             },
             {   
                 data: 'email', 

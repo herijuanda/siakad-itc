@@ -166,17 +166,16 @@
                 }  
             },
             { 
-                data: 'timetable', 
+                data: null, 
                 sortable: false, 
                 render: function (data) {
-                    return moment.utc(data).format('dddd, D MMMM YYYY');
+                    return data?.m_day?.indonesian;
                 }  
             },
             { 
-                data: 'timetable', 
-                sortable: false, 
+                data: null, 
                 render: function (data) {
-                    return moment.utc(data).format('HH.mm');
+                    return moment(data?.time_first, "HH:mm:ss").format("LT") + ' - ' + moment(data?.time_last, "HH:mm:ss").format("LT");
                 }  
             },
             {
@@ -190,8 +189,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
+                    return '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
                 }  
             },
         ],

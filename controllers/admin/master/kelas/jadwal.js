@@ -87,20 +87,40 @@ module.exports.index = async function(req, res) {
 module.exports.data = async function(req, res) {
     helper.auth(req, res);
 
-    const datatableObj = await datatables(req.body);
+    let datatableObj = await datatables(req.body);
     const count = await model.d_classroom_timetable.count({ 
         where: {
-            classroom_id: req.body?.id,
+            classroom_id: req.body.id,
         },
     });
 
+    model.d_classroom_timetable.hasOne(model.m_day, 
+        { 
+            sourceKey: 'day_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    datatableObj = {
+        ...datatableObj,
+        attributes: [ 'id', 'room', 'time_first', 'time_last'],
+    }
+
     const results = await model.d_classroom_timetable.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
+        include: [
+            { 
+                attributes: [ 'indonesian' ],
+                model: model.m_day,
+                required: true,
+            },
+        ],
         where: {
             classroom_id: req.body?.id,
         },
         order: [
-            ['timetable', 'ASC'],    
+            ['day_id', 'ASC'],
+            ['time_first', 'ASC'],
         ],
     });
 
@@ -121,6 +141,11 @@ module.exports.form = async function(req, res) {
 
     res.render('pages/'+req?.body?.path+'/form', {
         classroom_id: req?.body?.classroom_id,
+        day: await model.m_day.findAll(
+            {
+                attributes: [ 'id', ['indonesian', 'name'] ],
+            }
+        ),
         form,
         data,
         moment: moment,
@@ -136,7 +161,7 @@ module.exports.process = async function(req, res) {
         const myform = {
             ...req.body?.myform,
             classroom_id: req.body?.myform_hide?.classroom_id,
-            timetable: moment.utc(helper.datetime(req.body?.myform?.timetable)).format(),
+            // timetable: moment.utc(helper.datetime(req.body?.myform?.timetable)).format(),
         };
 
         const errors = helper.validator(myform);

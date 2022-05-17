@@ -65,6 +65,20 @@ module.exports = [
     //     ],
     // },
     {
+        module  : 'pembayaran',
+        route   : 'pembayaran',
+        path    : 'admin/pembayaran',
+        title   : 'Pembayaran',
+        icon    : 'dollar-sign',
+        plugin  : [
+            'datatables',
+            'select2',
+            'flatpickr',
+            'input_number',
+            'moment',
+        ],
+    },
+    {
         module  : 'pengguna',
         route   : 'pengguna',
         title   : 'Pengguna',

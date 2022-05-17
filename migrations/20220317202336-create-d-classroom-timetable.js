@@ -12,11 +12,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'd_classrooms', key: 'id' }
       },
-      timetable: {
-        type: Sequelize.DATE
+      // timetable: {
+      //   type: Sequelize.DATE
+      // },
+      day_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'm_days', key: 'id' }
+      },
+      time_first: {
+        type: Sequelize.TIME,
+      },
+      time_last: {
+        type: Sequelize.TIME,
       },
       room: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100)
       },
       createdAt: {
         allowNull: false,

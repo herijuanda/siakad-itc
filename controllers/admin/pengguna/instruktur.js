@@ -7,9 +7,9 @@ const datatables    = require('node-sequelize-datatable');
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
-    // res.json(routes[2].sub[0]);
+    // res.json(routes[3].sub[0]);
     res.render('layouts/app', {
-        ...routes[2].sub[0],
+        ...routes[3].sub[0],
         session : req.session,
         routes,
         base_url : helper.base_url(req),

@@ -4,11 +4,17 @@
     <div class="modal-body">
         <div id="alert"></div>
         <div class="form-row">
-            <div class="col-md-12 mb-4">
-                <%- form.input_date('timetable as jadwal', '*', moment.utc(data?.timetable).format('DD-MM-YYYY, H:mm')) %>
-            </div>
-            <div class="col-md-12 mb-4">
+            <div class="col-md-6 mb-4">
                 <%- form.input('room as ruangan', '*', data?.room) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.select('day_id as hari', '*', day) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input_date('time_first as jadwal_mulai', '*', data?.time_first ? moment.utc(data?.time_first).format('H:i') : null) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input_date('time_last as jadwal_berakhir', '*',data?.time_last ? moment.utc(data?.time_last).format('H:i') : null) %>
             </div>
         </div>
     </div>
@@ -19,9 +25,35 @@
 </form>
 
 <script>
-    flatpickr(document.getElementById('input_timetable'), {
+    // flatpickr(document.getElementById('input_timetable'), {
+    //     enableTime: true,
+    //     dateFormat: "d-m-Y, H:i",
+    // });
+
+    flatpickr(document.getElementById('input_time_first'), {
         enableTime: true,
-        dateFormat: "d-m-Y, H:i",
+        noCalendar: true,
+        dateFormat: "H:i",
+        defaultDate: "08:30",
+        time_24hr: true,
+        // minTime: "08:00",
+        // maxTime: "18:00"
+    });
+
+    flatpickr(document.getElementById('input_time_last'), {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        defaultDate: "10:30",
+        time_24hr: true,
+        // minTime: "08:00",
+        // maxTime: "18:00"
+    });
+
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
     });
 
     feather.replace();

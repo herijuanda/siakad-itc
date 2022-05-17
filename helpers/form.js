@@ -75,7 +75,7 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
     if(value?.key !== undefined){
         result += '<option selected="selected" value="'+value?.key+'">'+value?.value+'</option>';
     } else {
-        result += '<option value="">Pilih '+label+' ...</option>';
+        result += '<option value="">Pilih '+label+' :</option>';
     }
 
     option.forEach(function(v) {
@@ -100,4 +100,8 @@ module.exports.submit = (value = 'Simpan', icon = 'save') => {
 
 module.exports.cancel = () => {
     return '<button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>';
+}
+
+module.exports.rupiah = () => {
+    return Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
 }

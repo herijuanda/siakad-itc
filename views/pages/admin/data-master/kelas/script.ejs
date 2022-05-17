@@ -18,6 +18,10 @@
         $('#zero-config').dataTable().api().ajax.reload();
     });
 
+    $(document).on("change","#select_filter_step",function (){
+        $('#zero-config').dataTable().api().ajax.reload();
+    });
+
     /*  add data */
     $(document).on('click', '.add', function () {
 
@@ -41,11 +45,34 @@
     $('#select_subject_id').prop('disabled', true);
 
     $(document).on('change', '#select_study_program_id', function () {
+        $('#select_step').prop('disabled', false);
         
-        var id  = $(this).val();
+        var id      = $(this).val();
+        var step    = $('#select_step').val();
 
-        $.post(url+'/select-subject', { id } , function (data) {
-            $('#select_subject_id').prop('disabled', false);
+        $.post(url+'/select-subject', { id, step } , function (data) {
+            
+            if(step == '' || id == ''){
+                $('#select_subject_id').prop('disabled', true);
+            }else{
+                $('#select_subject_id').prop('disabled', false);
+            }
+
+            $("#select_subject_id").html(data?.results);
+        });
+    });
+
+    $(document).on('change', '#select_step', function () {
+        
+        var id      = $('#select_study_program_id').val();
+        var step    = $(this).val();
+
+        $.post(url+'/select-subject', { id, step } , function (data) {
+            if(step == '' || id == ''){
+                $('#select_subject_id').prop('disabled', true);
+            }else{
+                $('#select_subject_id').prop('disabled', false);
+            }
             $("#select_subject_id").html(data?.results);
         });
     });
@@ -160,7 +187,8 @@
             type: 'POST',
             data: function (d) {
                 d.school_year_id    = $('#select_filter_school_year_id').val();
-                d.study_program_id    = $('#select_filter_study_program_id').val();
+                d.study_program_id  = $('#select_filter_study_program_id').val();
+                d.step              = $('#select_filter_step').val();
             }
         },
         columns: [
@@ -191,13 +219,13 @@
                     return data?.m_study_program?.name;
                 }  
             },
-            {
-                data: 'code',
+            { 
+                data: null, 
+                className: 'text-center', 
                 sortable: false, 
-            },
-            {
-                data: 'name',
-                sortable: false, 
+                render: function (data) {
+                    return data?.m_subject?.step;
+                }  
             },
             { 
                 data: null, 
@@ -205,6 +233,14 @@
                 render: function (data) {
                     return data?.m_subject?.name;
                 }  
+            },
+            {
+                data: 'code',
+                sortable: false, 
+            },
+            {
+                data: 'name',
+                sortable: false, 
             },
             { 
                 data: null, 
