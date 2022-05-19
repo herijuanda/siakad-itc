@@ -17,28 +17,16 @@
                             <td>: <%= data?.user?.name %></td>
                         </tr>
                         <tr>
-                            <td>NIM</td>
-                            <td>: <%= data?.register_number ? data?.m_school_year?.year+data?.register_number : '-' %></td>
-                        </tr>
-                        <tr>
                             <td>Email</td>
                             <td>: <%= data?.user?.email %></td>
                         </tr>
                         <tr>
-                            <td>Tahun Ajaran </td>
-                            <td>: <%= data?.m_school_year?.year  %></td>
+                            <td>Pendidikan Terakhir </td>
+                            <td>: <%= data?.last_education  %></td>
                         </tr>
                         <tr>
-                            <td>Prodi</td>
-                            <td>: <%= data?.m_study_program?.name %></td>
-                        </tr>
-                        <tr>
-                            <td>Tempat, Tanggal Lahir</td>
-                            <td>: <%= data?.place_of_birth+', '+data?.date_of_birth %></td>
-                        </tr>
-                        <tr>
-                            <td>Alamat</td>
-                            <td>: <%= data?.address %></td>
+                            <td>Tahun Masuk</td>
+                            <td>: <%= data?.year_of_entry %></td>
                         </tr>
                     </table>
                 </div>

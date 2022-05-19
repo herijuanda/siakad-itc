@@ -117,7 +117,13 @@ module.exports.form = async function(req, res) {
     if(req.body?.id){
 
         data = await model.d_payment.findOne({
-            attributes: ['id', 'value', 'datetime', 'description'],
+            attributes: [
+                'id', 
+                'value', 
+                'datetime', 
+                'description', 
+                'file_payment'
+            ],
             include: [
                 { 
                     attributes: [ 'id' ],
@@ -163,11 +169,17 @@ module.exports.process = async function(req, res) {
     helper.auth(req, res);
 
     try {
+        const file = req?.file?.filename;
+        if (!file) {
+        res.status(422).json({ errors: 'Bukti Pembayaran Wajib di Upload' });
+        }
+
         const id = req.body?.myform_hide?.id;
         const myform = {
             ...req.body?.myform,
             value: req.body?.myform?.value?.replace(/\./ig, ''),
             datetime: moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
+            file_payment: file,
         }
 
         const errors = helper.validator(myform);
@@ -201,9 +213,22 @@ module.exports.process = async function(req, res) {
 
 module.exports.delete = async function(req, res) {
     helper.auth(req, res);
+    const fs = require('fs')
 
     try {
         const id = req.body?.id;
+
+        const data = await model.d_payment.findOne({
+            attributes: ['file_payment'],
+            where: { id },
+        });
+
+        try {
+            fs.unlinkSync('/public/uploads/payments/'+data?.file_payment)
+            //file removed
+          } catch(err) {
+            res.status(422).json({ errors: 'Gagal Hapus Bukti Pembayaran' });
+          }
 
         const result = await model.d_payment.destroy({
             where: {

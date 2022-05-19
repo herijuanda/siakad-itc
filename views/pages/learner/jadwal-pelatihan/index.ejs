@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
             <div class="widget-content widget-content-area widget-content-basic br-6">
-                <h5>Jadwal Pelatihan Berdasarkan Peserta Terkait.</h5>
+                <h5>Jadwal Pelatihan <b><%= session?.name || 'Peserta Terkait' %></b>.</h5>
                 <div class="table-responsive mb-4 mt-4">
                     <% if(data?.length > 0) { %> 
                         <%- include('table') %>

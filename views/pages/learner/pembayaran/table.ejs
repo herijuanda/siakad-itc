@@ -5,6 +5,7 @@
             <th>Waktu</th>
             <th>Nilai (Rp.)</th>
             <th>Keterangan</th>
+            <th class="text-center">Bukti Pembayaran</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,16 @@
                 <td><%= moment(value?.datetime, "DD-MM-YYYY, H:mm").locale('id').format("LT") %></td>
                 <td><%= form.rupiah().format(value?.value) + ',-' %></td>
                 <td><%= value?.description %></td>
+                <td class="text-center">
+                    <% if (!value?.file_payment) { %>
+                        <span class="text-danger"> Tidak Ada </span>
+                    <% } else { %>
+                        <button type="button" data-file="<%=value?.file_payment%>" class="view_proof_payment btn btn-warning">
+                            <i data-feather="image"></i>
+                            <b>Lihat Bukti</b>
+                        </button>
+                    <% } %>
+                </td>
             </tr>
         <% }); %>
     </tbody>

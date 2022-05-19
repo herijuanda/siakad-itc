@@ -2,7 +2,7 @@
 const helper    = require('../../helpers');
 // const form      = require('../../../helpers/form');
 const model     = require('../../models');
-const routes    = require('../../routes/menus/learner');
+const routes    = require('../../routes/menus/lecturer');
 const moment    = require('moment');  
 // const { body, validationResult } = require('express-validator');
 
@@ -23,13 +23,6 @@ module.exports.index = async function(req, res) {
         }
     );
 
-    model.d_classroom.hasMany(model.d_classroom_learner, 
-        { 
-            sourceKey: 'id', 
-            foreignKey: 'classroom_id' 
-        }
-    );
-
     model.d_classroom.hasOne(model.m_subject, 
         { 
             sourceKey: 'subject_id', 
@@ -45,20 +38,6 @@ module.exports.index = async function(req, res) {
     );
 
     model.m_lecturer.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    model.d_classroom_learner.hasOne(model.m_learner, 
-        { 
-            sourceKey: 'learner_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    model.m_learner.hasOne(model.user, 
         { 
             sourceKey: 'user_id', 
             foreignKey: 'id' 
@@ -92,28 +71,9 @@ module.exports.index = async function(req, res) {
                                 attributes: [ 'name' ],
                                 model: model.user,
                                 required: true,
-                            },
-                        ],
-                    },
-                    { 
-                        attributes: [],
-                        model: model.d_classroom_learner,
-                        required: true,
-                        include: [
-                            { 
-                                attributes: [],
-                                model: model.m_learner,
-                                required: true,
-                                include: [
-                                    { 
-                                        attributes: [],
-                                        model: model.user,
-                                        required: true,
-                                        where: { 
-                                            id:  req.session?.id
-                                        },
-                                    },
-                                ],
+                                where: { 
+                                    id:  req.session?.id
+                                },
                             },
                         ],
                     },
@@ -125,6 +85,8 @@ module.exports.index = async function(req, res) {
             ['time_first', 'ASC'],
         ],
     });
+
+    console.log('haiii', data?.[0]?.d_classroom?.m_lecturer);
 
     res.render('layouts/app', {
         ...routes[1],

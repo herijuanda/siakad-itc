@@ -35,11 +35,19 @@
         });
     });
     /* submit form */
-    $(document).on('click', '#submit', function () {
+    $(document).on('click', '#submit', function (e) {
+        e.preventDefault();
+        // var formData = new FormData(document.getElementById("form"));
+        var formData = new FormData($('#form')[0]);
+        formData.append('file', $("#file_payment")[0].files[0]);
+
         $.ajax({
             url  : url+'/process',
-            data : $('#form').serialize(),
+            data : formData,
             type : "post", 
+            enctype: 'multipart/form-data',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
             success: function(response){
                 if(response?.id === null)
                     $('#form')[0].reset();
@@ -129,7 +137,7 @@
             }
         })
     });
-
+    
     $('#zero-config').DataTable({
         oLanguage: {
             sUrl: "<%= base_url + '/indonesian.json' %>",
@@ -185,6 +193,24 @@
                 sortable: false, 
             },
             { 
+                data: 'file_payment', 
+                sortable: false, 
+                width: '150px',
+                className: 'text-center',
+                render: function (data) {
+                    feather.replace();
+
+                    if (!data) {
+                        return '<span class="text-danger"> Tidak Ada </span>';
+                    }
+
+                    return '<button type="button" data-file="'+ data +'" class="view_proof_payment btn btn-warning">'+
+                                '<i data-feather="image"></i> '+
+                                '<b>Lihat Bukti</b>'+
+                            '</button>';
+                }  
+            },
+            { 
                 data: null, 
                 sortable: false, 
                 orderable: false, 
@@ -196,6 +222,11 @@
                 }  
             },
         ],
+    });
+
+    /*  open proof payment file data */
+    $(document).on('click', '.view_proof_payment', function () {
+        window.open("<%=base_url%>/uploads/payments/" + $(this).data('file'), "_blank");
     });
 
 </script>

@@ -1,4 +1,26 @@
 module.exports = function(app) {
+    // MIDDLEWARE FILE UPLOAD
+
+    const multer  = require("multer");
+    const path    = require('path');
+
+    const diskStorage = multer.diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, path.join(__dirname, "../../public/uploads/payments"));
+        },
+        // konfigurasi penamaan file yang unik
+        filename: function (req, file, cb) {
+          cb(
+            null,
+            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+          );
+        },
+    });
+
+    const upload = multer({ storage: diskStorage })
+
+    // =================
+
     const dasbor = require('../../controllers/admin/dasbor');
     app.get('/admin/dasbor', dasbor.index);
 
@@ -67,6 +89,6 @@ module.exports = function(app) {
     app.get('/admin/pembayaran', pembayaran.index);
     app.post('/admin/pembayaran', pembayaran.data);
     app.post('/admin/pembayaran/form', pembayaran.form);
-    app.post('/admin/pembayaran/process', pembayaran.process);
+    app.post('/admin/pembayaran/process', upload.single("file"), pembayaran.process);
     app.post('/admin/pembayaran/delete', pembayaran.delete);
 };

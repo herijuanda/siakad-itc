@@ -5,42 +5,18 @@ const routes    = require('../../routes/menus/lecturer');
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
 
-    model.m_learner.hasOne(model.user, 
+    model.m_lecturer.hasOne(model.user, 
         { 
             sourceKey: 'user_id', 
             foreignKey: 'id' 
         }
     );
 
-    model.m_learner.hasOne(model.m_school_year, 
-        { 
-            sourceKey: 'school_year_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    model.m_learner.hasOne(model.m_study_program, 
-        { 
-            sourceKey: 'study_program_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    const data = await model.m_learner.findOne({
+    const data = await model.m_lecturer.findOne({
         include: [
             { 
                 attributes: [ 'name', 'email' ],
                 model: model.user,
-                required: true,
-            },
-            { 
-                attributes: [ 'year' ],
-                model: model.m_school_year,
-                required: true,
-            },
-            { 
-                attributes: [ 'name' ],
-                model: model.m_study_program,
                 required: true,
             },
         ],

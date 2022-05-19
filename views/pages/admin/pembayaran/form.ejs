@@ -1,4 +1,4 @@
-<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+<form id="form" class="simple-example" action="javascript:void(0);" enctype="multipart/form-data"  novalidate>
     <%- form.input_hide('id', data?.id) %>
     <div class="modal-body">
         <div id="alert"></div>
@@ -14,6 +14,10 @@
             </div>
             <div class="col-md-12 mb-4">
                 <%- form.input('description as keterangan', '*', data?.description) %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <label for="file_payment"><%= (data?.file_payment ? 'Ganti' : 'Upload' ) %> Bukti Pembayaran</label>
+                <input type="file" class="form-control-file" id="file_payment" accept="image/png, image/jpeg, application/pdf" >
             </div>
         </div>
     </div>

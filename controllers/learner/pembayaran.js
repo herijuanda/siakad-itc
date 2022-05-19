@@ -29,7 +29,7 @@ module.exports.index = async function(req, res) {
     );
 
     const data = await model.d_payment.findAll({
-        attributes: [ 'datetime', 'value', 'description' ],
+        attributes: [ 'datetime', 'value', 'description', 'file_payment' ],
         include: [
             { 
                 attributes: [],

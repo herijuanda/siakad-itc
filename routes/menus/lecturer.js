@@ -13,7 +13,7 @@ module.exports = [
         module  : 'jadwal-mengajar',
         route   : 'jadwal-mengajar',
         path    : 'lecturer/jadwal-mengajar',
-        title   : 'Jadwal Pelatihan',
+        title   : 'Jadwal Mengajar',
         icon    : 'clock',
         plugin  : [
 
