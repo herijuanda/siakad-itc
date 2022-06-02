@@ -80,8 +80,8 @@ module.exports.detail = {
             module  : 'kelas-mengajar',
             parent  : 'daftar-nilai',
             route   : false,
-            path    : 'lecturer/kelas-mengajar/daftar-nilai/siswa',
-            title   : 'Siswa',
+            path    : 'lecturer/kelas-mengajar/daftar-nilai/peserta-didik',
+            title   : 'Peserta Didik',
             plugin  : [
                 'datatables',
                 // 'select2',

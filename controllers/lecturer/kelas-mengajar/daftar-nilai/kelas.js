@@ -51,7 +51,18 @@ module.exports.data = async function(req, res) {
     );
     
     const datatableObj = await datatables(req.body);
-    const count = await model.d_classroom.count();
+    const count = await model.d_classroom.count({
+        include: [
+            { 
+                attributes: [],
+                model: model.m_lecturer,
+                required: true,
+                where: { 
+                    id:  req.session?.lecturer_id
+                },
+            },
+        ]
+    });
     const results = await model.d_classroom.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         attributes: [

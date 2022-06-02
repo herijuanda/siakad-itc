@@ -1,9 +1,9 @@
 // const { Op }    = require("sequelize");
 // const { sequelize }    = require("sequelize");
-const helper        = require('../../../../helpers');
+const helper        = require('../../../helpers');
 // const form      = require('../../../helpers/form');
-const model         = require('../../../../models');
-const routes        = require('../../../../routes/menus/lecturer');
+const model         = require('../../../models');
+const routes        = require('../../../routes/menus/learner');
 const datatables    = require('node-sequelize-datatable'); 
 // const moment    = require('moment');  
 // const { body, validationResult } = require('express-validator');
@@ -11,7 +11,7 @@ const datatables    = require('node-sequelize-datatable');
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
     res.render('layouts/app', {
-        ...routes[2].sub[1],
+        ...routes[4],
         session: req.session,
         routes,
         base_url : helper.base_url(req),
@@ -35,50 +35,69 @@ module.exports.data = async function(req, res) {
             foreignKey: 'id' 
         }
     );
+
+    model.m_lecturer.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.d_classroom.hasMany(model.d_classroom_learner, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'classroom_id' 
+        }
+    );
     
     const datatableObj = await datatables(req.body);
     const count = await model.d_classroom.count({
         include: [
             { 
                 attributes: [],
-                model: model.m_lecturer,
+                model: model.d_classroom_learner,
                 required: true,
                 where: { 
-                    id:  req.session?.lecturer_id
+                    learner_id:  req.session?.learner_id
                 },
-            },
+            }
         ],
-        group: 'subject_id',
     });
 
-    let results = await model.d_classroom.findAndCountAll({
+    const results = await model.d_classroom.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'id', 'name' ],
+                attributes: [ 'name' ],
                 model: model.m_subject,
                 required: true,
             },
             { 
-                attributes: [],
+                attributes: [ 'id' ],
                 model: model.m_lecturer,
                 required: true,
-                where: { 
-                    id:  req.session?.lecturer_id
-                },
+                include: [
+                    { 
+                        attributes: [ 'name' ],
+                        model: model.user,
+                        required: true,
+                    },
+                ],
             },
+            { 
+                attributes: [],
+                model: model.d_classroom_learner,
+                required: true,
+                where: { 
+                    learner_id:  req.session?.learner_id
+                },
+            }
         ],
         order: [
-            [model.m_subject, 'name', 'ASC'],
+            // [model.m_subject, 'name', 'ASC'],
             ['name', 'ASC'],
         ],
-        group: 'subject_id',
     });
 
-    results.count = results.count?.length;
-
-    return helper.datatables(req, res, count?.length, results);
+    return helper.datatables(req, res, count, results);
 };
-
-
-

@@ -36,32 +36,6 @@
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {
-                data: 'name',
-                sortable: false, 
-            },
-            { 
-                data: null, 
-                sortable: false, 
-                render: function (data) {
-                    return data?.m_school_year?.year;
-                }  
-            },
-            { 
-                data: null, 
-                sortable: false, 
-                render: function (data) {
-                    return data?.m_study_program?.name;
-                }  
-            },
-            { 
-                data: null, 
-                className: 'text-center', 
-                sortable: false, 
-                render: function (data) {
-                    return data?.m_subject?.step;
-                }  
-            },
             { 
                 data: null, 
                 sortable: false, 
@@ -69,10 +43,16 @@
                     return data?.m_subject?.name;
                 }  
             },
-            {
-                data: 'learner_count',
-                className: 'text-center', 
+            { 
+                data: 'name', 
                 sortable: false, 
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_lecturer?.user?.name;
+                }  
             },
             { 
                 data: null, 
@@ -81,7 +61,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<a class="btn btn-outline-primary" href="<%= base_url + route_now %>/peserta-didik?id='+ data?.id +'">Lihat Peserta Didik</a>';
+                    return '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/modul?id='+ data?.m_subject?.id +'">Detail</a>';
                 }  
             },
         ],

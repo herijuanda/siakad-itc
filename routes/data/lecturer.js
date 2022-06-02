@@ -12,10 +12,10 @@ module.exports = function(app) {
     app.get('/instruktur/kelas-mengajar/daftar-nilai/kelas', daftar_nilai_kelas.index);
     app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas', daftar_nilai_kelas.data);
 
-    const daftar_nilai_siswa = require('../../controllers/lecturer/kelas-mengajar/daftar-nilai/siswa');
-    app.get('/instruktur/kelas-mengajar/daftar-nilai/kelas/siswa', daftar_nilai_siswa.index);
-    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/siswa', daftar_nilai_siswa.data);
-    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/siswa/update-nilai', daftar_nilai_siswa.update_nilai);
+    const daftar_nilai_peserta_didik = require('../../controllers/lecturer/kelas-mengajar/daftar-nilai/peserta-didik');
+    app.get('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik', daftar_nilai_peserta_didik.index);
+    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik', daftar_nilai_peserta_didik.data);
+    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik/update-nilai', daftar_nilai_peserta_didik.update_nilai);
 
     const modul_pelatihan = require('../../controllers/lecturer/kelas-mengajar/modul-pelatihan');
     app.get('/instruktur/kelas-mengajar/modul-pelatihan', modul_pelatihan.index);

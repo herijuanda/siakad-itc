@@ -46,7 +46,7 @@ module.exports = [
         title   : 'Modul Pelatihan & Kuis',
         icon    : 'clipboard',
         plugin  : [
-
+            'datatables',
         ],
     },
 ];

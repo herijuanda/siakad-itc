@@ -51,12 +51,12 @@ module.exports.index = async function(req, res) {
         }
     );
 
-    model.d_classroom_learner.hasOne(model.m_learner, 
-        { 
-            sourceKey: 'learner_id', 
-            foreignKey: 'id' 
-        }
-    );
+    // model.d_classroom_learner.hasOne(model.m_learner, 
+    //     { 
+    //         sourceKey: 'learner_id', 
+    //         foreignKey: 'id' 
+    //     }
+    // );
 
     const data = await model.d_classroom_timetable.findAll({
         attributes: [ 'time_first', 'time_last', 'room' ],
@@ -92,16 +92,19 @@ module.exports.index = async function(req, res) {
                         attributes: [],
                         model: model.d_classroom_learner,
                         required: true,
-                        include: [
-                            { 
-                                attributes: [],
-                                model: model.m_learner,
-                                required: true,
-                                where: { 
-                                    id:  req.session?.learner_id
-                                },
-                            },
-                        ],
+                        where: { 
+                            learner_id:  req.session?.learner_id
+                        },
+                        // include: [
+                        //     { 
+                        //         attributes: [],
+                        //         model: model.m_learner,
+                        //         required: true,
+                        //         where: { 
+                        //             id:  req.session?.learner_id
+                        //         },
+                        //     },
+                        // ],
                     },
                 ],
             },
