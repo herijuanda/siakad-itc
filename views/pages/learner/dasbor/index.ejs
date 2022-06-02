@@ -17,8 +17,8 @@
                             <td>: <%= data?.user?.name %></td>
                         </tr>
                         <tr>
-                            <td>NIM</td>
-                            <td>: <%= data?.register_number ? data?.m_school_year?.year+data?.register_number : '-' %></td>
+                            <td>NIS</td>
+                            <td>: <%= data?.register_number || '-' %></td>
                         </tr>
                         <tr>
                             <td>Email</td>

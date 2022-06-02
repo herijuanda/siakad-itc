@@ -10,10 +10,13 @@
             <div class="col-md-6 mb-4">
                 <%- form.input('name as nama', '*', data?.name, 'text', 'myuser') %>
             </div>
-            <div class="col-md-6 mb-4">
+            <div class="col-md-5 mb-4">
+                <%- form.input('register_number as [nis]', '*', data?.m_learner?.register_number) %>
+            </div>
+            <div class="col-md-4 mb-4">
                 <%- form.input('place_of_birth as tempat_lahir', '*', data?.m_learner?.place_of_birth) %>
             </div>
-            <div class="col-md-6 mb-4">
+            <div class="col-md-3 mb-4">
                 <%- form.input_date('date_of_birth as tangal_lahir', '*', data?.m_learner?.date_of_birth) %>
             </div>
             <div class="col-md-6 mb-4">
@@ -68,8 +71,8 @@
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>
         <button id="submit" type="submit" name="submit" value="Simpan" class="btn btn-success submit-fn mt-2">
-            <i data-feather="<%= data?.register_number ? 'save' : 'check' %>"></i>
-            <b><%= data?.register_number ? 'Simpan' : 'Aktifkan' %></b>
+            <i data-feather="<%= data?.m_learner?.register_number ? 'save' : 'check' %>"></i>
+            <b><%= data?.m_learner?.register_number ? 'Simpan' : 'Aktifkan' %></b>
         </button>
     </div>
 </form>

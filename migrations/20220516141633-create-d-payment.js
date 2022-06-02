@@ -10,7 +10,7 @@ module.exports = {
       },
       learner_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'd_classrooms', key: 'id' }
+        references: { model: 'm_learners', key: 'id' }
       },
       value: {
         type: Sequelize.INTEGER
