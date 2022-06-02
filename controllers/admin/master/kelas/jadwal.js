@@ -60,7 +60,7 @@ module.exports.index = async function(req, res) {
                     required: true,
                 },
                 { 
-                    attributes: [ 'name' ],
+                    attributes: [ 'name', 'step' ],
                     model: model.m_subject,
                     required: true,
                 },

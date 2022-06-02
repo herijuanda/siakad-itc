@@ -37,13 +37,6 @@ module.exports.index = async function(req, res) {
         }
     );
 
-    model.m_lecturer.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
     const data = await model.d_classroom_timetable.findAll({
         attributes: [ 'time_first', 'time_last', 'room' ],
         include: [
@@ -66,16 +59,9 @@ module.exports.index = async function(req, res) {
                         attributes: [ 'id' ],
                         model: model.m_lecturer,
                         required: true,
-                        include: [
-                            { 
-                                attributes: [ 'name' ],
-                                model: model.user,
-                                required: true,
-                                where: { 
-                                    id:  req.session?.id
-                                },
-                            },
-                        ],
+                        where: { 
+                            id:  req.session?.lecturer_id
+                        },
                     },
                 ],
             },
@@ -85,8 +71,6 @@ module.exports.index = async function(req, res) {
             ['time_first', 'ASC'],
         ],
     });
-
-    console.log('haiii', data?.[0]?.d_classroom?.m_lecturer);
 
     res.render('layouts/app', {
         ...routes[1],

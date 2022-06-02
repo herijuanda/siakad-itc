@@ -39,4 +39,14 @@ module.exports = [
 
         ],
     },
+    {
+        module  : 'modul-pelatihan',
+        route   : 'modul-pelatihan',
+        path    : 'learner/modul-pelatihan',
+        title   : 'Modul Pelatihan & Kuis',
+        icon    : 'clipboard',
+        plugin  : [
+
+        ],
+    },
 ];

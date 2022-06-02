@@ -14,13 +14,6 @@ module.exports.index = async function(req, res) {
         }
     );
 
-    model.m_learner.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
     model.m_learner.hasOne(model.m_study_program, 
         { 
             sourceKey: 'study_program_id', 
@@ -34,16 +27,9 @@ module.exports.index = async function(req, res) {
             { 
                 attributes: [],
                 model: model.m_learner,
-                include: [
-                    { 
-                        attributes: [],
-                        model: model.user,
-                        required: true,
-                        where: { 
-                            id:  req.session?.id
-                        },
-                    },
-                ],
+                where: { 
+                    id:  req.session?.learner_id
+                },
             },
         ],
         order: [
@@ -68,15 +54,10 @@ module.exports.index = async function(req, res) {
                         model: model.m_study_program,
                         required: true,
                     },
-                    { 
-                        attributes: [],
-                        model: model.user,
-                        required: true,
-                        where: { 
-                            id:  req.session?.id
-                        },
-                    },
                 ],
+                where: { 
+                    id:  req.session?.learner_id
+                },
             }
         ),
         learner_payment: await model.d_payment.sum( 'value',
@@ -85,16 +66,9 @@ module.exports.index = async function(req, res) {
                     { 
                         attributes: [],
                         model: model.m_learner,
-                        include: [
-                            { 
-                                attributes: [],
-                                model: model.user,
-                                required: true,
-                                where: { 
-                                    id:  req.session?.id
-                                },
-                            },
-                        ],
+                        where: { 
+                            id:  req.session?.learner_id
+                        },
                     },
                 ],
             }

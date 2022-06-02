@@ -8,7 +8,7 @@
             <% } %> 
             
             <% if (!route){ %> 
-                <li class="breadcrumb-item"><a href="<%= base_url + '/' + session?.role_slug + '/' + module + (parent !== module ? '/' + parent : '') %>"><%= parent.toUpperCase(); %></a></li>
+                <li class="breadcrumb-item"><a href="<%= base_url + '/' + session?.role_slug + '/' + module + (parent !== module ? '/' + parent : '') %>"><%= parent.replace(/-/g, ' ').toUpperCase(); %></a></li>
             <% } %> 
             
             <li class="breadcrumb-item active" aria-current="page"><%= title.toUpperCase() %></li>

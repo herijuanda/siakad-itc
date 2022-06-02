@@ -25,6 +25,20 @@ module.exports.process = async function(req, res) {
         }
     );
 
+    model.user.hasOne(model.m_lecturer, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'user_id' 
+        }
+    );
+
+    model.user.hasOne(model.m_learner, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'user_id' 
+        }
+    );
+
     const user = await model.user.findOne({
         attributes: ['id', 'role_id', 'name', 'password'],
         include: [
@@ -32,6 +46,14 @@ module.exports.process = async function(req, res) {
                 attributes: [ 'name', 'slug' ],
                 model: model.role,
                 required: true,
+            },
+            { 
+                attributes: [ 'id' ],
+                model: model.m_lecturer,
+            },
+            { 
+                attributes: [ 'id' ],
+                model: model.m_learner,
             },
         ],
         where: { 
@@ -50,6 +72,8 @@ module.exports.process = async function(req, res) {
             role_id     : user?.role_id,
             role_name   : user?.role?.name,
             role_slug   : user?.role?.slug,
+            lecturer_id : user?.m_lecturer?.id || null,
+            learner_id  : user?.m_learner?.id || null,
         };
 
         return res.status(200).json({ message: 'Berhasil Login', results: req.session  })   

@@ -58,13 +58,6 @@ module.exports.index = async function(req, res) {
         }
     );
 
-    model.m_learner.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
     const data = await model.d_classroom_timetable.findAll({
         attributes: [ 'time_first', 'time_last', 'room' ],
         include: [
@@ -104,16 +97,9 @@ module.exports.index = async function(req, res) {
                                 attributes: [],
                                 model: model.m_learner,
                                 required: true,
-                                include: [
-                                    { 
-                                        attributes: [],
-                                        model: model.user,
-                                        required: true,
-                                        where: { 
-                                            id:  req.session?.id
-                                        },
-                                    },
-                                ],
+                                where: { 
+                                    id:  req.session?.learner_id
+                                },
                             },
                         ],
                     },

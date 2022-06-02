@@ -60,8 +60,6 @@ module.exports.data = async function(req, res) {
         }
     );
 
-    // console.log('haiii', helper.dt_clean_params(datatableObj));
-
     let filter = {};
 
     if(req.body?.school_year_id){

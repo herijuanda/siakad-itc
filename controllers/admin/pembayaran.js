@@ -218,18 +218,6 @@ module.exports.delete = async function(req, res) {
     try {
         const id = req.body?.id;
 
-        const data = await model.d_payment.findOne({
-            attributes: ['file_payment'],
-            where: { id },
-        });
-
-        try {
-            fs.unlinkSync('/public/uploads/payments/'+data?.file_payment)
-            //file removed
-          } catch(err) {
-            res.status(422).json({ errors: 'Gagal Hapus Bukti Pembayaran' });
-          }
-
         const result = await model.d_payment.destroy({
             where: {
                 id: id

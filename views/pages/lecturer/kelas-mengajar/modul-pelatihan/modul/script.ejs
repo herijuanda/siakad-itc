@@ -1,0 +1,209 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+    const subject_id = '<%= data?.id %>';
+    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    /*  add data */
+    $(document).on('click', '.add', function () {
+
+        $.post(url+'/form', { path, subject_id }, function (data) {
+            $("#modal-label").html('Form Tambah');
+            $("#show-modal").html(data);
+        });
+    });
+
+    /*  edit data */
+    $(document).on('click', '.edit', function () {
+        
+        var id  = $(this).data('id');
+
+        $.post(url+'/form', { id, path, subject_id }, function (data) {
+            $("#modal-label").html('Form Edit');
+            $("#show-modal").html(data);
+        });
+    });
+
+    $(document).on('click', '.delete', function () {
+        
+        var id  = $(this).data('id');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+            title: 'Apakah Anda Yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tidak, batal!',
+            reverseButtons: true,
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+
+                $.ajax({
+                    url  : url+'/delete',
+                    data : {id:id},
+                    type : "post", 
+                    success: function(response){
+                        swalWithBootstrapButtons(
+                            'Terhapus!',
+                            'Data telah terhapus.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
+                    },
+                    error: function (data) {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Dalam memproses hapus data, data masih ada. :)',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons(
+                    'Dibatalkan',
+                    'Data masih aman :)',
+                    'error'
+                )
+            }
+        })
+    });
+    
+
+    /* submit form */
+    $(document).on('click', '#submit', function (e) {
+        e.preventDefault();
+        // var formData = new FormData(document.getElementById("form"));
+        var formData = new FormData($('#form')[0]);
+        formData.append('file', $("#file")[0].files[0]);
+
+        $.ajax({
+            url  : url+'/process',
+            data : formData,
+            type : "post", 
+            enctype: 'multipart/form-data',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
+            success: function(response){
+                if(response?.id === null)
+                    $('#form')[0].reset();
+
+                $('#alert').html(alert_success(response?.message));
+                $('#zero-config').dataTable().api().ajax.reload();
+            },
+            error: function (data, response) {
+                const errors = data?.responseJSON?.errors;
+                switch (data.status) {
+                    case 400:
+                        let result = '';
+
+                        errors.forEach(function(v) {
+                            result += '<br>- '+v+' belum diisi';
+                        });
+
+                        $('#alert').html(alert_warning(result));
+                        break;
+                    case 422:
+                        $('#alert').html(alert_warning(errors));
+                        break;
+                    case 500:
+                        $('#alert').html(alert_error(errors));
+                        break;
+                    default:
+                        $('#alert').html(alert_error('Saat proses data'));
+                        break;
+                }
+            }
+        });
+                
+    });
+
+    $('#zero-config').DataTable({
+        oLanguage: {
+            sUrl: "<%= base_url + '/indonesian.json' %>",
+        },
+        stripeClasses: [],
+        lengthMenu: [5, 10, 20, 50],
+        pageLength: 10 ,
+        serverSide: true,
+        processing: true,
+        ajax: {
+            url: "<%= base_url + route_now %>",
+            type: 'POST',
+            data: function (d) {
+                d.id = subject_id;
+            }
+        },
+        columns: [
+            {
+                data: null, 
+                visible: false,
+            },
+            { 
+                data: 'id', 
+                sortable: false, 
+                className: 'text-center', 
+                width: 60,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
+                }  
+            },
+            {
+                data: 'name',
+                sortable: false, 
+            },
+            { 
+                data: 'file', 
+                sortable: false, 
+                width: '150px',
+                className: 'text-center',
+                render: function (data) {
+                    feather.replace();
+
+                    if (!data) {
+                        return '<span class="text-danger"> Tidak Ada </span>';
+                    }
+
+                    return '<button type="button" data-file="'+ data +'" class="view_file btn btn-warning">'+
+                                '<i data-feather="image"></i> '+
+                                '<b>Lihat File</b>'+
+                            '</button>';
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                orderable: false, 
+                className: 'text-center', 
+                'bSortable' : false,
+                render: function (data) {
+                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
+                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>';
+                }  
+            },
+        ],
+    });
+
+    /*  open proof payment file data */
+    $(document).on('click', '.view_file', function () {
+        window.open("<%=base_url%>/uploads/modules/" + $(this).data('file'), "_blank");
+    });
+
+</script>

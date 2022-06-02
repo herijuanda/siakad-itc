@@ -1,9 +1,12 @@
-const { Op }        = require("sequelize");
+const { Op }    = require("sequelize");
+// const { sequelize }    = require("sequelize");
 const helper        = require('../../../../helpers');
-const form          = require('../../../../helpers/form');
+// const form      = require('../../../helpers/form');
 const model         = require('../../../../models');
-const routes        = require('../../../../routes/menus/admin');
+const routes        = require('../../../../routes/menus/lecturer');
 const datatables    = require('node-sequelize-datatable'); 
+// const moment    = require('moment');  
+// const { body, validationResult } = require('express-validator');
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -44,7 +47,7 @@ module.exports.index = async function(req, res) {
     );
 
     res.render('layouts/app', {
-        ...routes.detail.kelas[0],
+        ...routes.detail.daftar_nilai[0],
         data: await model.d_classroom.findOne({ 
             attributes: [ 'id', 'name' ],
             include: [
@@ -76,7 +79,7 @@ module.exports.index = async function(req, res) {
             ],
             where: { id: req.query.id } 
         }),
-        session : req.session,
+        session: req.session,
         routes,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
@@ -92,11 +95,25 @@ module.exports.data = async function(req, res) {
             classroom_id: req.body?.id,
         },
     });
-    
+
+    model.d_classroom_learner.hasOne(model.d_classroom, 
+        { 
+            sourceKey: 'classroom_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     model.d_classroom_learner.hasOne(model.m_learner, 
         { 
             sourceKey: 'learner_id', 
             foreignKey: 'id' 
+        }
+    );
+
+    model.d_classroom_learner.hasOne(model.d_learner_value, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'classroom_learner_id' 
         }
     );
 
@@ -117,6 +134,15 @@ module.exports.data = async function(req, res) {
     const results = await model.d_classroom_learner.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         include: [
+            { 
+                attributes: [ 'id', 'subject_id', 'lecturer_id' ],
+                model: model.d_classroom,
+                required: true,
+            },
+            { 
+                attributes: [ 'id', 'absen', 'tugas', 'midterm', 'sikap', 'final', 'total' ],
+                model: model.d_learner_value,
+            },
             { 
                 attributes: [ 'id', 'register_number' ],
                 model: model.m_learner,
@@ -152,71 +178,46 @@ module.exports.data = async function(req, res) {
     return helper.datatables(req, res, count, results);
 };
 
-module.exports.form = async function(req, res) {
-    helper.auth(req, res);
-
-    let data = {};
-    let learner_value = {};
-
-    model.m_learner.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    res.render('pages/'+req?.body?.path+'/form', {
-        classroom_id: req?.body?.classroom_id,
-        learner: await model.m_learner.findAll({
-            attributes: [ 'id' ],
-            include: [
-                { 
-                    attributes: [ 'name' ],
-                    model: model.user,
-                    required: true,
-                },
-            ],
-            where: {
-                school_year_id: req.body?.school_year_id,
-                study_program_id: req.body?.study_program_id,
-            }
-        }),
-        learner_value,
-        form,
-        data,
-        // role_value
-    });
-};
-
-module.exports.process = async function(req, res) {
+module.exports.update_nilai = async function(req, res) {
     helper.auth(req, res);
 
     try {
-        const id = req.body?.myform_hide?.id;
         const myform = {
-            ...req.body?.myform,
-            classroom_id: req.body?.myform_hide?.classroom_id,
-        };
+            classroom_learner_id: req.body?.classroom_learner_id,
+            classroom_id: req.body?.classroom_id,
+            subject_id: req.body?.subject_id,
+            lecturer_id: req.body?.lecturer_id,
+            learner_id: req.body?.learner_id,
+        }
+
+        myform[req.body?.column] = req.body?.value;
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors });
         }
 
-        const learner_exist = await model.d_classroom_learner.count(
-                                        { 
-                                            where: { 
-                                                classroom_id: myform?.classroom_id,
-                                                learner_id: myform?.learner_id 
-                                            } 
-                                        }
-                                    );
-            
-        if(learner_exist > 0){
-            return res.status(422).json({ errors: 'Telah Terdaftar di Kelas ini.' });
-        }
+        const condition = { classroom_learner_id: myform?.classroom_learner_id }
 
-        const result = await model.d_classroom_learner.create(myform);
+        const result = await model.d_learner_value
+            .findOne({ where: condition })
+            .then(function(obj) {
+                // update
+                if(obj)
+                    return obj.update(myform);
+                // insert
+                return model.d_learner_value.create(myform);
+            })
+
+        // if(id === '') {
+        //     result = await model.d_subject_module.create(myform);
+        // }else{
+        //     result = await model.d_subject_module.update(myform, {
+        //         where: {
+        //             id: id
+        //         }
+        //     });
+        // }
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
@@ -230,25 +231,5 @@ module.exports.process = async function(req, res) {
     }
 };
 
-module.exports.delete = async function(req, res) {
-    helper.auth(req, res);
 
-    try {
-        const id = req.body?.id;
 
-        const result = await model.d_classroom_learner.destroy({
-            where: {
-                id: id
-            }
-        });
-
-        if(result){
-            return res.status(200).json({ message: 'Berhasil di Hapus' })
-        }
-
-        throw Error();
-        
-    } catch (error) {
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
-    }
-};

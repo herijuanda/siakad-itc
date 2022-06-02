@@ -1,0 +1,60 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#zero-config').DataTable({
+        oLanguage: {
+            sUrl: "<%= base_url + '/indonesian.json' %>",
+        },
+        stripeClasses: [],
+        lengthMenu: [5, 10, 20, 50],
+        pageLength: 10 ,
+        serverSide: true,
+        processing: true,
+        ajax: {
+            url: "<%= base_url + route_now %>",
+            type: 'POST',
+        },
+        columns: [
+            {
+                data: null, 
+                visible: false,
+            },
+            { 
+                data: 'id', 
+                sortable: false, 
+                className: 'text-center', 
+                width: 60,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_subject?.name;
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                orderable: false, 
+                className: 'text-center', 
+                'bSortable' : false,
+                render: function (data) {
+                    return '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/modul?id='+ data?.m_subject?.id +'">Manage Modul</a>'+
+                    '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/kuis?id='+ data?.m_subject?.id +'">Manage Kuis</a>';
+                }  
+            },
+        ],
+    });
+
+</script>

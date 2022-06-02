@@ -1,0 +1,166 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#zero-config').DataTable({
+        oLanguage: {
+            sUrl: "<%= base_url + '/indonesian.json' %>",
+        },
+        stripeClasses: [],
+        lengthMenu: [5, 10, 20, 50],
+        pageLength: 10 ,
+        serverSide: true,
+        processing: true,
+        ajax: {
+            url: "<%= base_url + route_now %>",
+            type: 'POST',
+            data: function (d) {
+                d.id = '<%= data?.id %>';
+            }
+        },
+        columns: [
+            {   
+                data: null, 
+                visible: false,
+            },
+            { 
+                data: 'id', 
+                className: 'text-center', 
+                sortable: false, 
+                width: 60,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1 + '.';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    if(data?.m_learner?.register_number){
+                        return data?.m_learner?.m_school_year?.year+data?.m_learner?.register_number;
+                    }
+
+                    return '-';
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_learner?.user?.name;
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.absen || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'absen\')" />';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.tugas || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'tugas\')" />';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.midterm || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'midterm\')" />';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.sikap || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'sikap\')" />';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.final || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'final\')" />';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.total || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'total\')" />';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return '-';
+                }  
+            },            
+        ],
+    });
+
+    const swalWithBootstrapButtons = swal.mixin({
+        confirmButtonClass: 'btn btn-success btn-rounded',
+        cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+        buttonsStyling: false,
+    })
+
+    function inputNilai(
+        e, 
+        classroom_learner_id, 
+        classroom_id,
+        subject_id,
+        lecturer_id,
+        learner_id,
+        column,
+    ) {
+        // console.log('haii', id, e.value, column);
+
+        if (!$.isNumeric(e.value)) {
+            swalWithBootstrapButtons(
+                'Gagal',
+                'Hanya bisa di input angka!',
+                'error'
+            )
+
+            return;
+        }
+        
+        $.ajax({
+            url  : url+'/update-nilai',
+            data : {
+                classroom_learner_id,
+                classroom_id,
+                subject_id,
+                lecturer_id,
+                learner_id,
+                value : e.value,
+                column : column,
+            },
+            type : "post", 
+            success: function(response){
+                // swalWithBootstrapButtons(
+                //     'TerUpdate!',
+                //     'Data telah terupdate.',
+                //     'success'
+                // )
+                console.log('berhasil', classroom_learner_id, e.value, column);
+            },
+            error: function (data) {
+                swalWithBootstrapButtons(
+                    'Gagal',
+                    'Dalam memproses update data, silahkan reload dan coba lagi. :)',
+                    'error'
+                )
+            }
+        });
+    }
+</script>

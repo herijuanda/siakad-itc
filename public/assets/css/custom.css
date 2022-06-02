@@ -235,3 +235,28 @@ input[readonly], select[readonly], textarea[readonly]{
     color: #333;
     padding: 0px 13px;
 }
+
+.dataTable > thead > tr > th {
+    border: 1px solid #ebedf2 !important;
+    padding: 8px  !important;
+}
+
+.dataTable > tbody > tr > td {
+    border: 1px solid #ebedf2 !important;
+    padding: 8px  !important;
+}
+
+.dataTable > tbody:before {
+    line-height: 0;
+}
+
+.input-nilai {
+    width: 65px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px #e0e1e2 solid;
+}
+
+.custom-control-label {
+    cursor: pointer;
+}

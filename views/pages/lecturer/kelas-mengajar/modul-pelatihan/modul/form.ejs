@@ -1,0 +1,24 @@
+<form id="form" class="simple-example" action="javascript:void(0);" enctype="multipart/form-data"  novalidate>
+    <%- form.input_hide('id', data?.id) %>
+    <%- form.input_hide('subject_id', subject_id) %>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-12 mb-4">
+                <%- form.input('name as nama modul / judul', '*', data?.name) %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <label for="file_payment"><%= (data?.file ? 'Ganti' : 'Upload' ) %> File Dokumen</label>
+                <input type="file" class="form-control-file" id="file" accept="application/pdf" >
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <%- form.cancel() %>
+        <%- form.submit(data?.id ? 'Perbarui' : undefined) %>
+    </div>
+</form>
+
+<script>
+    feather.replace();
+</script>

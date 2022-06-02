@@ -1,0 +1,48 @@
+<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+    <%- form.input_hide('id', data?.id) %>
+    <%- form.input_hide('subject_id', subject_id) %>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-12 mb-4">
+                <%- form.input('question as soal', '*', data?.question) %>
+            </div>
+            <% const alpha = ['a', 'b', 'c', 'd', 'e'] %>
+            <% if (data?.d_subject_quiz_answers) { %>
+                <% data?.d_subject_quiz_answers.forEach(function(v, i) { %>
+                    <div class="col-md-6 mb-4">
+                        <%- form.input('answer_' + i + ' as jawaban: ' + alpha[(i-1)] + '.', '*', v?.answer, 'text', 'myanswer') %>
+                        <div class="custom-control custom-radio">
+                            <input <%= v?.correct ? 'checked' : '' %> type="radio" id="customRadio<%= i %>" name="mycorrect" class="custom-control-input" value="<%= i %>">
+                            <label class="custom-control-label" for="customRadio<%= i %>">Pilih Jawaban Benar</label>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <% for( var i = 1; i <= 4 ; i++ ) { %>
+                    <div class="col-md-6 mb-4">
+                        <%- form.input('answer_' + i + ' as jawaban: ' + alpha[(i-1)] + '.', '*', null, 'text', 'myanswer') %>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio<%= i %>" name="mycorrect" class="custom-control-input" value="<%= i %>">
+                            <label class="custom-control-label" for="customRadio<%= i %>">Pilih Jawaban Benar</label>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <%- form.cancel() %>
+        <%- form.submit(data?.id ? 'Perbarui' : undefined) %>
+    </div>
+</form>
+
+<style>
+    .modal-dialog {
+        max-width: 700px !important;
+    }
+</style>
+
+<script>
+    feather.replace();
+</script>
