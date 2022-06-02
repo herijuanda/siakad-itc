@@ -168,27 +168,27 @@ module.exports.process = async function(req, res) {
 
         await model.user.update({ ...myuser, status: true }, { where: { id: myform_hide?.id } });
 
-        const last_data = await model.m_learner.findOne({
-            attributes: ['register_number'],
-            where: { 
-                school_year_id : myform_hide?.school_year_id,
-                register_number: { [Op.not]: null },
-            },
-            order: [
-                ['id', 'DESC'],
-            ],
-        });
+        // const last_data = await model.m_learner.findOne({
+        //     attributes: ['register_number'],
+        //     where: { 
+        //         school_year_id : myform_hide?.school_year_id,
+        //         register_number: { [Op.not]: null },
+        //     },
+        //     order: [
+        //         ['id', 'DESC'],
+        //     ],
+        // });
 
-        let register_number = 1;
+        // let register_number = 1;
 
-        if(last_data){
-            register_number = Number(last_data?.register_number);
-            register_number++;
-        }
+        // if(last_data){
+        //     register_number = Number(last_data?.register_number);
+        //     register_number++;
+        // }
 
         const data = await model.m_learner.update({
             ...myform, 
-            register_number: register_number.toString().padStart(5, "0"),
+            // register_number: register_number.toString().padStart(5, "0"),
             date_of_birth: helper.date(myform?.date_of_birth),
         }, { where: { user_id: myform_hide?.id } });
 

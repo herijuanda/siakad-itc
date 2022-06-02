@@ -85,7 +85,7 @@
                 sortable: false, 
                 render: function (data) {
                     if(data?.m_learner?.register_number){
-                        return data?.m_learner?.m_school_year?.year+data?.m_learner?.register_number;
+                        return data?.m_learner?.register_number;
                     }
 
                     return '-';
