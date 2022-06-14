@@ -43,6 +43,9 @@ module.exports = {
       final: {
         type: Sequelize.INTEGER
       },
+      kuis: {
+        type: Sequelize.INTEGER
+      },
       total: {
         type: Sequelize.INTEGER
       },

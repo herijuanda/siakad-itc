@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     midterm: DataTypes.INTEGER,
     sikap: DataTypes.INTEGER,
     final: DataTypes.INTEGER,
+    kuis: DataTypes.INTEGER,
     total: DataTypes.INTEGER
   }, {
     sequelize,

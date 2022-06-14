@@ -64,3 +64,19 @@ module.exports.datetime = function(data) {
     
     return date?.[2]+'-'+date?.[1]+'-'+date?.[0]+' '+time?.[0]+':'+time?.[1]+':00.000000';
 };
+
+module.exports.encrypt = function(text) {
+    const CryptoJS = require('crypto-js');
+    // const passphrase = "Secret Passphrase";
+    // return CryptoJS.AES.encrypt(text, passphrase).toString();
+    return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
+};
+
+module.exports.decrypt = function(text) {
+    const CryptoJS  = require('crypto-js');
+    // const passphrase = "Secret Passphrase";
+    // const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+    // const originalText = bytes.toString(CryptoJS.enc.Utf8);
+    // return originalText;
+    return CryptoJS.enc.Base64.parse(text).toString(CryptoJS.enc.Utf8);
+};

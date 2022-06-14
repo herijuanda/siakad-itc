@@ -213,7 +213,7 @@ module.exports.process = async function(req, res) {
 
 module.exports.delete = async function(req, res) {
     helper.auth(req, res);
-    const fs = require('fs')
+    // const fs = require('fs')
 
     try {
         const id = req.body?.id;

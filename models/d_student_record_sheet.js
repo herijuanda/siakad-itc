@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class d_subject_quiz_result extends Model {
+  class d_student_record_sheet extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,19 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  d_subject_quiz_result.init({
+  }
+  d_student_record_sheet.init({
     classroom_id: DataTypes.INTEGER,
-    classroom_learner_id: DataTypes.INTEGER,
-    learner_id: DataTypes.INTEGER,
-    lecturer_id: DataTypes.INTEGER,
     subject_id: DataTypes.INTEGER,
-    quiz_id: DataTypes.INTEGER,
-    answer_id: DataTypes.INTEGER,
-    correct: DataTypes.BOOLEAN
+    learner_id: DataTypes.INTEGER,
+    datetime: DataTypes.DATE,
+    catatan: DataTypes.STRING,
+    keterangan: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'd_subject_quiz_result',
+    modelName: 'd_student_record_sheet',
   });
-  return d_subject_quiz_result;
+  return d_student_record_sheet;
 };

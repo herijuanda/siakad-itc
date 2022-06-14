@@ -1,0 +1,16 @@
+<div class="layout-px-spacing">
+    <div class="row mx-0">
+        <%- include('../../../../../inc/breadcrumb') %>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+            <div class="widget-content widget-content-area widget-content-basic br-6">
+                <h5>Kuis Mata Pelatihan : <b><%= session?.quiz_result?.subject?.name %></b></h5>
+                <h5>Instruktur : <b><%= session?.quiz_result?.lecturer?.user?.name %></b></h5>
+                <h5>Nilai : <b><%= session?.quiz_result?.total %></b></h5>
+            </div>
+        </div>
+
+    </div>
+</div>
+

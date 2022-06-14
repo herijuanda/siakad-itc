@@ -1,0 +1,8 @@
+<h6>No. <%= session?.quiz?.no %></h6>
+<h5><%= session?.quiz?.question?.question %></h5>
+<% session?.quiz?.question?.d_subject_quiz_answers.forEach(function(v, i) { %>
+    <div class="custom-control custom-radio">
+        <input type="radio" id="answer_<%= i %>" name="answer" class="custom-control-input" value="<%= JSON.stringify({ id: v?.id, correct: v?.correct }) %>">
+        <label class="custom-control-label label-answer" for="answer_<%= i %>"><%= alpha[i] + '. ' + v?.answer %></label>
+    </div>
+<% }) %>

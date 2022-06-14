@@ -1,0 +1,1 @@
+module.exports.quiz_time = 1;

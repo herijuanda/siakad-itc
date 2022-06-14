@@ -1,0 +1,57 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).on('click', '.next', function () {
+        const status  = $(this).data('status');
+        const choose  = $('input[name="answer"]:checked').val();
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        $.ajax({
+            url  : url+'/next',
+            data : { status, choose },
+            type : "post", 
+            success: function(response){
+                $('#question-value').html(response);
+            },
+            error: function (response) {
+
+                if(response?.status === 300) {
+                    $.ajax({
+                        url  : url+'/done',
+                        type : "post", 
+                        success: function(response){
+                            window.location.href = url+'/result';
+                        },
+                        error: function (response) {
+                            swalWithBootstrapButtons(
+                                'Gagal',
+                                'Terjadi Kesalahan Saat Menyelesaikan Ujian',
+                                'error'
+                            )
+                        }
+                    });
+                } else {
+                    swalWithBootstrapButtons(
+                        'Gagal',
+                        response?.responseJSON?.message,
+                        'error'
+                    )
+                }
+            }
+        });
+    });
+
+
+</script>

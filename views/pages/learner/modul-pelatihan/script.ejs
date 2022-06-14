@@ -61,10 +61,18 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/modul?id='+ data?.m_subject?.id +'">Detail</a>';
+                    const value =  JSON.stringify({
+                        classroom_id: data?.id,
+                        classroom_learner_id: data?.d_classroom_learners?.[0]?.id,
+                        subject_id: data?.m_subject?.id,
+                        lecturer_id: data?.m_lecturer?.id,
+                    });
+
+                    const params = encrypt(value);
+                    
+                    return '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/detail?params=' + params + '">Detail</a>';
                 }  
             },
         ],
     });
-
 </script>

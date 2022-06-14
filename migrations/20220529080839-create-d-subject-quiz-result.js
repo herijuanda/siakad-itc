@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      classroom_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'd_classrooms', key: 'id' }
+      },
+      classroom_learner_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'd_classroom_learners', key: 'id' }
+      },
       learner_id: {
         type: Sequelize.INTEGER,
         references: { model: 'm_learners', key: 'id' }

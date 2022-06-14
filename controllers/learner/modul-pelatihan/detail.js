@@ -1,78 +1,89 @@
 const helper    = require('../../../helpers');
-const form      = require('../../../helpers/form');
 const model     = require('../../../models');
 const routes    = require('../../../routes/menus/learner');
-const moment    = require('moment');  
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
 
-    model.d_payment.hasOne(model.m_learner, 
-        { 
-            sourceKey: 'learner_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    model.m_learner.hasOne(model.m_study_program, 
-        { 
-            sourceKey: 'study_program_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    const data = await model.d_payment.findAll({
-        attributes: [ 'datetime', 'value', 'description', 'file_payment' ],
-        include: [
-            { 
-                attributes: [],
-                model: model.m_learner,
-                where: { 
-                    id:  req.session?.learner_id
-                },
+    try {
+        const detail = JSON.parse(helper.decrypt(req?.query?.params));
+        const data = await model.d_subject_module.findAll({
+            attributes: [ 
+                'id',
+                'name', 
+                'file',
+                [
+                    model.sequelize.literal(`(
+                        SELECT COUNT(id)
+                        FROM d_subject_module_reads AS reader
+                        WHERE 
+                            reader.module_id = d_subject_module.id
+                            AND reader.learner_id = '${req?.session?.learner_id}'
+                    )`),
+                    'status'
+                ]
+            ],
+            where: { 
+                lecturer_id: detail?.lecturer_id,
+                subject_id: detail?.subject_id,
             },
-        ],
-        order: [
-            ['createdAt', 'DESC'],
-        ],
-    });
+        });
+        
+        let progress = 0;
+        data.forEach(function(value){ 
+            progress += value?.dataValues?.status;
+        });
 
-    res.render('layouts/app', {
-        ...routes[2],
-        session : req.session,
-        routes,
-        base_url : helper.base_url(req),
-        route_now : helper.route_now(req),
-        form,
-        data,
-        learner_cost: await model.m_learner.findOne(
-            {
-                attributes: [],
-                include: [
-                    { 
-                        attributes: [ 'cost' ],
-                        model: model.m_study_program,
-                        required: true,
-                    },
-                ],
-                where: { 
-                    id:  req.session?.learner_id
-                },
-            }
-        ),
-        learner_payment: await model.d_payment.sum( 'value',
-            {
-                include: [
-                    { 
-                        attributes: [],
-                        model: model.m_learner,
-                        where: { 
-                            id:  req.session?.learner_id
-                        },
-                    },
-                ],
-            }
-        ),
-        moment: moment,
-    });
+        res.render('layouts/app', {
+            ...routes.detail.modul_pelatihan,
+            session : req.session,
+            routes,
+            base_url : helper.base_url(req),
+            route_now : helper.route_now(req),
+            params : req?.query?.params,
+            detail, 
+            data,
+            progress: progress ? (progress / data?.length) * 100 : 0,
+        });
+    } catch (error) {
+        res.writeHead(302, {
+            'Location': helper.base_url(req) + '/peserta-didik/modul-pelatihan'
+        });
+        res.end();
+    }
+};
+
+module.exports.update_read = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const myform = {
+            module_id: req?.body?.id,
+            learner_id: req.session?.learner_id,
+        }
+
+        const errors = helper.validator(myform);
+        if (errors?.length !== 0) {
+            return res.status(400).json({ errors: errors });
+        }
+
+        const result = await model.d_subject_module_read.create(myform);
+
+        if(result){
+
+            // const data = model.d_subject_module_read.findAll({
+            //     where: { 
+            //         module_id: 
+            //     }
+            // });
+
+            return res.status(200).json({ message: 'Berhasil di Simpan' })
+        }
+
+        throw Error();
+        
+    } catch (error) {
+        console.log('error', error);
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
 };

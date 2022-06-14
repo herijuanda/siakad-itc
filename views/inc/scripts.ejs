@@ -34,6 +34,20 @@
   <script src="<%= base_url %>/plugins/table/datatable/datatables.js"></script>
 <% } %>
 
+<% if(plugin?.includes('encrypt_decrypt')) { %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
+
+  <script>
+    const encrypt = (text) => {
+        return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
+    };
+
+    const decrypt = (ciphertext) => {
+        return CryptoJS.enc.Base64.parse(ciphertext).toString(CryptoJS.enc.Utf8);
+    };
+  </script>
+<% } %>
+
 <% if(plugin?.includes('datatables_advance')) { %>
   <script src="<%= base_url %>/plugins/table/datatable/datatables.js"></script>
   <script src="<%= base_url %>/plugins/table/datatable/button-ext/dataTables.buttons.min.js"></script>

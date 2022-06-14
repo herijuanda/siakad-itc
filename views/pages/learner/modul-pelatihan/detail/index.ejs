@@ -1,0 +1,31 @@
+<div class="layout-px-spacing">
+    <div class="row mx-0">
+        <%- include('../../../../inc/breadcrumb') %>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+            <div class="widget-content widget-content-area widget-content-basic br-6">
+                <h5>Progres Pelatihan</h5>
+                <div class="row">
+                    <div class="col-sm-9 layout-spacing">
+                        <div class="progress br-30 mt-3">
+                            <div class="progress-bar bg-success" role="progressbar" <%- `style="width: ${progress}%"` %> aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><%= progress %>%</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 layout-spacing">
+                        <button id="quiz_setup" data-params="<%= params %>" data-status="<%= progress < 100 ? 0 : 1 %>" type="button" class="btn btn-<%= progress < 100 ? 'disabled' : 'success' %>">
+                            <i data-feather="book-open"></i>
+                            <b>Mulai Kuis</b>
+                        </button>
+                    </div>
+                </div>
+                <h5>Detail List Modul Pelatihan</h5>
+                <div class="table-responsive mb-4 mt-4">
+                    <%- include('table') %>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -260,3 +260,29 @@ input[readonly], select[readonly], textarea[readonly]{
 .custom-control-label {
     cursor: pointer;
 }
+
+.label-answer {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-top: 5px;
+    padding-left: 8px;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    border-color: #d84a49;
+    background-color: #d84a49;
+}
+
+.custom-control-label::after {
+    top: 0.27rem;
+    left: -1.498rem;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.custom-control-label::before {
+    top: 0.25rem;
+    left: -1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
+}

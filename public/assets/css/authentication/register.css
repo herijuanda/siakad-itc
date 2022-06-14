@@ -1,5 +1,11 @@
+@media (min-width: 991px) {
+    .form-form {
+        width: 80%;
+    }
+}
+
 .form-form .form-form-wrap{
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .action-register{

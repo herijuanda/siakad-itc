@@ -144,7 +144,7 @@ module.exports.data = async function(req, res) {
                 model: model.d_learner_value,
             },
             { 
-                attributes: [ 'id', 'register_number' ],
+                attributes: [ 'id', 'nis' ],
                 model: model.m_learner,
                 required: true,
                 include: [
@@ -208,16 +208,6 @@ module.exports.update_nilai = async function(req, res) {
                 // insert
                 return model.d_learner_value.create(myform);
             })
-
-        // if(id === '') {
-        //     result = await model.d_subject_module.create(myform);
-        // }else{
-        //     result = await model.d_subject_module.update(myform, {
-        //         where: {
-        //             id: id
-        //         }
-        //     });
-        // }
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })

@@ -1,4 +1,4 @@
-const { Op }        = require("sequelize");
+// const { Op }        = require("sequelize");
 const helper        = require('../../../helpers');
 const form          = require('../../../helpers/form');
 const model         = require('../../../models');
@@ -48,7 +48,7 @@ module.exports.data = async function(req, res) {
         attributes: [ 'id', 'name', 'email', 'status' ],
         include: [
             { 
-                attributes: [ 'register_number' ],
+                attributes: [ 'nis' ],
                 model: model.m_learner,
                 required: true,
                 include: [
@@ -155,7 +155,7 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors });
         }
 
-        if(myuser?.password){
+        if (myuser?.password) {
             if(myuser?.password !== notused?.password_confirmation) {
                 return res.status(422).json({ errors: 'Konfirmasi Password Tidak Cocok' });
             }
@@ -164,31 +164,33 @@ module.exports.process = async function(req, res) {
                 ...myuser,
                 password: password.hash(myuser?.password),
             }
+        } else {
+            delete myuser.password;
         }
 
         await model.user.update({ ...myuser, status: true }, { where: { id: myform_hide?.id } });
 
         // const last_data = await model.m_learner.findOne({
-        //     attributes: ['register_number'],
+        //     attributes: ['nis'],
         //     where: { 
         //         school_year_id : myform_hide?.school_year_id,
-        //         register_number: { [Op.not]: null },
+        //         nis: { [Op.not]: null },
         //     },
         //     order: [
         //         ['id', 'DESC'],
         //     ],
         // });
 
-        // let register_number = 1;
+        // let nis = 1;
 
         // if(last_data){
-        //     register_number = Number(last_data?.register_number);
-        //     register_number++;
+        //     nis = Number(last_data?.nis);
+        //     nis++;
         // }
 
         const data = await model.m_learner.update({
             ...myform, 
-            // register_number: register_number.toString().padStart(5, "0"),
+            // nis: nis.toString().padStart(5, "0"),
             date_of_birth: helper.date(myform?.date_of_birth),
         }, { where: { user_id: myform_hide?.id } });
 

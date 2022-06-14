@@ -1,0 +1,33 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Judul</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.length < 1) { %>
+            <tr>
+                <td colspan="3" class="text-center">Data Tidak Ditemukan</td>
+            </tr>
+        <% } %>
+
+        <% data.forEach(function(value, i){ %>
+            <tr>
+                <td><%= value?.name %></td>
+                <td class="text-center" id="status_<%= value?.id %>">
+                    <span class="text-<%= value?.dataValues?.status ? 'success' : 'danger' %>">
+                        <%= value?.dataValues?.status ? 'Sudah Dilihat' : 'Belum Dilihat' %>
+                    </span>
+                </td>
+                <td class="text-center">
+                    <button type="button" data-id="<%= value?.id %>" data-status="<%= value?.dataValues?.status %>" data-file="<%= value?.file %>" class="view_file btn btn-warning">
+                        <i data-feather="image"></i>
+                        <b>Lihat File</b>
+                    </button>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>

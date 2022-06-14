@@ -1,0 +1,87 @@
+<script type="text/javascript">
+
+    const path = '<%=path%>';
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).on('click', '.view_file', function () {
+        const id        = $(this).data('id');
+        const status    = $(this).data('status');
+        const file      = $(this).data('file');
+
+        if (status) {
+            window.open("<%=base_url%>/uploads/modules/" + file, "_blank");
+        } else {
+            $.ajax({
+                url  : url+'/baca',
+                data : { id },
+                type : "post", 
+                success: function(response){
+                    console.log('berhasil update');
+                },
+                error: function (data) {
+                    console.log('gagal update');
+                }
+            });
+ 
+            window.open("<%=base_url%>/uploads/modules/" + file, "_blank");
+        }
+
+        location.reload();
+
+        // $('#status_' + id).html('<span class="text-success"> Sudah Dilihat </span>');
+    });
+
+    $(document).on('click', '#quiz_setup', function () {
+        const status = $(this).data('status');
+        const params = $(this).data('params');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        if (status) {
+            $.ajax({
+                url  : url+'/quiz/mulai',
+                data : { params },
+                type : "post", 
+                success: function(response){
+                    window.location.replace(url + "/quiz");
+                },
+                error: function (data) {
+                    if (data?.status == 302) {
+                        window.location.replace(url + "/quiz");
+                    } else if (data?.status == 422) {
+                        swalWithBootstrapButtons(
+                            'Peringatan',
+                            data?.responseJSON?.message,
+                            'warning'
+                        )
+                    } else {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Terjadi Kesalah Sistem. :)',
+                            'error'
+                        )
+                    }
+                }
+            });
+
+            return false;
+        }
+
+        swalWithBootstrapButtons(
+            'Gagal',
+            'Belum bisa Mulai Kuis, Silahkan lengkapi pelatihan terlebih dahulu ...',
+            'error'
+        )
+    });
+
+
+</script>

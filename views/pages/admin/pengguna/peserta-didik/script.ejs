@@ -84,8 +84,8 @@
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    if(data?.m_learner?.register_number){
-                        return data?.m_learner?.register_number;
+                    if(data?.m_learner?.nis){
+                        return data?.m_learner?.nis;
                     }
 
                     return '-';
@@ -130,7 +130,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.register_number ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.register_number ? 'Edit' : 'Aktivasi')+'</button>';
+                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.nis ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.nis ? 'Edit' : 'Aktivasi')+'</button>';
                 }  
             },
             // {data: 'role_id'},

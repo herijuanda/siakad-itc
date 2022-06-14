@@ -5,6 +5,7 @@ const helper        = require('../../../helpers');
 const model         = require('../../../models');
 const routes        = require('../../../routes/menus/learner');
 const datatables    = require('node-sequelize-datatable'); 
+
 // const moment    = require('moment');  
 // const { body, validationResult } = require('express-validator');
 
@@ -68,7 +69,7 @@ module.exports.data = async function(req, res) {
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'name' ],
+                attributes: [ 'id', 'name' ],
                 model: model.m_subject,
                 required: true,
             },
@@ -85,7 +86,7 @@ module.exports.data = async function(req, res) {
                 ],
             },
             { 
-                attributes: [],
+                attributes: [ 'id' ],
                 model: model.d_classroom_learner,
                 required: true,
                 where: { 

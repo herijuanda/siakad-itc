@@ -11,7 +11,7 @@
                 <%- form.input('name as nama', '*', data?.name, 'text', 'myuser') %>
             </div>
             <div class="col-md-5 mb-4">
-                <%- form.input('register_number as [nis]', '*', data?.m_learner?.register_number) %>
+                <%- form.input('nis as ?NIS', '*', data?.m_learner?.nis) %>
             </div>
             <div class="col-md-4 mb-4">
                 <%- form.input('place_of_birth as tempat_lahir', '*', data?.m_learner?.place_of_birth) %>
@@ -58,7 +58,7 @@
             <div class="col-md-6 mb-4">
                 <%- form.input('email', '*', data?.email, 'email', 'myuser', null, 'readonly') %>
             </div>
-            <% if(data?.m_learner?.register_number){ %>
+            <% if(data?.m_learner?.nis){ %>
             <div class="col-md-6 mb-4">
                 <%- form.input('password', null, '', 'password', 'myuser') %>
             </div>
@@ -71,8 +71,8 @@
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal"><i data-feather="x-circle"></i> <b>Batal</b></button>
         <button id="submit" type="submit" name="submit" value="Simpan" class="btn btn-success submit-fn mt-2">
-            <i data-feather="<%= data?.m_learner?.register_number ? 'save' : 'check' %>"></i>
-            <b><%= data?.m_learner?.register_number ? 'Simpan' : 'Aktifkan' %></b>
+            <i data-feather="<%= data?.m_learner?.nis ? 'save' : 'check' %>"></i>
+            <b><%= data?.m_learner?.nis ? 'Simpan' : 'Aktifkan' %></b>
         </button>
     </div>
 </form>

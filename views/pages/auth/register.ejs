@@ -12,19 +12,28 @@
                     <form id="form" class="simple-example text-left" action="javascript:void(0);" novalidate>
                         <div class="form">
                             <div class="form-row">
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <%- form.select('study_program_id as prodi', '*', study_program) %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <%- form.input('name as nama', '*', '', 'text', 'myuser') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
+                                    <%- form.input('register_number as nomor_pendaftaran', '*') %>
+                                </div>
+                                <div class="col-md-3 mb-4">
                                     <%- form.input('place_of_birth as tempat_lahir', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-2 mb-4">
                                     <%- form.input_date('date_of_birth as tangal_lahir', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-3 mb-4">
+                                    <%- form.input('phone_number as nomor_handphone', '*') %>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <%- form.input('email', '*', '', 'email', 'myuser') %>
+                                </div>
+                                <div class="col-md-4 mb-4">
                                     <%- 
                                         form.select('gender_id as jenis_kelamin', '*', [
                                             {
@@ -42,8 +51,21 @@
                                         ]) 
                                     %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <%- form.input('religion as agama', '*') %>
+                                </div>
+                                <div class="col-md-4 mb-4"></div>
+                                <div class="col-md-3 mb-4">
+                                    <%- form.input('last_education as pendidikan_terakhir', '*') %>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <%- form.input('educational_institution as instansi_pendidikan', '*') %>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    <%- form.input('major_program as program_jurusan', '*') %>
+                                </div>
+                                <div class="col-md-2 mb-4">
+                                    <%- form.input('graduation_year as tahun_lulus', '*') %>
                                 </div>
                                 <div class="col-md-9 mb-4">
                                     <%- form.input('address as alamat', '*') %>
@@ -51,22 +73,25 @@
                                 <div class="col-md-3 mb-4">
                                     <%- form.input('postal_code as kode_pos', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <%- form.input('phone_number as nomor_handphone', '*') %>
-                                </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <%- form.input('parent_name as Nama Orang Tua (Ayah / Ibu)', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-4 mb-4">
                                     <%- form.input('parent_job as Pekerjaan Orang Tua (Ayah / Ibu)', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <%- form.input('email', '*', '', 'email', 'myuser') %>
+                                <div class="col-md-4 mb-4">
+                                    <%- form.input('parent_phone_number as Nomor Handphone Orang Tua', '*') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-7 mb-4">
+                                    <%- form.input('parent_address as Alamat Orang Tua', '*') %>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <%- form.input('parent_postal_code as Kode Pos Orang Tua', '*') %>
+                                </div>
+                                <div class="col-md-5 mb-4">
                                     <%- form.input('password', '*', '', 'password', 'myuser') %>
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-5 mb-4">
                                     <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'notused') %>
                                 </div>
                             </div>

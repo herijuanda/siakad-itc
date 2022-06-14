@@ -12,14 +12,22 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
     if (name.indexOf(' as ') > -1) {
         arr_name   = name.split(' as ');
         name       = arr_name[0];
-        label      = arr_name[1].replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        if (arr_name[1].includes('?')) {
+            label = arr_name[1].replace('?', '');
+        } else {
+            label = arr_name[1].replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        }
     } else {
-        label      = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        if (arr_name[1].includes('?')) {
+            label = arr_name[1].replace('?', '');
+        } else {
+            label = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        }
     }
 
     let result =  ''+
         '<label id="label_'+name+'">'+label+''+(req || '')+'</label>'+
-        '<input id="input_'+name+'" placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control '+(classes || '')+'" '+value+' '+(req ? 'required' : '')+' '+(attribute || '')+'/>';
+        '<input id="input_'+name+'" type="'+type+'" name="'+name_func+'['+name+']" class="form-control '+(classes || '')+'" '+value+' '+(req ? 'required' : '')+' '+(attribute || '')+'/>';
     return result;
 };
 
@@ -44,7 +52,7 @@ module.exports.input_date = (name, req = null, value = null, type = 'text', name
 
     let result =  ''+
         '<label id="label_'+name+'">'+label+''+req+'</label>'+
-        '<input id="input_'+name+'" '+value+' placeholder="Masukkan '+label+' ..." type="'+type+'" name="'+name_func+'['+name+']" class="form-control flatpickr flatpickr-input active"/>';
+        '<input id="input_'+name+'" '+value+' type="'+type+'" name="'+name_func+'['+name+']" class="form-control flatpickr flatpickr-input active"/>';
     return result;
 };
 

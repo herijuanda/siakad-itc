@@ -34,5 +34,12 @@ module.exports = function(app) {
     app.post('/instruktur/kelas-mengajar/modul-pelatihan/kuis/form', modul_pelatihan_kuis.form);
     app.post('/instruktur/kelas-mengajar/modul-pelatihan/kuis/process', upload('modules').single("file"), modul_pelatihan_kuis.process);
     app.post('/instruktur/kelas-mengajar/modul-pelatihan/kuis/delete', modul_pelatihan_kuis.delete);
+
+    const student_record_sheet = require('../../controllers/lecturer/kelas-mengajar/student-record-sheet');
+    app.get('/instruktur/kelas-mengajar/student-record-sheet', student_record_sheet.index);
+    app.post('/instruktur/kelas-mengajar/student-record-sheet', student_record_sheet.data);
+    app.post('/instruktur/kelas-mengajar/student-record-sheet/form', student_record_sheet.form);
+    app.post('/instruktur/kelas-mengajar/student-record-sheet/process', student_record_sheet.process);
+    app.post('/instruktur/kelas-mengajar/student-record-sheet/delete', student_record_sheet.delete);
     
 };

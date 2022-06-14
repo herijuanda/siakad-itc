@@ -51,18 +51,18 @@ module.exports.process = async function(req, res) {
         });
 
         // const last_data = await model.m_learner.findOne({
-        //     attributes: ['register_number',],
+        //     attributes: ['nis',],
         //     where: { school_year_id : school_year?.id },
         //     order: [
         //         ['id', 'DESC'],
         //     ],
         // });
 
-        // let register_number = 1;
+        // let nis = 1;
 
         // if(last_data){
-        //     register_number = Number(last_data?.register_number);
-        //     register_number++;
+        //     nis = Number(last_data?.nis);
+        //     nis++;
         // }
 
         const user = await model.user.create({
@@ -76,7 +76,7 @@ module.exports.process = async function(req, res) {
                 ...myform, 
                 user_id: user?.id,
                 school_year_id: school_year?.id,
-                // register_number: register_number.toString().padStart(5, "0"),
+                // nis: nis.toString().padStart(5, "0"),
                 date_of_birth: helper.date(myform?.date_of_birth),
             });
 
