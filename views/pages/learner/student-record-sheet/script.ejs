@@ -1,7 +1,6 @@
 <script type="text/javascript">
 
-    const path = '<%=path%>';
-    const rupiah = Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 });
+    const path  = '<%=path%>';
 
     $.ajaxSetup({
         headers: {
@@ -23,64 +22,65 @@
             type: 'POST',
         },
         columns: [
-            {
+            {   
                 data: null, 
                 visible: false,
             },
             { 
                 data: 'id', 
-                sortable: false, 
                 className: 'text-center', 
+                sortable: false, 
                 width: 60,
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            { 
-                data: null, 
-                sortable: false, 
-                className: 'text-center', 
-                render: function (data) {
-                    return data?.m_subject?.step;
-                }  
-            },
-            { 
-                data: null, 
+            {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    return data?.m_subject?.name;
-                }  
-            },
-            { 
-                data: 'name', 
-                sortable: false, 
-            },
-            { 
-                data: null, 
-                sortable: false, 
-                render: function (data) {
-                    return data?.m_lecturer?.user?.name;
-                }  
-            },
-            { 
-                data: null, 
-                sortable: false, 
-                orderable: false, 
-                className: 'text-center', 
-                'bSortable' : false,
-                render: function (data) {
-                    const value =  JSON.stringify({
-                        classroom_id: data?.id,
-                        classroom_learner_id: data?.d_classroom_learners?.[0]?.id,
-                        subject_id: data?.m_subject?.id,
-                        lecturer_id: data?.m_lecturer?.id,
-                    });
+                    if(data?.d_classroom?.name){
+                        return data?.d_classroom?.name;
+                    }
 
-                    const params = encrypt(value);
-                    
-                    return '<a class="btn btn-outline-secondary" href="<%= base_url + route_now %>/detail?params=' + params + '">Detail</a>';
+                    return '-';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    if(data?.m_subject?.name){
+                        return data?.m_subject?.name;
+                    }
+
+                    return '-';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    if(data?.m_lecturer?.user?.name){
+                        return data?.m_lecturer?.user?.name;
+                    }
+
+                    return '-';
+                }  
+            },
+            { 
+                data: 'notes', 
+                sortable: false, 
+            },
+            { 
+                data: 'description', 
+                sortable: false, 
+                visible: false,
+            },
+            { 
+                data: 'datetime', 
+                render: function (data) {
+                    return moment(data, "DD-MM-YYYY, H:mm").format("LLLL");
                 }  
             },
         ],
     });
+
 </script>

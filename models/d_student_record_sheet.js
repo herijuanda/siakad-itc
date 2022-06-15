@@ -15,11 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   d_student_record_sheet.init({
     classroom_id: DataTypes.INTEGER,
+    // classroom_learner_id: DataTypes.INTEGER,
     subject_id: DataTypes.INTEGER,
     learner_id: DataTypes.INTEGER,
+    lecturer_id: DataTypes.INTEGER,
     datetime: DataTypes.DATE,
-    catatan: DataTypes.STRING,
-    keterangan: DataTypes.STRING
+    notes: DataTypes.TEXT,
+    description: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'd_student_record_sheet',

@@ -9,22 +9,33 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       classroom_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'd_classrooms', key: 'id' }
       },
+      // classroom_learner_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: { model: 'd_classroom_learners', key: 'id' }
+      // },
       subject_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'm_subjects', key: 'id' }
+      },
+      lecturer_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'm_lecturers', key: 'id' }
       },
       learner_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'm_learners', key: 'id' }
       },
       datetime: {
         type: Sequelize.DATE
       },
-      catatan: {
-        type: Sequelize.STRING(225)
+      notes: {
+        type: Sequelize.TEXT
       },
-      keterangan: {
-        type: Sequelize.STRING(225)
+      description: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

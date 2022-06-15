@@ -13,12 +13,29 @@
 
         $.post(url+'/form', { 
             path, 
-            classroom_id: '<%= data?.id %>',
-            school_year_id: '<%= data?.m_school_year?.id %>',
-            study_program_id: '<%= data?.m_study_program?.id %>',
         }, function (data) {
             $("#modal-label").html('Form Tambah');
             $("#show-modal").html(data);
+        });
+    });
+
+    $(document).on('change', '#select_subject_id', function () {
+
+        var id      = $(this).val();
+
+        $.post(url+'/select-classes', { id } , function (data) {
+            $('#select_classroom_id').prop('disabled', false);
+            $('#select_classroom_id').html(data?.results);
+        });
+    });
+
+    $(document).on('change', '#select_classroom_id', function () {
+
+        var id      = $(this).val();
+
+        $.post(url+'/select-learner', { id } , function (data) {
+            $('#select_learner_id').prop('disabled', false);
+            $('#select_learner_id').html(data?.results);
         });
     });
 
@@ -130,9 +147,6 @@
         ajax: {
             url: "<%= base_url + route_now %>",
             type: 'POST',
-            data: function (d) {
-                d.id = '<%= data?.id %>';
-            }
         },
         columns: [
             {   
@@ -163,6 +177,41 @@
                 sortable: false, 
                 render: function (data) {
                     return data?.m_learner?.user?.name;
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    if(data?.d_classroom?.name){
+                        return data?.d_classroom?.name;
+                    }
+
+                    return '-';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    if(data?.m_subject?.name){
+                        return data?.m_subject?.name;
+                    }
+
+                    return '-';
+                }  
+            },
+            { 
+                data: 'notes', 
+                sortable: false, 
+            },
+            { 
+                data: 'description', 
+                sortable: false, 
+                visible: false,
+            },
+            { 
+                data: 'datetime', 
+                render: function (data) {
+                    return moment(data, "DD-MM-YYYY, H:mm").format("LLLL");
                 }  
             },
             { 

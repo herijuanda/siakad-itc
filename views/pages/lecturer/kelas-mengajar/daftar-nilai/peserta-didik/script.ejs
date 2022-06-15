@@ -9,6 +9,35 @@
         }
     });
 
+    function value_character(value) {
+        if (value > 90) {
+            return { 
+                charater    : 'A', 
+                description : 'Istimewa',
+            };
+        } else if (value >= 78 && value <= 89) {
+            return { 
+                charater    : 'B', 
+                description : 'Baik',
+            };
+        } else if (value >= 70 && value <= 77) {
+            return { 
+                charater    : 'C', 
+                description : 'Cukup',
+            };
+        } else if (value >= 60 && value <= 69) {
+            return { 
+                charater    : 'D', 
+                description : 'Kurang',
+            };
+        } else {
+            return { 
+                charater    : 'E', 
+                description : 'Sangat Kurang',
+            };
+        }
+    };
+
     $('#zero-config').DataTable({
         oLanguage: {
             sUrl: "<%= base_url + '/indonesian.json' %>",
@@ -60,48 +89,60 @@
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.absen || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'absen\')" />';
+                    return '<input value="' + (data?.d_learner_value?.absen || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'absen\')" />';
                 }  
             },
             {   data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.tugas || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'tugas\')" />';
+                    return '<input value="' + (data?.d_learner_value?.tugas || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'tugas\')" />';
                 }  
             },
             {   data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.midterm || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'midterm\')" />';
+                    return '<input value="' + (data?.d_learner_value?.midterm || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'midterm\')" />';
                 }  
             },
             {   data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.sikap || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'sikap\')" />';
+                    return '<input value="' + (data?.d_learner_value?.sikap || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'sikap\')" />';
                 }  
             },
             {   data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.final || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'final\')" />';
+                    return '<input value="' + (data?.d_learner_value?.final || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'final\')" />';
                 }  
             },
             {   data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.d_learner_value?.total || '') + '" type="number" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'total\')" />';
+                    return '<b>' + data?.d_learner_value?.kuis + '</b>';
+                }  
+            },
+            {   data: null, 
+                className: 'text-center', 
+                sortable: false, 
+                render: function (data) {
+                    return '<input value="' + (data?.d_learner_value?.total || '') + '" type="text" class="input-nilai" onkeyup="inputNilai(this, \''+ data?.id +'\', \''+ data?.d_classroom?.id +'\', \''+ data?.d_classroom?.subject_id +'\', \''+ data?.d_classroom?.lecturer_id +'\', \''+ data?.m_learner?.id +'\', \'total\')" />';
                 }  
             },
             {   data: null, 
                 sortable: false, 
+                className: 'text-center', 
                 render: function (data) {
-                    return '-';
+                    if (data?.d_learner_value?.total) {
+                        return '<b><span id="nilai_' + data?.id + '"> ' + value_character(data?.d_learner_value?.total)?.charater + ' </span></b>';
+                    }
+                    
+                    return '<b><span id="nilai_' + data?.id + '"> - </span></b>';
                 }  
             },            
         ],
@@ -123,6 +164,11 @@
         column,
     ) {
 
+        if(!e.value) {
+            $('#nilai_' + classroom_learner_id).html('-');
+            return;
+        }
+
         if (!$.isNumeric(e.value)) {
             swalWithBootstrapButtons(
                 'Gagal',
@@ -130,9 +176,14 @@
                 'error'
             )
 
+            $(e).val('');
             return;
         }
-        
+
+        if (column == 'total') {
+            $('#nilai_' + classroom_learner_id).html(value_character(e.value)?.charater);
+        }
+
         $.ajax({
             url  : url+'/update-nilai',
             data : {

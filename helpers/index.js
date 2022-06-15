@@ -67,16 +67,39 @@ module.exports.datetime = function(data) {
 
 module.exports.encrypt = function(text) {
     const CryptoJS = require('crypto-js');
-    // const passphrase = "Secret Passphrase";
-    // return CryptoJS.AES.encrypt(text, passphrase).toString();
     return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
 };
 
 module.exports.decrypt = function(text) {
     const CryptoJS  = require('crypto-js');
-    // const passphrase = "Secret Passphrase";
-    // const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
-    // const originalText = bytes.toString(CryptoJS.enc.Utf8);
-    // return originalText;
     return CryptoJS.enc.Base64.parse(text).toString(CryptoJS.enc.Utf8);
+};
+
+module.exports.value_character = function(value) {
+    if (value > 90) {
+        return { 
+            charater    : 'A', 
+            description : 'Istimewa',
+        };
+    } else if (value >= 78 && value <= 89) {
+        return { 
+            charater    : 'B', 
+            description : 'Baik',
+        };
+    } else if (value >= 70 && value <= 77) {
+        return { 
+            charater    : 'C', 
+            description : 'Cukup',
+        };
+    } else if (value >= 60 && value <= 69) {
+        return { 
+            charater    : 'D', 
+            description : 'Kurang',
+        };
+    } else {
+        return { 
+            charater    : 'E', 
+            description : 'Sangat Kurang',
+        };
+    }
 };

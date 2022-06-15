@@ -168,7 +168,7 @@ module.exports.form = async function(req, res) {
     res.render('pages/'+req?.body?.path+'/form', {
         classroom_id: req?.body?.classroom_id,
         learner: await model.m_learner.findAll({
-            attributes: [ 'id' ],
+            attributes: [ 'id', 'nis' ],
             include: [
                 { 
                     attributes: [ 'name' ],

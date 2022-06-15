@@ -6,17 +6,87 @@
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
             <div class="widget-content widget-content-area widget-content-basic br-6">
                 <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-sm-12 layout-spacing">
+                    <div class="col-xl-8 col-lg-8 col-sm-12 layout-spacing">
                         <h5>Detail Nilai Transkip</h5>
                         <div class="table-responsive mb-4 mt-4">
-                            <%- include('table') %>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="30" rowspan="2">No.</th>
+                                        <th rowspan="2">Mata Pelatihan</th>
+                                        <th class="text-center" colspan="2">Hasil</th>
+                                        <th class="text-center" rowspan="2">Keterangan</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Angka</th>
+                                        <th class="text-center">Huruf</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% let step = 0; let total = 0; data.forEach(function(value, i){ %>
+                                    <tr>
+                                        <% if(value?.m_subject?.step != step) { step = value?.m_subject?.step; %> 
+                                            <tr bgcolor="#f1f2f3">
+                                                <td colspan="5">
+                                                    <b>
+                                                        Tahap <%= step %>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        <% } %> 
+                                        <td><%= (i+1) %></td>
+                                        <td><%= value?.m_subject?.name %></td>
+                                        <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total || '-' %></td>
+                                        <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total ? value_character(value?.d_classroom_learner?.d_learner_value?.total).charater : '-' %></td>
+                                        <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total ? value_character(value?.d_classroom_learner?.d_learner_value?.total).description : '-' %></td>
+                                    </tr>
+                                    <% total += (value?.d_classroom_learner?.d_learner_value?.total || 0)  }); %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-sm-12 layout-spacing">
+                    <div class="col-xl-4 col-lg-4 col-sm-12 layout-spacing">
                         <h5>Rekapan Nilai Transkip</h5>
                         <div class="table-responsive mb-4 mt-4">
-                            <%- include('table-recap') %>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>Jumlah Mata Pelajaran</td>
+                                        <td><b><%= data?.length %></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Nilai</td>
+                                        <td><b><%= total %></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rata - Rata</td>
+                                        <td><b><%= (total / data?.length).toFixed(2) %></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Predikat</td>
+                                        <td><b><%= value_character((total / data?.length).toFixed(2)).charater %></b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                        <h6>Keterangan Nilai:</h6>
+                        <ul style="padding-left: 20px;">
+                            <li>
+                                <label>A = 90 - 100</label>
+                            </li>
+                            <li>
+                                <label>B = 78 - 89</label>
+                            </li>
+                            <li>
+                                <label>C = 70 - 77</label>
+                            </li>
+                            <li>
+                                <label>D = 60 - 69</label>
+                            </li>
+                            <li>
+                                <label>E = < 60</label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

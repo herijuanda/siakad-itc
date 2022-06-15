@@ -1,0 +1,42 @@
+<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-6 mb-4">
+                <%- form.select('subject_id as mata_pelatihan', '*', subject) %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.select('classroom_id as kelas', '*', [], {}, null, null, 'disabled') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.select('learner_id as peserta_didik', '*', [], {}, null, null, 'disabled') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input_date('datetime as waktu', '*') %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <%- form.textarea('notes as catatan', '*', '', 5) %>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <%- form.cancel() %>
+        <%- form.submit(data?.id ? 'Perbarui' : undefined) %>
+    </div>
+</form>
+
+<script>
+    $(".select").select2({
+        allowClear: true,
+        tags: true,
+        dropdownParent: $('#modal'),
+    });
+
+    flatpickr(document.getElementById('input_datetime'), {
+        enableTime: true,
+        dateFormat: "d-m-Y, H:i",
+        time_24hr: true,
+    });
+
+    feather.replace();
+</script>

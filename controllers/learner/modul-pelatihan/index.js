@@ -44,7 +44,7 @@ module.exports.data = async function(req, res) {
         }
     );
 
-    model.d_classroom.hasMany(model.d_classroom_learner, 
+    model.d_classroom.hasOne(model.d_classroom_learner, 
         { 
             sourceKey: 'id', 
             foreignKey: 'classroom_id' 
@@ -69,7 +69,7 @@ module.exports.data = async function(req, res) {
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'id', 'name' ],
+                attributes: [ 'id', 'name', 'step' ],
                 model: model.m_subject,
                 required: true,
             },
@@ -95,8 +95,8 @@ module.exports.data = async function(req, res) {
             }
         ],
         order: [
-            // [model.m_subject, 'name', 'ASC'],
-            ['name', 'ASC'],
+            [model.m_subject, 'step', 'ASC'],
+            [model.m_subject, 'name', 'ASC'],
         ],
     });
 

@@ -25,4 +25,8 @@ module.exports = function(app) {
     app.post('/peserta-didik/modul-pelatihan/detail/quiz/next', modul_pelatihan_quiz.next);
     app.post('/peserta-didik/modul-pelatihan/detail/quiz/done', modul_pelatihan_quiz.done);
     app.get('/peserta-didik/modul-pelatihan/detail/quiz/result', modul_pelatihan_quiz.result);
+
+    const student_record_sheet = require('../../controllers/learner/student-record-sheet');
+    app.get('/peserta-didik/student-record-sheet', student_record_sheet.index);
+    app.post('/peserta-didik/student-record-sheet', student_record_sheet.data);
 };

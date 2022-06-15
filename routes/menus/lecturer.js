@@ -48,29 +48,43 @@ module.exports = [
                     // 'flatpickr',
                 ],
             },
-            {
-                module  : 'kelas-mengajar',
-                route   : 'student-record-sheet',
-                path    : 'lecturer/kelas-mengajar/student-record-sheet',
-                title   : 'Student Record Sheet',
-                plugin  : [
-                    'datatables',
-                    'select2',
-                    'flatpickr',
-                ],
-            },
-            {
-                module  : 'kelas-mengajar',
-                route   : 'logbook-ojt',
-                path    : 'lecturer/kelas-mengajar/logbook-ojt',
-                title   : 'Log Book OJT',
-                plugin  : [
-                    'datatables',
-                    'select2',
-                    'flatpickr',
-                ],
-            },
+            // {
+            //     module  : 'kelas-mengajar',
+            //     route   : 'student-record-sheet',
+            //     path    : 'lecturer/kelas-mengajar/student-record-sheet',
+            //     title   : 'Student Record Sheet',
+            //     plugin  : [
+            //         'datatables',
+            //         'select2',
+            //         'flatpickr',
+            //         'moment',
+            //     ],
+            // },
+            // {
+            //     module  : 'kelas-mengajar',
+            //     route   : 'logbook-ojt',
+            //     path    : 'lecturer/kelas-mengajar/logbook-ojt',
+            //     title   : 'Log Book OJT',
+            //     plugin  : [
+            //         'datatables',
+            //         'select2',
+            //         'flatpickr',
+            //     ],
+            // },
         ]
+    },
+    {
+        module  : 'student-record-sheet',
+        route   : 'student-record-sheet',
+        path    : 'lecturer/student-record-sheet',
+        title   : 'Student Record Sheet',
+        icon    : 'book-open',
+        plugin  : [
+            'datatables',
+            'select2',
+            'flatpickr',
+            'moment',
+        ],
     },
 ];
 

@@ -81,6 +81,7 @@ module.exports.index = async function(req, res) {
         }),
         session: req.session,
         routes,
+        value_character : helper.value_character,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
     });
@@ -140,7 +141,7 @@ module.exports.data = async function(req, res) {
                 required: true,
             },
             { 
-                attributes: [ 'id', 'absen', 'tugas', 'midterm', 'sikap', 'final', 'total' ],
+                attributes: [ 'id', 'absen', 'tugas', 'midterm', 'sikap', 'final', 'kuis', 'total' ],
                 model: model.d_learner_value,
             },
             { 

@@ -50,6 +50,19 @@ module.exports = [
             'encrypt_decrypt'
         ],
     },
+    {
+        module  : 'student-record-sheet',
+        route   : 'student-record-sheet',
+        path    : 'learner/student-record-sheet',
+        title   : 'Student Record Sheet',
+        icon    : 'book-open',
+        plugin  : [
+            'datatables',
+            // 'select2',
+            'flatpickr',
+            'moment',
+        ],
+    },
 ];
 
 module.exports.detail = {

@@ -29,25 +29,28 @@ module.exports.data = async function(req, res) {
         }
     );
 
-    model.d_classroom.hasOne(model.m_lecturer, 
-        { 
-            sourceKey: 'lecturer_id', 
-            foreignKey: 'id' 
-        }
-    );
+    // model.d_classroom.hasOne(model.m_lecturer, 
+    //     { 
+    //         sourceKey: 'lecturer_id', 
+    //         foreignKey: 'id' 
+    //     }
+    // );
     
     const datatableObj = await datatables(req.body);
     const count = await model.d_classroom.count({
-        include: [
-            { 
-                attributes: [],
-                model: model.m_lecturer,
-                required: true,
-                where: { 
-                    id:  req.session?.lecturer_id
-                },
-            },
-        ],
+        // include: [
+        //     { 
+        //         attributes: [],
+        //         model: model.m_lecturer,
+        //         required: true,
+        //         where: { 
+        //             id:  req.session?.lecturer_id
+        //         },
+        //     },
+        // ],
+        where: { 
+            lecturer_id:  req.session?.lecturer_id
+        },
         group: 'subject_id',
     });
 
@@ -59,15 +62,18 @@ module.exports.data = async function(req, res) {
                 model: model.m_subject,
                 required: true,
             },
-            { 
-                attributes: [],
-                model: model.m_lecturer,
-                required: true,
-                where: { 
-                    id:  req.session?.lecturer_id
-                },
-            },
+            // { 
+            //     attributes: [],
+            //     model: model.m_lecturer,
+            //     required: true,
+            //     where: { 
+            //         id:  req.session?.lecturer_id
+            //     },
+            // },
         ],
+        where: { 
+            lecturer_id:  req.session?.lecturer_id
+        },
         order: [
             [model.m_subject, 'name', 'ASC'],
             ['name', 'ASC'],

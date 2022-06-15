@@ -60,6 +60,36 @@ module.exports.input_hide = (name, value) => {
     return '<input id="hidden_'+name+'" type="hidden" name="myform_hide['+name+']" value="'+(value || '')+'" />';
 }
 
+module.exports.textarea = (name, req = null, value = '', rows = 3, name_func = null,  classes = null, attribute = null) => {
+
+    if(req)
+        req    = '<span class="req">*</span>';
+
+    if(!name_func)
+        name_func = 'myform';
+
+    if (name.indexOf(' as ') > -1) {
+        arr_name   = name.split(' as ');
+        name       = arr_name[0];
+        if (arr_name[1].includes('?')) {
+            label = arr_name[1].replace('?', '');
+        } else {
+            label = arr_name[1].replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        }
+    } else {
+        if (arr_name[1].includes('?')) {
+            label = arr_name[1].replace('?', '');
+        } else {
+            label = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
+        }
+    }
+
+    let result =  ''+
+        '<label id="label_'+name+'">'+label+''+(req || '')+'</label>'+
+        '<textarea id="input_'+name+'" rows="'+rows+'" name="'+name_func+'['+name+']" class="form-control '+(classes || '')+'" '+(req ? 'required' : '')+' '+(attribute || '')+'>'+value+'</textarea>';
+    return result;
+};
+
 module.exports.select = (name, req = null, option = array(), value = {}, name_func = null, classes = null, attribute = null) => {
 
     if(req)
@@ -89,7 +119,7 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
     option.forEach(function(v) {
         if(v?.id !== value?.key)
             result += '<option value="'+v?.id+'">' +
-            ( v?.user ? v?.user?.name : v?.dataValues?.name ) +
+            ( v?.user ? v?.nis+' - '+v?.user?.name : v?.dataValues?.name ) +
             '</option>';
     });
 
