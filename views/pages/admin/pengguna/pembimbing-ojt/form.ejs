@@ -8,10 +8,14 @@
                 <%- form.input('name as nama', '*', data?.name) %>
             </div>
             <div class="col-md-6 mb-4">
+                <%- form.input('position as jabatan', '*', data?.m_mentor?.position, 'text', 'mymentor') %>
+            </div>
+            <div class="col-md-6 mb-4">
+                <%- form.input('agency as Instansi', '*', data?.m_mentor?.agency, 'text', 'mymentor') %>
+            </div>
+            <div class="col-md-6 mb-4">
                 <%- form.input('email', '*', data?.email, 'text', null, null, data?.id ? 'readonly' : null) %>
             </div>
-        </div>
-        <div class="form-row">
             <div class="col-md-6 mb-4">
                 <%- form.input('password', '*', '', 'password', 'mypassword') %>
             </div>

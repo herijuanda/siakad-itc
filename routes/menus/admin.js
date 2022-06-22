@@ -119,6 +119,30 @@ module.exports = [
             },
         ]
     },
+    {
+        module  : 'pengaturan-ojt',
+        route   : 'pengaturan-ojt',
+        path    : 'admin/pengaturan-ojt',
+        title   : 'Pengaturan OJT',
+        icon    : 'user',
+        plugin  : [
+            'datatables',
+            'select2',
+        ],
+    },
+    {
+        module  : 'student-record-sheet',
+        route   : 'student-record-sheet',
+        path    : 'admin/student-record-sheet',
+        title   : 'Student Record Sheet',
+        icon    : 'book-open',
+        plugin  : [
+            'datatables',
+            'select2',
+            'flatpickr',
+            'moment',
+        ],
+    },
 ];
 
 module.exports.detail = {

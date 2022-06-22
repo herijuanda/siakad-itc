@@ -38,31 +38,19 @@
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    if(data?.d_classroom?.name){
-                        return data?.d_classroom?.name;
-                    }
-
-                    return '-';
+                    return data?.d_classroom?.name || '-';
                 }  
             },
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    if(data?.m_subject?.name){
-                        return data?.m_subject?.name;
-                    }
-
-                    return '-';
+                    return data?.m_subject?.name || '-';
                 }  
             },
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    if(data?.m_lecturer?.user?.name){
-                        return data?.m_lecturer?.user?.name;
-                    }
-
-                    return '-';
+                    return data?.m_lecturer?.user?.name || '-';
                 }  
             },
             { 

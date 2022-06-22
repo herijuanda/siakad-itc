@@ -19,26 +19,6 @@
         });
     });
 
-    $(document).on('change', '#select_subject_id', function () {
-
-        var id      = $(this).val();
-
-        $.post(url+'/select-classes', { id } , function (data) {
-            $('#select_classroom_id').prop('disabled', false);
-            $('#select_classroom_id').html(data?.results);
-        });
-    });
-
-    $(document).on('change', '#select_classroom_id', function () {
-
-        var id      = $(this).val();
-
-        $.post(url+'/select-learner', { id } , function (data) {
-            $('#select_learner_id').prop('disabled', false);
-            $('#select_learner_id').html(data?.results);
-        });
-    });
-
     /* submit form */
     $(document).on('click', '#submit', function () {
         $.ajax({
@@ -185,6 +165,13 @@
                 sortable: false, 
                 render: function (data) {
                     return data?.m_subject?.name || '-';
+                }  
+            },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_lecturer?.user?.name || '-';
                 }  
             },
             { 

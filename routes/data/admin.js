@@ -71,4 +71,22 @@ module.exports = function(app) {
     app.post('/admin/pembayaran/form', pembayaran.form);
     app.post('/admin/pembayaran/process', upload('payments').single("file"), pembayaran.process);
     app.post('/admin/pembayaran/delete', pembayaran.delete);
+
+    // PENGATURAN OJT
+
+    const pengaturan_ojt = require('../../controllers/admin/pengaturan-ojt');
+    app.get('/admin/pengaturan-ojt', pengaturan_ojt.index);
+    app.post('/admin/pengaturan-ojt', pengaturan_ojt.data);
+    app.post('/admin/pengaturan-ojt/form', pengaturan_ojt.form);
+    app.post('/admin/pengaturan-ojt/process', pengaturan_ojt.process);
+    app.post('/admin/pengaturan-ojt/delete', pengaturan_ojt.delete);
+
+    // STUDENT RECORD SHEET
+
+    const student_record_sheet = require('../../controllers/admin/student-record-sheet');
+    app.get('/admin/student-record-sheet', student_record_sheet.index);
+    app.post('/admin/student-record-sheet', student_record_sheet.data);
+    app.post('/admin/student-record-sheet/form', student_record_sheet.form);
+    app.post('/admin/student-record-sheet/process', student_record_sheet.process);
+    app.post('/admin/student-record-sheet/delete', student_record_sheet.delete);
 };
