@@ -12,6 +12,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'users', key: 'id' }
       },
+      nip: {
+        type: Sequelize.STRING(30)
+      },
       position: {
         type: Sequelize.STRING(25)
       },

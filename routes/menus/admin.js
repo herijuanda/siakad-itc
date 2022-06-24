@@ -1,22 +1,45 @@
 module.exports = [
     {
-        module  : 'dasbor',
-        route   : 'dasbor',
-        path    : 'admin/dasbor',
-        title   : 'Dasbor',
-        icon    : 'grid',
-        plugin  : [
-
-        ],
+        module  : 'pengguna',
+        route   : 'pengguna',
+        title   : 'Pengguna',
+        icon    : 'users',
+        sub     : [
+            {
+                module  : 'pengguna',
+                route   : 'peserta-didik',
+                path    : 'admin/pengguna/peserta-didik',
+                title   : 'Peserta Didik',
+                plugin  : [
+                    'datatables',
+                    'select2',
+                    'flatpickr',
+                ],
+            },
+            {
+                module  : 'pengguna',
+                route   : 'instruktur',
+                path    : 'admin/pengguna/instruktur',
+                title   : 'Instruktur',
+                plugin  : [
+                    'datatables',
+                    'select2',
+                    'flatpickr',
+                ],
+            },
+            {
+                module  : 'pengguna',
+                route   : 'pembimbing-ojt',
+                path    : 'admin/pengguna/pembimbing-ojt',
+                title   : 'Pembimbing OJT',
+                plugin  : [
+                    'datatables',
+                    'select2',
+                    // 'flatpickr',
+                ],
+            },
+        ]
     },
-    // {
-    //     route   : 'semester',
-    //     title   : 'Pengaturan Semester',
-    //     icon    : 'file-text',
-    //     plugin  : [
-
-    //     ],
-    // },
     {
         module  : 'data-master',
         route   : 'data-master',
@@ -77,47 +100,6 @@ module.exports = [
             'input_number',
             'moment',
         ],
-    },
-    {
-        module  : 'pengguna',
-        route   : 'pengguna',
-        title   : 'Pengguna',
-        icon    : 'users',
-        sub     : [
-            {
-                module  : 'pengguna',
-                route   : 'instruktur',
-                path    : 'admin/pengguna/instruktur',
-                title   : 'Instruktur',
-                plugin  : [
-                    'datatables',
-                    'select2',
-                    'flatpickr',
-                ],
-            },
-            {
-                module  : 'pengguna',
-                route   : 'pembimbing-ojt',
-                path    : 'admin/pengguna/pembimbing-ojt',
-                title   : 'Pembimbing OJT',
-                plugin  : [
-                    'datatables',
-                    'select2',
-                    // 'flatpickr',
-                ],
-            },
-            {
-                module  : 'pengguna',
-                route   : 'peserta-didik',
-                path    : 'admin/pengguna/peserta-didik',
-                title   : 'Peserta Didik',
-                plugin  : [
-                    'datatables',
-                    'select2',
-                    'flatpickr',
-                ],
-            },
-        ]
     },
     {
         module  : 'pengaturan-ojt',

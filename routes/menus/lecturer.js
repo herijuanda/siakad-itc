@@ -4,7 +4,7 @@ module.exports = [
         route   : 'dasbor',
         path    : 'lecturer/dasbor',
         title   : 'Profil',
-        icon    : 'book',
+        icon    : 'user',
         plugin  : [
 
         ],
@@ -24,7 +24,7 @@ module.exports = [
         route   : 'kelas-mengajar',
         // path    : 'lecturer/kelas-mengajar',
         title   : 'Kelas Mengajar',
-        icon    : 'clipboard',
+        icon    : 'box',
         sub     : [
             {
                 module  : 'kelas-mengajar',

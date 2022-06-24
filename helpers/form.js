@@ -18,11 +18,7 @@ module.exports.input = (name, req = null, value = null, type = 'text', name_func
             label = arr_name[1].replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
         }
     } else {
-        if (arr_name[1].includes('?')) {
-            label = arr_name[1].replace('?', '');
-        } else {
-            label = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
-        }
+        label = name.replace('_', ' ').toLowerCase().replace(/(?<= )[^\s]|^./g, a=>a.toUpperCase());
     }
 
     let result =  ''+
@@ -119,7 +115,17 @@ module.exports.select = (name, req = null, option = array(), value = {}, name_fu
     option.forEach(function(v) {
         if(v?.id !== value?.key)
             result += '<option value="'+v?.id+'">' +
-            ( v?.user ? v?.nis+' - '+v?.user?.name : v?.dataValues?.name ) +
+            ( 
+                v?.user 
+                    ? v?.nis 
+                        ? v?.nis +' - '+ v?.user?.name 
+                        : v?.nip
+                            ? v?.nip +' - '+ v?.user?.name
+                            : v?.agency
+                                ? v?.agency +' - '+ v?.user?.name
+                                : v?.user?.name
+                : v?.dataValues?.name 
+            ) +
             '</option>';
     });
 

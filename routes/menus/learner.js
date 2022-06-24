@@ -4,7 +4,7 @@ module.exports = [
         route   : 'dasbor',
         path    : 'learner/dasbor',
         title   : 'Profil',
-        icon    : 'book',
+        icon    : 'user',
         plugin  : [
 
         ],
@@ -24,7 +24,7 @@ module.exports = [
         route   : 'pembayaran',
         path    : 'learner/pembayaran',
         title   : 'Informasi Pembayaran',
-        icon    : 'book-open',
+        icon    : 'credit-card',
         plugin  : [
 
         ],
@@ -44,7 +44,7 @@ module.exports = [
         route   : 'modul-pelatihan',
         path    : 'learner/modul-pelatihan',
         title   : 'Modul Pelatihan & Kuis',
-        icon    : 'clipboard',
+        icon    : 'file-text',
         plugin  : [
             'datatables',
             'encrypt_decrypt'
@@ -56,6 +56,19 @@ module.exports = [
         path    : 'learner/student-record-sheet',
         title   : 'Student Record Sheet',
         icon    : 'book-open',
+        plugin  : [
+            'datatables',
+            // 'select2',
+            'flatpickr',
+            'moment',
+        ],
+    },
+    {
+        module  : 'logbook',
+        route   : 'logbook',
+        path    : 'learner/logbook',
+        title   : 'Log Book',
+        icon    : 'book',
         plugin  : [
             'datatables',
             // 'select2',

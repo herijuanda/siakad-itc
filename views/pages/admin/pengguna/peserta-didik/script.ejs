@@ -19,8 +19,24 @@
         });
     });
 
+    function checkPassword(
+        e, 
+        name, 
+    ) {
+
+        if(e.value.length < 8) {
+            $('#' + name + '_valid').show();
+        } else {
+            $('#' + name + '_valid').hide();
+        }
+
+    }
+
     /* submit form */
     $(document).on('click', '#submit', function () {
+        if (password.length < 8 || password_confirmation.length < 8) {
+            return;
+        }
         $.ajax({
             url  : url+'/process',
             data : $('#form').serialize(),
@@ -84,11 +100,13 @@
             {   data: null, 
                 sortable: false, 
                 render: function (data) {
-                    if(data?.m_learner?.nis){
-                        return data?.m_learner?.nis;
-                    }
-
-                    return '-';
+                    return data?.m_learner?.register_number || '-';
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_learner?.nis || '-';
                 }  
             },
             {   

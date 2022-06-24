@@ -29,4 +29,11 @@ module.exports = function(app) {
     const student_record_sheet = require('../../controllers/learner/student-record-sheet');
     app.get('/peserta-didik/student-record-sheet', student_record_sheet.index);
     app.post('/peserta-didik/student-record-sheet', student_record_sheet.data);
+
+    const logbook = require('../../controllers/learner/logbook');
+    app.get('/peserta-didik/logbook', logbook.index);
+    app.post('/peserta-didik/logbook', logbook.data);
+    app.post('/peserta-didik/logbook/form', logbook.form);
+    app.post('/peserta-didik/logbook/process', logbook.process);
+    app.post('/peserta-didik/logbook/delete', logbook.delete);
 };

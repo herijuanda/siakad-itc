@@ -89,10 +89,12 @@
                                     <%- form.input('parent_postal_code as Kode Pos Orang Tua', '*') %>
                                 </div>
                                 <div class="col-md-5 mb-4">
-                                    <%- form.input('password', '*', '', 'password', 'myuser') %>
+                                    <%- form.input('password', '*', '', 'password', 'myuser', '', 'onkeyup="checkPassword(this, \'password\')"') %>
+                                    <span id="password_valid" class="text-danger">Password kurang dari 8 karakter</span>
                                 </div>
                                 <div class="col-md-5 mb-4">
-                                    <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'notused') %>
+                                    <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'notused', '', 'onkeyup="checkPassword(this, \'password_confirmation\')"') %>
+                                    <span id="password_confirmation_valid" class="text-danger">Konfirmasi Password kurang dari 8 karakter</span>
                                 </div>
                             </div>
                             <div id="alert"></div>

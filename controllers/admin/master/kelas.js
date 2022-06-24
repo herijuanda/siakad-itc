@@ -79,7 +79,7 @@ module.exports.data = async function(req, res) {
             where: { 
                 ...helper.dt_clean_params(datatableObj)?.where,
                 ...filter,
-                actived: 1,
+                // actived: 1,
             }
         },
         include: [
@@ -235,11 +235,14 @@ module.exports.form = async function(req, res) {
         //     }
         // }),
         lecturer: await model.m_lecturer.findAll({
-            attributes: [ 'id' ],
+            attributes: [ 'id', 'nip' ],
             include: [
                 { 
                     attributes: [ 'name' ],
                     model: model.user,
+                    where: {
+                        status: 1,
+                    }
                 },
             ],
         }),
@@ -289,27 +292,16 @@ module.exports.process = async function(req, res) {
     }
 };
 
-module.exports.delete = async function(req, res) {
+module.exports.actived = async function(req, res) {
     helper.auth(req, res);
 
     try {
         const id = req.body?.id;
+        const actived = req.body?.actived;
 
-        const result = await model.d_classroom.destroy({
+        const result = await model.d_classroom.update({ actived }, {
             where: {
                 id: id
-            }
-        });
-
-        await model.d_classroom_learner.destroy({
-            where: {
-                classroom_id: id
-            }
-        });
-
-        await model.d_classroom_timetable.destroy({
-            where: {
-                classroom_id: id
             }
         });
 

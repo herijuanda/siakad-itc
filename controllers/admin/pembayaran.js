@@ -126,7 +126,7 @@ module.exports.form = async function(req, res) {
             ],
             include: [
                 { 
-                    attributes: [ 'id' ],
+                    attributes: [ 'id', 'nis' ],
                     model: model.m_learner,
                     include: [
                         { 
@@ -149,7 +149,7 @@ module.exports.form = async function(req, res) {
 
     res.render('pages/'+req?.body?.path+'/form', {
         learner: await model.m_learner.findAll({
-            attributes: [ 'id' ],
+            attributes: [ 'id', 'nis' ],
             include: [
                 { 
                     attributes: [ 'name' ],

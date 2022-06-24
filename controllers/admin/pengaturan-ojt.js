@@ -10,7 +10,7 @@ module.exports.index = async function(req, res) {
     helper.auth(req, res);
 
     res.render('layouts/app', {
-        ...routes[4],
+        ...routes[3],
         session : req.session,
         routes,
         base_url : helper.base_url(req),
@@ -64,7 +64,7 @@ module.exports.data = async function(req, res) {
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'id' ],
+                attributes: [ 'id', 'agency', 'position'],
                 model: model.m_mentor,
                 required: true,
                 include: [
@@ -133,7 +133,7 @@ module.exports.form = async function(req, res) {
 
     res.render('pages/'+req?.body?.path+'/form', {
         mentor: await model.m_mentor.findAll({
-            attributes: [ 'id' ],
+            attributes: [ 'id', 'agency' ],
             include: [
                 { 
                     attributes: [ 'name' ],
@@ -168,17 +168,24 @@ module.exports.process = async function(req, res) {
     helper.auth(req, res);
 
     try {
-        const myform = {
-            ...req.body?.myform,
-            datetime: moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
-        };
+        const myform = req.body?.myform;
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors });
         }
 
-        const result = await model.d_student_record_sheet.create(myform);
+        const exist = await model.d_mentoring.count({
+            where: {
+                learner_id: myform?.learner_id
+            },
+        });
+
+        if(exist > 0){
+            return res.status(422).json({ errors: 'Peserta Didik Telah Didaftarkan' });
+        }
+
+        const result = await model.d_mentoring.create(myform);
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
@@ -198,7 +205,7 @@ module.exports.delete = async function(req, res) {
     try {
         const id = req.body?.id;
 
-        const result = await model.d_student_record_sheet.destroy({
+        const result = await model.d_mentoring.destroy({
             where: {
                 id: id
             }

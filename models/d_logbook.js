@@ -15,8 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   d_logbook.init({
     mentoring_id: DataTypes.INTEGER,
-    time_in: DataTypes.INTEGER,
-    time_out: DataTypes.INTEGER,
+    date: DataTypes.DATE,
+    time_in: DataTypes.TIME,
+    time_out: DataTypes.TIME,
     event: DataTypes.STRING,
     problem: DataTypes.STRING,
     file: DataTypes.STRING,

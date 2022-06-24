@@ -28,8 +28,33 @@
         });
     });
 
+    function checkPassword(
+        e, 
+        name, 
+    ) {
+
+        if(e.value.length < 8) {
+            $('#' + name + '_valid').show();
+        } else {
+            $('#' + name + '_valid').hide();
+        }
+
+    }
+
     /* submit form */
     $(document).on('click', '#submit', function () {
+        const password = $('#input_password').val();
+        const password_confirmation = $('#input_password_confirmation').val();
+
+        if (!$('#hidden_id').val() || password || password_confirmation) {
+
+            if (password.length < 8 || password_confirmation.length < 8) {
+                if(password.length < 8) $('#password_valid').show();
+                if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
+                return;
+            }
+        }
+
         $.ajax({
             url  : url+'/process',
             data : $('#form').serialize(),
@@ -68,9 +93,10 @@
                 
     });
 
-    $(document).on('click', '.delete', function () {
+    $(document).on('click', '.actived', function () {
         
         var id  = $(this).data('id');
+        var actived  = $(this).data('actived');
 
         const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success btn-rounded',
@@ -79,11 +105,11 @@
         })
 
         swalWithBootstrapButtons({
-            title: 'Apakah Anda Yakin?',
-            text: "Anda tidak akan dapat mengembalikan ini!",
+            title: 'Apakah Anda Yakin ' + (actived == 0 ? 'Non Aktifkan' : 'Aktifkan') + ' Instruktur Ini?',
+            text: "Instruktur ini nantiknya berubah status!",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Ya, hapus!',
+            confirmButtonText: 'Ya, lanjutkan!',
             cancelButtonText: 'Tidak, batal!',
             reverseButtons: true,
             padding: '2em'
@@ -91,33 +117,22 @@
             if (result.value) {
 
                 $.ajax({
-                    url  : url+'/destroy',
-                    data : {id:id},
+                    url  : url+'/actived',
+                    data : {id, actived},
                     type : "post", 
                     success: function(response){
-                        switch (response?.code) {
-                            case 200:
-                                swalWithBootstrapButtons(
-                                    'Terhapus!',
-                                    'Data telah terhapus.',
-                                    'success'
-                                )
-                                
-                                $('#zero-config').dataTable().api().ajax.reload();
-                                break;
-                            default:
-                                swalWithBootstrapButtons(
-                                    'Gagal',
-                                    'Dalam memproses hapus data, data masih ada. :)',
-                                    'error'
-                                )
-                                break;
-                        }
+                        swalWithBootstrapButtons(
+                            'Berhasil!',
+                            'Status Instruktur telah terupdate.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
                     },
                     error: function (data) {
                         swalWithBootstrapButtons(
                             'Gagal',
-                            'Terjadi Kesalah Sistem. :)',
+                            'Dalam memproses update instruktur',
                             'error'
                         )
                     }
@@ -128,7 +143,7 @@
                 ) {
                 swalWithBootstrapButtons(
                     'Dibatalkan',
-                    'Data masih aman :)',
+                    'Data masih seperti semula :)',
                     'error'
                 )
             }
@@ -161,6 +176,12 @@
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_lecturer?.nip || '-';
+                }  
+            },
             {
                 data: 'name',
                 sortable: false, 
@@ -184,15 +205,31 @@
                 }
             },
             { 
+                data: 'status', 
+                sortable: false, 
+                className: 'text-center', 
+                render: function (data) {
+                    if(data){
+                        return '<span class="text-success">Aktif</span>';
+                    }
+
+                    return '<span class="text-danger">Tidak Aktif</span>';
+                }  
+            },
+            { 
                 data: null, 
                 sortable: false, 
                 orderable: false, 
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    // return meta.row + meta.settings._iDisplayStart + 1;
-                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>'+
-                        '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Non Aktifkan</button>';
+                    let actived = '<button class="btn btn-outline-success actived" data-id="'+data?.id+'" data-actived="1">Aktifkan</button>';
+
+                    if ( data?.status ) {
+                        actived = '<button class="btn btn-outline-danger actived" data-id="'+data?.id+'" data-actived="0">Non Aktifkan</button>';
+                    }
+                    
+                    return '<button class="edit btn btn-outline-warning" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">Edit</button>' + actived;
                 }  
             },
         ],

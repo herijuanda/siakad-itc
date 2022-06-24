@@ -3,18 +3,25 @@ const model     = require('../../models');
 const password  = require("node-php-password");
 
 module.exports.index = async function(req, res) {
-    if(req?.session?.id) {
-        res.redirect(`/${req?.session?.role_slug}/dasbor`);
+    if (req?.session?.id) {
+        if ( 
+            req?.session?.role_slug == 'superadmin' 
+            || req?.session?.role_slug == 'admin' 
+        ) {
+            return res.redirect(`/${req?.session?.role_slug}/pengguna/peserta-didik`);
+        }
+        
+        return res.redirect(`/${req?.session?.role_slug}/dasbor`);
     }
 
-    res.render('layouts/auth', {
+    return res.render('layouts/auth', {
         base_url : helper.base_url(req),
         view : 'login',
     });
 };
 
 module.exports.process = async function(req, res) {
-    try {
+    // try {
         
         if(req?.session?.id) {
             return res.status(422).json({ errors: 'Anda Sudah Login' });
@@ -68,7 +75,7 @@ module.exports.process = async function(req, res) {
         }
 
         if(password.verify(req.body.password, user?.password)){
-            req.session = {
+            const data = {
                 id          : user?.id,
                 name        : user?.name,
                 role_id     : user?.role_id,
@@ -76,15 +83,26 @@ module.exports.process = async function(req, res) {
                 role_slug   : user?.role?.slug,
                 lecturer_id : user?.m_lecturer?.id || null,
                 learner_id  : user?.m_learner?.id || null,
-            };
+            }
 
-            return res.status(200).json({ message: 'Berhasil Login', results: req.session  })   
+            req.session = data;
+
+            return res.status(200).json({ message: 'Berhasil Login', results: 
+                { 
+                    ...data, 
+                    link: data?.role_slug + (
+                        ( data?.role_slug == 'admin' ) 
+                        ? '/pengguna/peserta-didik' 
+                        : '/dasbor'
+                    ) 
+                }  
+            });
         }else{
             return res.status(422).json({ errors: 'Password Anda Salah !' });
         }
-    } catch (error) {
-        return res.status(500).json({ errors: 'Terjadi Kesalahan' });
-    }
+    // } catch (error) {
+    //     return res.status(500).json({ errors: 'Terjadi Kesalahan' });
+    // }
 };
 
 module.exports.logout = async function(req, res) {

@@ -2,16 +2,52 @@ const { Op }        = require("sequelize");
 const helper        = require('../../helpers');
 const form          = require('../../helpers/form');
 const model         = require('../../models');
-const routes        = require('../../routes/menus/admin');
+const routes        = require('../../routes/menus/learner');
 const datatables    = require('node-sequelize-datatable'); 
 const moment        = require('moment');
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
 
+    model.d_mentoring.hasOne(model.m_mentor, 
+        { 
+            sourceKey: 'mentor_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_mentor.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    const data = await model.d_mentoring.findOne({
+        attributes: [ 'id' ],
+        include: [
+            { 
+                attributes: [ 'agency', 'position' ],
+                model: model.m_mentor,
+                required: true,
+                include: [
+                    { 
+                        attributes: [ 'name'  ],
+                        model: model.user,
+                        required: true,
+                    },
+                ],
+            },
+        ],
+        where: { 
+            learner_id:  req.session?.learner_id
+        },
+    });
+
     res.render('layouts/app', {
-        ...routes[4],
+        ...routes[6],
         session : req.session,
+        data,
         routes,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
@@ -23,7 +59,11 @@ module.exports.data = async function(req, res) {
     
     const datatableObj = await datatables(req.body);
 
-    const count = await model.d_student_record_sheet.count();
+    const count = await model.d_student_record_sheet.count({
+        where: {
+            lecturer_id: req.session?.lecturer_id,
+        },
+    });
 
     model.d_student_record_sheet.hasOne(model.d_classroom, 
         { 
@@ -60,20 +100,6 @@ module.exports.data = async function(req, res) {
         }
     );
 
-    model.d_student_record_sheet.hasOne(model.m_lecturer, 
-        { 
-            sourceKey: 'lecturer_id', 
-            foreignKey: 'id' 
-        }
-    );
-
-    model.m_lecturer.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
     const results = await model.d_student_record_sheet.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         include: [
@@ -86,29 +112,6 @@ module.exports.data = async function(req, res) {
                 attributes: [ 'name' ],
                 model: model.m_subject,
                 required: false,
-            },
-            { 
-                attributes: [ 'name' ],
-                model: model.m_subject,
-                required: false,
-            },
-            { 
-                attributes: [ 'id' ],
-                model: model.m_lecturer,
-                required: false,
-                include: [
-                    { 
-                        attributes: [ 'name' ],
-                        model: model.user,
-                        required: true,
-                        where: req.body?.search?.value ? 
-                        {
-                            name: {
-                                [Op.like]: '%'+req.body?.search?.value+'%',
-                            } 
-                        } : {}
-                    },
-                ],
             },
             { 
                 attributes: [ 'id', 'nis' ],
@@ -134,7 +137,9 @@ module.exports.data = async function(req, res) {
                 ],
             },
         ],
-        where: {},
+        where: {
+            lecturer_id: req.session?.lecturer_id,
+        },
         order: [
             ['id', 'DESC'],    
         ],
@@ -146,30 +151,9 @@ module.exports.data = async function(req, res) {
 module.exports.form = async function(req, res) {
     helper.auth(req, res);
 
-    model.m_learner.hasOne(model.user, 
-        { 
-            sourceKey: 'user_id', 
-            foreignKey: 'id' 
-        }
-    );
-
     res.render('pages/'+req?.body?.path+'/form', {
-        learner: await model.m_learner.findAll({
-            attributes: [ 'id', 'nis' ],
-            include: [
-                { 
-                    attributes: [ 'name' ],
-                    model: model.user,
-                    required: true,
-                    where: {
-                        status: 1,
-                    }
-                },
-            ],
-        }),
+        mentoring_id: req?.body?.mentoring_id,
         form,
-        moment: moment,
-        // role_value
     });
 };
 
@@ -177,8 +161,10 @@ module.exports.process = async function(req, res) {
     helper.auth(req, res);
 
     try {
+        // const id = req.body?.myform_hide?.id;
         const myform = {
             ...req.body?.myform,
+            lecturer_id: req.session?.lecturer_id,
             datetime: moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
         };
 
@@ -221,5 +207,86 @@ module.exports.delete = async function(req, res) {
         
     } catch (error) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};
+
+module.exports.select_classes = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+
+        const results = await model.d_classroom.findAll({
+            attributes: [ 'id', 'name' ],
+            where: {
+                subject_id  : id,
+                lecturer_id : req.session?.lecturer_id
+            }
+        });
+
+        let data = '<option>Pilih Kelas</option>';
+        
+        results.forEach(function(v) {
+            data += '<option value="'+v?.id+'">'+v?.name+'</option>';
+        });
+            
+        return res.status(200).json({ results: data  })
+        
+    } catch (error) {
+        res.status(500).json({ errors: error });
+    }
+};
+
+module.exports.select_learner = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+
+        model.d_classroom_learner.hasOne(model.m_learner, 
+            { 
+                sourceKey: 'learner_id', 
+                foreignKey: 'id' 
+            }
+        );
+    
+        model.m_learner.hasOne(model.user, 
+            { 
+                sourceKey: 'user_id', 
+                foreignKey: 'id' 
+            }
+        );
+
+        const results = await model.d_classroom_learner.findAll({
+            attributes: [ 'id' ],
+            include: [
+                { 
+                    attributes: [ 'id', 'nis' ],
+                    model: model.m_learner,
+                    required: true,
+                    include: [
+                        { 
+                            attributes: [ 'name' ],
+                            model: model.user,
+                            required: true,
+                        },
+                    ],
+                },
+            ],
+            where: {
+                classroom_id : id,
+            }
+        });
+
+        let data = '<option>Pilih Peserta Didik</option>';
+        
+        results.forEach(function(v) {
+            data += '<option value="'+v?.m_learner?.id+'">'+v?.m_learner?.nis+' - '+v?.m_learner?.user?.name+'</option>';
+        });
+            
+        return res.status(200).json({ results: data  })
+        
+    } catch (error) {
+        res.status(500).json({ errors: error });
     }
 };

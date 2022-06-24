@@ -8,7 +8,7 @@ const datatables    = require('node-sequelize-datatable');
 
 module.exports.index = async function(req, res) {
     res.render('layouts/app', {
-        ...routes[3].sub[2],
+        ...routes[0].sub[0],
         session: req.session,
         routes,
         base_url : helper.base_url(req),
@@ -48,7 +48,7 @@ module.exports.data = async function(req, res) {
         attributes: [ 'id', 'name', 'email', 'status' ],
         include: [
             { 
-                attributes: [ 'nis' ],
+                attributes: [ 'register_number', 'nis' ],
                 model: model.m_learner,
                 required: true,
                 include: [

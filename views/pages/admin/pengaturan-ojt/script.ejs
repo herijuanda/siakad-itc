@@ -142,12 +142,6 @@
                     return meta.row + meta.settings._iDisplayStart + 1 + '.';
                 }  
             },
-            {   data: null, 
-                sortable: false, 
-                render: function (data) {
-                    return data?.m_learner?.nis + ' - ' + data?.m_learner?.user?.name;
-                }  
-            },
             { 
                 data: null, 
                 sortable: false, 
@@ -159,6 +153,12 @@
                 sortable: false, 
                 render: function (data) {
                     return data?.m_mentor?.agency + ' (' + data?.m_mentor?.position + ')' ;
+                }  
+            },
+            {   data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.m_learner?.nis + ' - ' + data?.m_learner?.user?.name;
                 }  
             },
             { 

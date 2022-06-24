@@ -1,0 +1,54 @@
+<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+    <div class="modal-body">
+        <div id="alert"></div>
+        <div class="form-row">
+            <div class="col-md-5 mb-4">
+                <%- form.input_date('date as tanggal', '*') %>
+            </div>
+            <div class="col-md-3 mb-4">
+                <%- form.input_date('time_in as waktu_masuk', '*') %>
+            </div>
+            <div class="col-md-3 mb-4">
+                <%- form.input_date('time_out as waktu_keluar', '*') %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <%- form.input('event as kegiatan', '*') %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <%- form.textarea('notes as catatan', '*', '', 5) %>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <%- form.cancel() %>
+        <%- form.submit() %>
+    </div>
+</form>
+
+<script>
+    // $(".select").select2({
+    //     allowClear: true,
+    //     tags: true,
+    //     dropdownParent: $('#modal'),
+    // });
+
+    flatpickr(document.getElementById('input_date'), {
+        dateFormat: "d-m-Y",
+    });
+
+    flatpickr(document.getElementById('input_time_in'), {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        defaultDate: "08:30"
+    });
+
+    flatpickr(document.getElementById('input_time_out'), {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        defaultDate: "16:30"
+    });
+
+    feather.replace();
+</script>

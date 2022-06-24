@@ -90,6 +90,9 @@ module.exports.index = async function(req, res) {
                         },
                     },
                 ],
+                where: { 
+                    actived: 1,
+                }
             },
         ],
         order: [

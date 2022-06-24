@@ -25,7 +25,7 @@ module.exports = function(app) {
     app.post('/admin/data-master/kelas/form', kelas.form);
     app.post('/admin/data-master/kelas/select-subject', kelas.select_subject);
     app.post('/admin/data-master/kelas/process', kelas.process);
-    app.post('/admin/data-master/kelas/delete', kelas.delete);
+    app.post('/admin/data-master/kelas/actived', kelas.actived);
 
     const kelas_peserta_didik = require('../../controllers/admin/master/kelas/peserta-didik');
     app.get('/admin/data-master/kelas/peserta-didik', kelas_peserta_didik.index);
@@ -47,14 +47,14 @@ module.exports = function(app) {
     app.post('/admin/pengguna/instruktur', instruktur.data);
     app.post('/admin/pengguna/instruktur/form', instruktur.form);
     app.post('/admin/pengguna/instruktur/process', instruktur.process);
-    app.post('/admin/pengguna/instruktur/delete', instruktur.delete);
+    app.post('/admin/pengguna/instruktur/actived', instruktur.actived);
 
     const pembimbing_ojt = require('../../controllers/admin/pengguna/pembimbing-ojt');
     app.get('/admin/pengguna/pembimbing-ojt', pembimbing_ojt.index);
     app.post('/admin/pengguna/pembimbing-ojt', pembimbing_ojt.data);
     app.post('/admin/pengguna/pembimbing-ojt/form', pembimbing_ojt.form);
     app.post('/admin/pengguna/pembimbing-ojt/process', pembimbing_ojt.process);
-    app.post('/admin/pengguna/pembimbing-ojt/delete', pembimbing_ojt.delete);
+    app.post('/admin/pengguna/pembimbing-ojt/actived', pembimbing_ojt.actived);
 
     const peserta_didik = require('../../controllers/admin/pengguna/peserta-didik');
     app.get('/admin/pengguna/peserta-didik', peserta_didik.index);

@@ -61,10 +61,19 @@ module.exports.data = async function(req, res) {
                     id:  req.session?.lecturer_id
                 },
             },
-        ]
+        ],
+        where: { 
+            actived: 1,
+        }
     });
     const results = await model.d_classroom.findAndCountAll({
-        ...helper.dt_clean_params(datatableObj),
+        ...{
+            ...helper.dt_clean_params(datatableObj),
+            where: { 
+                ...helper.dt_clean_params(datatableObj)?.where,
+                actived: 1,
+            }
+        },
         attributes: [
             'id',
             'name',

@@ -60,6 +60,9 @@ module.exports.index = async function(req, res) {
                 ],
             },
         ],
+        where: { 
+            actived: 1,
+        },
         order: [
             [model.m_subject, 'step', 'ASC'],
             [model.m_subject, 'name', 'ASC'],

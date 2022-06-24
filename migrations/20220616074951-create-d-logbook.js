@@ -12,11 +12,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'd_mentorings', key: 'id' }
       },
+      date: {
+        type: Sequelize.DATE,
+      },
       time_in: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TIME,
       },
       time_out: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TIME,
       },
       event: {
         type: Sequelize.STRING

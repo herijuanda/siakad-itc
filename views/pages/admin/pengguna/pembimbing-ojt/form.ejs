@@ -8,19 +8,21 @@
                 <%- form.input('name as nama', '*', data?.name) %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('position as jabatan', '*', data?.m_mentor?.position, 'text', 'mymentor') %>
+                <%- form.input('agency as Instansi', '*', data?.m_mentor?.agency, 'text', 'mymentor') %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('agency as Instansi', '*', data?.m_mentor?.agency, 'text', 'mymentor') %>
+                <%- form.input('position as jabatan', '*', data?.m_mentor?.position, 'text', 'mymentor') %>
             </div>
             <div class="col-md-6 mb-4">
                 <%- form.input('email', '*', data?.email, 'text', null, null, data?.id ? 'readonly' : null) %>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('password', '*', '', 'password', 'mypassword') %>
+                <%- form.input('password', '*', '', 'password', 'mypassword', '', 'onkeyup="checkPassword(this, \'password\')"') %>
+                <span id="password_valid" class="text-danger">Password kurang dari 8 karakter</span>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('konfirmasi_password', '*', '', 'password', 'mypassword') %>
+                <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'mypassword', '', 'onkeyup="checkPassword(this, \'password_confirmation\')"') %>
+                <span id="password_confirmation_valid" class="text-danger">Konfirmasi Password kurang dari 8 karakter</span>
             </div>
         </div>
     </div>
@@ -41,4 +43,7 @@
     });
 
     feather.replace();
+
+    $('#password_valid').hide();
+    $('#password_confirmation_valid').hide();
 </script>

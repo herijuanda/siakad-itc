@@ -1,12 +1,15 @@
 <script type="text/javascript">
 
+    $('#password_valid').hide();
+    $('#password_confirmation_valid').hide();
+
     $(document).on('click', '#submit-login', function () {
         $.ajax({
             url  : url+'/login',
             data : $('#form').serialize(),
             type : "post", 
             success: function(response){
-                window.location.href = url+'/'+response?.results?.role_slug+'/dasbor';
+                window.location.href = url+'/'+response?.results?.link;
             },
             error: function (data, response) {
                 const errors = data?.responseJSON?.errors;
@@ -35,7 +38,29 @@
                 
     });
 
+    function checkPassword(
+        e, 
+        name, 
+    ) {
+
+        if(e.value.length < 8) {
+            $('#' + name + '_valid').show();
+        } else {
+            $('#' + name + '_valid').hide();
+        }
+
+    }
+
     $(document).on('click', '#submit', function () {
+        const password = $('#input_password').val();
+        const password_confirmation = $('#input_password_confirmation').val();
+
+        if (password.length < 8 || password_confirmation.length < 8) {
+            if(password.length < 8) $('#password_valid').show();
+            if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
+            return;
+        }
+
         $.ajax({
             url  : url+'/register/process',
             data : $('#form').serialize(),

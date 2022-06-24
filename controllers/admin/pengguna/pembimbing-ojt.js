@@ -8,7 +8,7 @@ const datatables    = require('node-sequelize-datatable');
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
     res.render('layouts/app', {
-        ...routes[3].sub[1],
+        ...routes[0].sub[2],
         session : req.session,
         routes,
         base_url : helper.base_url(req),
@@ -25,9 +25,23 @@ module.exports.data = async function(req, res) {
             role_id: 5,
         },
     });
+
+    model.user.hasOne(model.m_mentor, 
+        { 
+            sourceKey: 'id', 
+            foreignKey: 'user_id' 
+        }
+    );
     
     const results = await model.user.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
+        include: [
+            { 
+                attributes: [ 'position', 'agency'],
+                model: model.m_mentor,
+                required: true,
+            },
+        ],
         where: {
             role_id: 5,
         },
@@ -68,6 +82,7 @@ module.exports.process = async function(req, res) {
             ...req.body?.myform,
             role_id: req.body?.myform_hide?.role_id, 
         };
+        const mymentor = req.body?.mymentor; 
         const mypassword = req.body?.mypassword;
 
         let validator = myform;
@@ -91,7 +106,7 @@ module.exports.process = async function(req, res) {
         };
 
         if(myform?.password){
-            if(myform?.password !== myform?.konfirmasi_password){
+            if(myform?.password !== myform?.password_confirmation){
                 return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
             }
 
@@ -127,7 +142,21 @@ module.exports.process = async function(req, res) {
         }
 
         if(result){
-            return res.status(200).json({ message: 'Berhasil di Simpan' })
+            let mentor = {};
+
+            if(id === '') {
+                mentor = await model.m_mentor.create({...mymentor, user_id: result?.id});
+            }else{
+                mentor = await model.m_mentor.update(mymentor, { 
+                    where: {
+                        user_id: id
+                    }
+                });
+            }
+
+            if(mentor){
+                return res.status(200).json({ message: 'Berhasil di Simpan' })
+            }
         }
 
         throw Error();
@@ -138,13 +167,14 @@ module.exports.process = async function(req, res) {
     }
 };
 
-module.exports.delete = async function(req, res) {
+module.exports.actived = async function(req, res) {
     helper.auth(req, res);
 
     try {
         const id = req.body?.id;
+        const actived = req.body?.actived;
 
-        const result = await model.user.destroy({
+        const result = await model.user.update({ status: actived }, {
             where: {
                 id: id
             }

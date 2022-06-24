@@ -9,7 +9,7 @@ module.exports.index = async function(req, res) {
     helper.auth(req, res);
     // res.json(routes[3].sub[0]);
     res.render('layouts/app', {
-        ...routes[3].sub[0],
+        ...routes[0].sub[1],
         session : req.session,
         routes,
         base_url : helper.base_url(req),
@@ -34,7 +34,7 @@ module.exports.data = async function(req, res) {
         ...helper.dt_clean_params(datatableObj),
         include: [
             { 
-                attributes: [ 'last_education', 'year_of_entry' ],
+                attributes: [ 'nip', 'last_education', 'year_of_entry' ],
                 model: model.m_lecturer,
                 required: true,
             },
@@ -62,7 +62,7 @@ module.exports.form = async function(req, res) {
             include: [
                 { 
                     attributes: [ 
-                        // 'position', 
+                        'nip', 
                         'last_education', 
                         'year_of_entry' 
                     ],
@@ -120,7 +120,7 @@ module.exports.process = async function(req, res) {
         };
 
         if(myform?.password){
-            if(myform?.password !== myform?.konfirmasi_password){
+            if(myform?.password !== myform?.password_confirmation){
                 return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });
             }
 
@@ -181,13 +181,14 @@ module.exports.process = async function(req, res) {
     }
 };
 
-module.exports.delete = async function(req, res) {
+module.exports.actived = async function(req, res) {
     helper.auth(req, res);
 
     try {
         const id = req.body?.id;
+        const actived = req.body?.actived;
 
-        const result = await model.user.destroy({
+        const result = await model.user.update({ status: actived }, {
             where: {
                 id: id
             }

@@ -10,10 +10,13 @@
             <div class="col-md-6 mb-4">
                 <%- form.input('name as nama', '*', data?.name, 'text', 'myuser') %>
             </div>
-            <div class="col-md-5 mb-4">
+            <div class="col-md-3 mb-4">
+                <%- form.input('register_number as No. Registrasi', '*', data?.m_learner?.nis, 'text', 'myform', '', 'disabled') %>
+            </div>
+            <div class="col-md-3 mb-4">
                 <%- form.input('nis as ?NIS', '*', data?.m_learner?.nis) %>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <%- form.input('place_of_birth as tempat_lahir', '*', data?.m_learner?.place_of_birth) %>
             </div>
             <div class="col-md-3 mb-4">
@@ -60,10 +63,12 @@
             </div>
             <% if(data?.m_learner?.nis){ %>
             <div class="col-md-6 mb-4">
-                <%- form.input('password', null, '', 'password', 'myuser') %>
+                <%- form.input('password', '*', '', 'password', 'myuser', '', 'onkeyup="checkPassword(this, \'password\')"') %>
+                <span id="password_valid" class="text-danger">Password kurang dari 8 karakter</span>
             </div>
             <div class="col-md-6 mb-4">
-                <%- form.input('password_confirmation as konfirmasi_password', null, '', 'password', 'notused') %>
+                <%- form.input('password_confirmation as konfirmasi_password', '*', '', 'password', 'notused', '', 'onkeyup="checkPassword(this, \'password_confirmation\')"') %>
+                <span id="password_confirmation_valid" class="text-danger">Konfirmasi Password kurang dari 8 karakter</span>
             </div>
             <% } %>
         </div>
@@ -90,4 +95,7 @@
     });
 
     feather.replace();
+
+    $('#password_valid').hide();
+    $('#password_confirmation_valid').hide();
 </script>
