@@ -19,6 +19,64 @@
         });
     });
 
+    $(document).on('click', '.actived', function () {
+        
+        var id  = $(this).data('id');
+        var actived  = $(this).data('actived');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+            title: 'Apakah Anda Yakin ' + (actived == 0 ? 'Non Aktifkan' : 'Aktifkan') + ' Peserta Didik Ini?',
+            text: "Peserta Didik ini nantiknya berubah status!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, lanjutkan!',
+            cancelButtonText: 'Tidak, batal!',
+            reverseButtons: true,
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+
+                $.ajax({
+                    url  : url+'/actived',
+                    data : {id, actived},
+                    type : "post", 
+                    success: function(response){
+                        swalWithBootstrapButtons(
+                            'Berhasil!',
+                            'Status Peserta Didik telah terupdate.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
+                    },
+                    error: function (data) {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Dalam memproses update Peserta Didik',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons(
+                    'Dibatalkan',
+                    'Data masih seperti semula :)',
+                    'error'
+                )
+            }
+        })
+    });
+
+
     function checkPassword(
         e, 
         name, 
@@ -141,6 +199,7 @@
             { 
                 data: null, 
                 sortable: false, 
+                className: 'text-center', 
                 render: function (data) {
                     if(data?.status)
                         return '<span class="text-success">Aktif</span>';
@@ -152,10 +211,22 @@
                 data: null, 
                 sortable: false, 
                 orderable: false, 
-                className: 'text-center', 
+                className: 'text-center text-nowrap', 
                 'bSortable' : false,
                 render: function (data) {
-                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.nis ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.nis ? 'Edit' : 'Aktivasi')+'</button>';
+                    let actived = '';
+                    
+                    if ( data?.m_learner?.nis ) {
+                    
+                        actived = '<button class="btn btn-outline-success actived" data-id="'+data?.id+'" data-actived="1">Aktifkan</button>';
+
+                        if ( data?.status ) {
+                            actived = '<button class="btn btn-outline-danger actived" data-id="'+data?.id+'" data-actived="0">Non Aktifkan</button>';
+                        }
+
+                    }
+
+                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.nis ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.nis ? 'Edit' : 'Aktivasi')+'</button>'+actived;
                 }  
             },
             // {data: 'role_id'},

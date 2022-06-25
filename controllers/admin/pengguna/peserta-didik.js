@@ -205,3 +205,27 @@ module.exports.process = async function(req, res) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
+
+module.exports.actived = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+        const actived = req.body?.actived;
+
+        const result = await model.user.update({ status: actived }, {
+            where: {
+                id: id
+            }
+        });
+
+        if(result){
+            return res.status(200).json({ message: 'Berhasil di Hapus' })
+        }
+
+        throw Error();
+        
+    } catch (error) {
+        res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};
