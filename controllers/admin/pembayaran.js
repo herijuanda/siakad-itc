@@ -172,7 +172,7 @@ module.exports.process = async function(req, res) {
         const file = req?.file?.filename;
         
         if (!file) {
-            res.status(422).json({ errors: 'Bukti Pembayaran Wajib di Upload' });
+            return res.status(422).json({ errors: 'Bukti Pembayaran Wajib di Upload' });
         }
 
         const id = req.body?.myform_hide?.id;

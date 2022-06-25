@@ -4,7 +4,7 @@ const form          = require('../../helpers/form');
 const model         = require('../../models');
 const routes        = require('../../routes/menus/learner');
 const datatables    = require('node-sequelize-datatable'); 
-const moment        = require('moment');
+// const moment        = require('moment');
 
 module.exports.index = async function(req, res) {
     helper.auth(req, res);
@@ -161,11 +161,17 @@ module.exports.process = async function(req, res) {
     helper.auth(req, res);
 
     try {
-        // const id = req.body?.myform_hide?.id;
+        const file = req?.file?.filename;
+        
+        if (!file) {
+            return res.status(422).json({ errors: 'Foto kegiatan belum di upload' });
+        }
+
         const myform = {
             ...req.body?.myform,
-            lecturer_id: req.session?.lecturer_id,
-            datetime: moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
+            mentoring_id: req.body?.myform_hide?.mentoring_id,
+            date: helper.date(req.body?.myform?.date),
+            file: file,
         };
 
         const errors = helper.validator(myform);
@@ -173,7 +179,7 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors });
         }
 
-        const result = await model.d_student_record_sheet.create(myform);
+        const result = await model.d_logbook.create(myform);
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
@@ -193,7 +199,7 @@ module.exports.delete = async function(req, res) {
     try {
         const id = req.body?.id;
 
-        const result = await model.d_student_record_sheet.destroy({
+        const result = await model.d_logbook.destroy({
             where: {
                 id: id
             }
@@ -207,86 +213,5 @@ module.exports.delete = async function(req, res) {
         
     } catch (error) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
-    }
-};
-
-module.exports.select_classes = async function(req, res) {
-    helper.auth(req, res);
-
-    try {
-        const id = req.body?.id;
-
-        const results = await model.d_classroom.findAll({
-            attributes: [ 'id', 'name' ],
-            where: {
-                subject_id  : id,
-                lecturer_id : req.session?.lecturer_id
-            }
-        });
-
-        let data = '<option>Pilih Kelas</option>';
-        
-        results.forEach(function(v) {
-            data += '<option value="'+v?.id+'">'+v?.name+'</option>';
-        });
-            
-        return res.status(200).json({ results: data  })
-        
-    } catch (error) {
-        res.status(500).json({ errors: error });
-    }
-};
-
-module.exports.select_learner = async function(req, res) {
-    helper.auth(req, res);
-
-    try {
-        const id = req.body?.id;
-
-        model.d_classroom_learner.hasOne(model.m_learner, 
-            { 
-                sourceKey: 'learner_id', 
-                foreignKey: 'id' 
-            }
-        );
-    
-        model.m_learner.hasOne(model.user, 
-            { 
-                sourceKey: 'user_id', 
-                foreignKey: 'id' 
-            }
-        );
-
-        const results = await model.d_classroom_learner.findAll({
-            attributes: [ 'id' ],
-            include: [
-                { 
-                    attributes: [ 'id', 'nis' ],
-                    model: model.m_learner,
-                    required: true,
-                    include: [
-                        { 
-                            attributes: [ 'name' ],
-                            model: model.user,
-                            required: true,
-                        },
-                    ],
-                },
-            ],
-            where: {
-                classroom_id : id,
-            }
-        });
-
-        let data = '<option>Pilih Peserta Didik</option>';
-        
-        results.forEach(function(v) {
-            data += '<option value="'+v?.m_learner?.id+'">'+v?.m_learner?.nis+' - '+v?.m_learner?.user?.name+'</option>';
-        });
-            
-        return res.status(200).json({ results: data  })
-        
-    } catch (error) {
-        res.status(500).json({ errors: error });
     }
 };

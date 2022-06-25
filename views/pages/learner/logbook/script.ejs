@@ -23,10 +23,16 @@
 
     /* submit form */
     $(document).on('click', '#submit', function () {
+        var formData = new FormData($('#form')[0]);
+        formData.append('file', $("#file")[0].files[0]);
+
         $.ajax({
             url  : url+'/process',
-            data : $('#form').serialize(),
+            data : formData,
             type : "post", 
+            enctype: 'multipart/form-data',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
             success: function(response){
                 if(response?.id === null)
                     $('#form')[0].reset();

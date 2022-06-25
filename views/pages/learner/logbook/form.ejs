@@ -1,4 +1,5 @@
-<form id="form" class="simple-example" action="javascript:void(0);" novalidate>
+<form id="form" class="simple-example" action="javascript:void(0);" enctype="multipart/form-data"  novalidate>
+    <%- form.input_hide('mentoring_id', mentoring_id) %>
     <div class="modal-body">
         <div id="alert"></div>
         <div class="form-row">
@@ -15,7 +16,14 @@
                 <%- form.input('event as kegiatan', '*') %>
             </div>
             <div class="col-md-12 mb-4">
-                <%- form.textarea('notes as catatan', '*', '', 5) %>
+                <%- form.input('problem as kendala', '*') %>
+            </div>
+            <div class="col-md-12 mb-4">
+                <label for="file">Upload Foto Kegiatan</label>
+                <input type="file" class="form-control-file" id="file" accept="image/png, image/jpeg, application/pdf" >
+            </div>
+            <div class="col-md-12 mb-4">
+                <%- form.textarea('note as catatan', '*', '', 3) %>
             </div>
         </div>
     </div>
@@ -34,6 +42,7 @@
 
     flatpickr(document.getElementById('input_date'), {
         dateFormat: "d-m-Y",
+        defaultDate: "today",
     });
 
     flatpickr(document.getElementById('input_time_in'), {

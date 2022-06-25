@@ -1,4 +1,6 @@
 module.exports = function(app) {
+    const upload = require('../../helpers/upload');    
+
     const profil = require('../../controllers/learner/dasbor');
     app.get('/peserta-didik/dasbor', profil.index);
 
@@ -34,6 +36,6 @@ module.exports = function(app) {
     app.get('/peserta-didik/logbook', logbook.index);
     app.post('/peserta-didik/logbook', logbook.data);
     app.post('/peserta-didik/logbook/form', logbook.form);
-    app.post('/peserta-didik/logbook/process', logbook.process);
+    app.post('/peserta-didik/logbook/process', upload('logbooks').single("file"), logbook.process);
     app.post('/peserta-didik/logbook/delete', logbook.delete);
 };
