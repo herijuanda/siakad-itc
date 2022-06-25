@@ -1,8 +1,8 @@
 <form id="form" class="simple-example text-left" action="javascript:void(0);" novalidate>
     <%- form.input_hide('id', data?.id) %>
     <%- form.input_hide('school_year_id', data?.m_learner?.school_year_id) %>
-    <div id="alert"></div>
     <div class="modal-body">
+        <div id="alert"></div>
         <div class="form-row">
             <div class="col-md-6 mb-4">
                 <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
