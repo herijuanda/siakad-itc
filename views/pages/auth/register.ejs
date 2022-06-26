@@ -65,13 +65,13 @@
                                     <%- form.input('major_program as program_jurusan', '*') %>
                                 </div>
                                 <div class="col-md-2 mb-4">
-                                    <%- form.input('graduation_year as tahun_lulus', '*') %>
+                                    <%- form.input('graduation_year as tahun_lulus', '*', '', 'number') %>
                                 </div>
                                 <div class="col-md-9 mb-4">
                                     <%- form.input('address as alamat', '*') %>
                                 </div>
                                 <div class="col-md-3 mb-4">
-                                    <%- form.input('postal_code as kode_pos', '*') %>
+                                    <%- form.input('postal_code as kode_pos', '*', '', 'number') %>
                                 </div>
                                 <div class="col-md-4 mb-4">
                                     <%- form.input('parent_name as Nama Orang Tua (Ayah / Ibu)', '*') %>
@@ -86,7 +86,7 @@
                                     <%- form.input('parent_address as Alamat Orang Tua', '*') %>
                                 </div>
                                 <div class="col-md-4 mb-4">
-                                    <%- form.input('parent_postal_code as Kode Pos Orang Tua', '*') %>
+                                    <%- form.input('parent_postal_code as Kode Pos Orang Tua', '*', '', 'number') %>
                                 </div>
                                 <div class="col-md-5 mb-4">
                                     <%- form.input('password', '*', '', 'password', 'myuser', '', 'onkeyup="checkPassword(this, \'password\')"') %>

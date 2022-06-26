@@ -105,6 +105,10 @@ module.exports.process = async function(req, res) {
             ...mypassword,
         };
 
+        if(!helper.email_validate(myform?.email)) {
+            return res.status(422).json({ errors: 'Format Email Tidak Sesuai' });
+        }
+
         if(myform?.password){
             if(myform?.password !== myform?.password_confirmation){
                 return res.status(500).json({ errors: 'Konfirmasi Password Tidak Cocok' });

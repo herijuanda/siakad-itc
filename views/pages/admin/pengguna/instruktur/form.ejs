@@ -19,7 +19,7 @@
                 <%- form.input('nip as ?NIP', '*', data?.m_lecturer?.nip, 'text', 'mylecturer') %>
             </div>
             <div class="col-md-5 mb-4">
-                <%- form.input('email', '*', data?.email, 'text', null, null, data?.id ? 'readonly' : null) %>
+                <%- form.input('email', '*', data?.email, 'email', null, null, data?.id ? 'readonly' : null) %>
             </div>
         </div>
         <div class="form-row">

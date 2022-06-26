@@ -33,6 +33,10 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors });
         }
 
+        if(!helper.email_validate(myuser?.email)) {
+            return res.status(422).json({ errors: 'Format Email Tidak Sesuai' });
+        }
+
         if(myuser?.password !== notused?.password_confirmation) {
             return res.status(422).json({ errors: 'Konfirmasi Password Tidak Cocok' });
         }
