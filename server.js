@@ -31,7 +31,6 @@ require('./routes/data/auth')(app);
 require('./routes/data/admin')(app);
 require('./routes/data/learner')(app);
 require('./routes/data/lecturer')(app);
-require('./routes/data/mentor')(app);
 
 
 app.listen(8080);

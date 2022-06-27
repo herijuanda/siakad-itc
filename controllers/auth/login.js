@@ -41,13 +41,6 @@ module.exports.process = async function(req, res) {
             }
         );
 
-        model.user.hasOne(model.m_mentor, 
-            { 
-                sourceKey: 'id', 
-                foreignKey: 'user_id' 
-            }
-        );
-
         model.user.hasOne(model.m_learner, 
             { 
                 sourceKey: 'id', 
@@ -66,10 +59,6 @@ module.exports.process = async function(req, res) {
                 { 
                     attributes: [ 'id' ],
                     model: model.m_lecturer,
-                },
-                { 
-                    attributes: [ 'id' ],
-                    model: model.m_mentor,
                 },
                 { 
                     attributes: [ 'id' ],
@@ -93,7 +82,6 @@ module.exports.process = async function(req, res) {
                 role_name   : user?.role?.name,
                 role_slug   : user?.role?.slug,
                 lecturer_id : user?.m_lecturer?.id || null,
-                mentor_id   : user?.m_mentor?.id || null,
                 learner_id  : user?.m_learner?.id || null,
             }
 

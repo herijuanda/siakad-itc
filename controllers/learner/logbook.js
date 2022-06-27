@@ -59,28 +59,86 @@ module.exports.data = async function(req, res) {
     
     const datatableObj = await datatables(req.body);
 
-    const count = await model.d_logbook.count({
+    const count = await model.d_student_record_sheet.count({
         where: {
-            mentoring_id: req.body?.mentoring_id,
+            lecturer_id: req.session?.lecturer_id,
         },
     });
 
-    const results = await model.d_logbook.findAndCountAll({
+    model.d_student_record_sheet.hasOne(model.d_classroom, 
+        { 
+            sourceKey: 'classroom_id', 
+            foreignKey: 'id' 
+        }
+    );
+    
+    model.d_student_record_sheet.hasOne(model.m_learner, 
+        { 
+            sourceKey: 'learner_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_learner.hasOne(model.m_school_year, 
+        { 
+            sourceKey: 'school_year_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_learner.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.d_student_record_sheet.hasOne(model.m_subject, 
+        { 
+            sourceKey: 'subject_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    const results = await model.d_student_record_sheet.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
-        attributes: [ 
-            'id', 
-            'date', 
-            'time_in', 
-            'time_out', 
-            'event', 
-            'problem', 
-            'file', 
-            'note', 
-            'status', 
-            'score'
+        include: [
+            { 
+                attributes: [ 'code', 'name' ],
+                model: model.d_classroom,
+                required: false,
+            },
+            { 
+                attributes: [ 'name' ],
+                model: model.m_subject,
+                required: false,
+            },
+            { 
+                attributes: [ 'id', 'nis' ],
+                model: model.m_learner,
+                required: true,
+                include: [
+                    { 
+                        attributes: [ 'year' ],
+                        model: model.m_school_year,
+                        required: false,
+                    },
+                    { 
+                        attributes: [ 'name' ],
+                        model: model.user,
+                        required: true,
+                        where: req.body?.search?.value ? 
+                        {
+                            name: {
+                                [Op.like]: '%'+req.body?.search?.value+'%',
+                            } 
+                        } : {}
+                    },
+                ],
+            },
         ],
         where: {
-            mentoring_id: req.body?.mentoring_id,
+            lecturer_id: req.session?.lecturer_id,
         },
         order: [
             ['id', 'DESC'],    

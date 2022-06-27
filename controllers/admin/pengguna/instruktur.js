@@ -199,7 +199,7 @@ module.exports.actived = async function(req, res) {
         });
 
         if(result){
-            return res.status(200).json({ message: 'Berhasil di Update' })
+            return res.status(200).json({ message: 'Berhasil di Hapus' })
         }
 
         throw Error();

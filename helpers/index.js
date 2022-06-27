@@ -8,8 +8,7 @@ module.exports.route_now = (req) => {
 }
 
 module.exports.auth = (req, res) => {
-    const _level = req.url.split("/")[1];
-    if( !req.session?.id || (_level != req.session?.role_slug ) ) {
+    if(!req.session?.id) {
         res.redirect('/');
     }
 }
