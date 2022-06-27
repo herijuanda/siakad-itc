@@ -160,6 +160,14 @@ module.exports.process = async function(req, res) {
         }
 
         if (myuser?.password) {
+            if(myuser?.password?.length < 8) {
+                return res.status(422).json({ errors: 'Password Kurang dari 8 Angka' });
+            }
+
+            if(myuser?.password_confirmation?.length < 8) {
+                return res.status(422).json({ errors: 'Konfirmasi Password Kurang dari 8 Angka' });
+            }
+
             if(myuser?.password !== notused?.password_confirmation) {
                 return res.status(422).json({ errors: 'Konfirmasi Password Tidak Cocok' });
             }

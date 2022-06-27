@@ -43,16 +43,16 @@
 
     /* submit form */
     $(document).on('click', '#submit', function () {
-        const password = $('#input_password').val();
-        const password_confirmation = $('#input_password_confirmation').val();
+        // const password = $('#input_password').val();
+        // const password_confirmation = $('#input_password_confirmation').val();
         
-        if (!$('#hidden_id').val() || password || password_confirmation) {
-            if (password.length < 8 || password_confirmation.length < 8) {
-                if(password.length < 8) $('#password_valid').show();
-                if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
-                return;
-            }
-        }
+        // if (!$('#hidden_id').val() || password || password_confirmation) {
+        //     if (password.length < 8 || password_confirmation.length < 8) {
+        //         if(password.length < 8) $('#password_valid').show();
+        //         if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
+        //         return;
+        //     }
+        // }
         $.ajax({
             url  : url+'/process',
             data : $('#form').serialize(),
