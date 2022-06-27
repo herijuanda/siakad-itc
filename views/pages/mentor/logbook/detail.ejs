@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-sm-12  mb-3">
+        <div class="widget-content widget-content-area br-6">
+            <div class="p-4 ">
+                <h7> Pembimbing OJT : </h7>
+                <% if (data) { %>
+                    <h4> <%= data?.m_mentor?.user?.name %> </h4>
+                    <h6> <%= data?.m_mentor?.agency + ' - ' + data?.m_mentor?.position %> </h6>
+                <% } else { %>
+                    <h5 class="text-warning"> Belum Ditentukan </h5>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

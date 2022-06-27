@@ -192,15 +192,11 @@
                 }  
             },
             {   
-                data: 'score', 
+                data: null, 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    if ( data ){
-                        return '<b>' + data + '</b>';
-                    }
-
-                    return '-';                    
+                    return '<input value="' + (data?.score || '') + '" type="text" style="width:40px" class="input-score" onkeyup="inputScore(this, \''+ data?.id +'\')" />';
                 }
             },
             { 
@@ -210,21 +206,117 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    const view_file = '<button class="view_file btn btn-outline-success" data-file="' + data?.file + '">Lihat Foto</button>';
-                    let _delete = '<button style="margin-top:5px" class="btn btn-outline-danger delete" data-id="' + data?.id + '">Hapus</button>';
+                    const view_file = '<button class="view_file btn btn-outline-secondary" data-file="' + data?.file + '">Lihat Foto</button>';
+                    let approval = '';
 
-                    if (data?.status){
-                        _delete = '';
+                    if ( data?.status == null ) {
+                        approval = '<button style="margin-top:5px" class="btn btn-outline-success approval" data-id="'+data?.id+'" data-approval="1">Terima</button>'+ 
+                        '<button style="margin-top:5px" class="btn btn-outline-danger approval" data-id="'+data?.id+'" data-approval="0">Tolak</button>';
                     }
 
-                    return view_file + _delete;
+                    return view_file + approval;
                 }  
             },
         ],
     });
 
+    function inputScore(
+        e, 
+        id, 
+    ) {
+
+        if (!$.isNumeric(e.value)) {
+            swalWithBootstrapButtons(
+                'Gagal',
+                'Hanya bisa di input angka!',
+                'error'
+            )
+
+            $(e).val('');
+            return;
+        }
+
+        $.ajax({
+            url  : url+'/update-score',
+            data : {
+                id,
+                value : e.value,
+            },
+            type : "post", 
+            success: function(response){
+                console.log('berhasil', response);
+            },
+            error: function (data) {
+                swalWithBootstrapButtons(
+                    'Gagal',
+                    'Dalam memproses update data, silahkan reload dan coba lagi. :)',
+                    'error'
+                )
+            }
+        });
+    }
+
+
     $(document).on('click', '.view_file', function () {
         window.open("<%=base_url%>/uploads/logbooks/" + $(this).data('file'), "_blank");
     });
+
+    $(document).on('click', '.approval', function () {
+        
+        var id  = $(this).data('id');
+        var approval  = $(this).data('approval');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+            title: 'Apakah Anda Yakin ' + (approval == 0 ? 'Tidak Terima' : 'Terima') + ' Logbook Ini?',
+            text: "Logbook ini nantiknya berubah status!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, lanjutkan!',
+            cancelButtonText: 'Tidak, batal!',
+            reverseButtons: true,
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+
+                $.ajax({
+                    url  : url+'/approval',
+                    data : {id, approval},
+                    type : "post", 
+                    success: function(response){
+                        swalWithBootstrapButtons(
+                            'Berhasil!',
+                            'Status Logbook telah terupdate.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
+                    },
+                    error: function (data) {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Dalam memproses update Logbook',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons(
+                    'Dibatalkan',
+                    'Data masih seperti semula :)',
+                    'error'
+                )
+            }
+        })
+    });
+
 
 </script>

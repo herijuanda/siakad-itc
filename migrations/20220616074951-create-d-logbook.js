@@ -35,7 +35,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        defaultValue: NULL,
       },
       score: {
         type: Sequelize.INTEGER

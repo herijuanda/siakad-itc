@@ -2,7 +2,7 @@ const { Op }        = require("sequelize");
 const helper        = require('../../helpers');
 const form          = require('../../helpers/form');
 const model         = require('../../models');
-const routes        = require('../../routes/menus/learner');
+const routes        = require('../../routes/menus/mentor');
 const datatables    = require('node-sequelize-datatable'); 
 // const moment        = require('moment');
 
@@ -40,12 +40,12 @@ module.exports.index = async function(req, res) {
             },
         ],
         where: { 
-            learner_id:  req.session?.learner_id
+            mentor_id:  req.session?.mentor_id
         },
     });
 
     res.render('layouts/app', {
-        ...routes[6],
+        ...routes[1],
         session : req.session,
         data,
         routes,
@@ -90,38 +90,41 @@ module.exports.data = async function(req, res) {
     return helper.datatables(req, res, count, results);
 };
 
-module.exports.form = async function(req, res) {
-    helper.auth(req, res);
-
-    res.render('pages/'+req?.body?.path+'/form', {
-        mentoring_id: req?.body?.mentoring_id,
-        form,
-    });
-};
-
-module.exports.process = async function(req, res) {
+module.exports.approval = async function(req, res) {
     helper.auth(req, res);
 
     try {
-        const file = req?.file?.filename;
+        const id = req.body?.id;
+        const approval = req.body?.approval;
+
+        const result = await model.d_logbook.update({ status: approval }, {
+            where: {
+                id: id
+            }
+        });
+
+        if(result){
+            return res.status(200).json({ message: 'Berhasil di Update' })
+        }
+
+        throw Error();
         
-        if (!file) {
-            return res.status(422).json({ errors: 'Foto kegiatan belum di upload' });
-        }
+    } catch (error) {
+        res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};
 
-        const myform = {
-            ...req.body?.myform,
-            mentoring_id: req.body?.myform_hide?.mentoring_id,
-            date: helper.date(req.body?.myform?.date),
-            file: file,
-        };
+module.exports.update_score = async function(req, res) {
+    helper.auth(req, res);
 
-        const errors = helper.validator(myform);
-        if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
-        }
+    try {
+        console.log('haiii', req?.body);
 
-        const result = await model.d_logbook.create(myform);
+        const result = await model.d_logbook.update({ score: req?.body?.value }, {
+            where: {
+                id: req?.body?.id
+            }
+        });
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
@@ -131,29 +134,6 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
-    }
-};
-
-module.exports.delete = async function(req, res) {
-    helper.auth(req, res);
-
-    try {
-        const id = req.body?.id;
-
-        const result = await model.d_logbook.destroy({
-            where: {
-                id: id
-            }
-        });
-
-        if(result){
-            return res.status(200).json({ message: 'Berhasil di Hapus' })
-        }
-
-        throw Error();
-        
-    } catch (error) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
