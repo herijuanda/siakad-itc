@@ -164,6 +164,13 @@
                     return moment(data?.time_in, "HH:mm:ss").locale("id").format("LT") + ' - ' + moment(data?.time_out, "HH:mm:ss").locale("id").format("LT");
                 }  
             },
+            { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return data?.d_mentoring?.m_learner?.user?.name;
+                }  
+            },
             {   data: 'event', 
                 sortable: false, 
             },

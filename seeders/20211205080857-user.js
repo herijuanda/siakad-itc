@@ -26,6 +26,7 @@ module.exports = {
       name: 'Admin',
       email: 'admin@siakad.com',
       password: '$2y$10$x4HyOw9wy5llvfVSBC8bge3qVhSzBl7cf4T5fcAO4zjlIM47pS.O6',
+      status: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     },

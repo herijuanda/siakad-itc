@@ -241,3 +241,32 @@ module.exports.actived = async function(req, res) {
         res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
+
+module.exports.delete = async function(req, res) {
+    helper.auth(req, res);
+
+    try {
+        const id = req.body?.id;
+
+        await model.m_learner.destroy({
+            where: {
+                user_id: id
+            }
+        });
+
+        const user = await model.user.destroy({
+            where: {
+                id: id
+            }
+        });
+
+        if(user){    
+            return res.status(200).json({ message: 'Berhasil di Hapus' })
+        }
+
+        throw Error();
+        
+    } catch (error) {
+        res.status(500).json({ errors: 'Terjadi kesalahan' });
+    }
+};

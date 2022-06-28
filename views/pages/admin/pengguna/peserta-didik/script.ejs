@@ -76,6 +76,63 @@
         })
     });
 
+    $(document).on('click', '.delete', function () {
+        
+        var id  = $(this).data('id');
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+            title: 'Apakah Anda Yakin?',
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tidak, batal!',
+            reverseButtons: true,
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+
+                $.ajax({
+                    url  : url+'/delete',
+                    data : {id:id},
+                    type : "post", 
+                    success: function(response){
+                        swalWithBootstrapButtons(
+                            'Terhapus!',
+                            'Data telah terhapus.',
+                            'success'
+                        )
+                        
+                        $('#zero-config').dataTable().api().ajax.reload();
+                    },
+                    error: function (data) {
+                        swalWithBootstrapButtons(
+                            'Gagal',
+                            'Dalam memproses hapus data, data masih ada. :)',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons(
+                    'Dibatalkan',
+                    'Data masih aman :)',
+                    'error'
+                )
+            }
+        })
+    });
+
+
 
     function checkPassword(
         e, 
@@ -218,6 +275,7 @@
                 'bSortable' : false,
                 render: function (data) {
                     let actived = '';
+                    let deleted = '';
                     
                     if ( data?.m_learner?.nis ) {
                     
@@ -227,9 +285,11 @@
                             actived = '<button class="btn btn-outline-danger actived" data-id="'+data?.id+'" data-actived="0">Non Aktifkan</button>';
                         }
 
+                    } else {
+                        deleted = '<button class="btn btn-outline-danger delete" data-id="'+data?.id+'">Hapus</button>'
                     }
 
-                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.nis ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.nis ? 'Edit' : 'Aktivasi')+'</button>'+actived;
+                    return '<button class="edit btn btn-outline-'+(data?.m_learner?.nis ? 'warning' : 'success')+'" data-id="'+data?.id+'" data-toggle="modal" data-target="#modal">'+(data?.m_learner?.nis ? 'Edit' : 'Aktivasi')+'</button>'+actived+deleted;
                 }  
             },
             // {data: 'role_id'},

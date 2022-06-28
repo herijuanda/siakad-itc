@@ -56,7 +56,7 @@ module.exports.process = async function(req, res) {
         );
 
         const user = await model.user.findOne({
-            attributes: ['id', 'role_id', 'name', 'password'],
+            attributes: ['id', 'role_id', 'name', 'password', 'status'],
             include: [
                 { 
                     attributes: [ 'name', 'slug' ],
@@ -86,6 +86,10 @@ module.exports.process = async function(req, res) {
         }
 
         if(password.verify(req.body.password, user?.password)){
+            if(!user?.status){
+                return res.status(422).json({ errors: 'Akun Tidak Aktif, Silahkan Hubungi Admin !' });
+            }
+            
             const data = {
                 id          : user?.id,
                 name        : user?.name,

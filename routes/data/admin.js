@@ -62,6 +62,7 @@ module.exports = function(app) {
     app.post('/admin/pengguna/peserta-didik/form', peserta_didik.form);
     app.post('/admin/pengguna/peserta-didik/process', peserta_didik.process);
     app.post('/admin/pengguna/peserta-didik/actived', peserta_didik.actived);
+    app.post('/admin/pengguna/peserta-didik/delete', peserta_didik.delete);
 
 
     // PEMBAYARAN

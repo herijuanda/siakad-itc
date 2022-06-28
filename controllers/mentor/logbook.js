@@ -65,6 +65,27 @@ module.exports.data = async function(req, res) {
         },
     });
 
+    model.d_logbook.hasOne(model.d_mentoring, 
+        { 
+            sourceKey: 'mentoring_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.d_mentoring.hasOne(model.m_learner, 
+        { 
+            sourceKey: 'learner_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    model.m_learner.hasOne(model.user, 
+        { 
+            sourceKey: 'user_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     const results = await model.d_logbook.findAndCountAll({
         ...helper.dt_clean_params(datatableObj),
         attributes: [ 
@@ -78,6 +99,27 @@ module.exports.data = async function(req, res) {
             'note', 
             'status', 
             'score'
+        ],
+        include: [
+            { 
+                attributes: [ 'id' ],
+                model: model.d_mentoring,
+                required: true,
+                include: [
+                    { 
+                        attributes: [ 'id' ],
+                        model: model.m_learner,
+                        required: true,
+                        include: [
+                            { 
+                                attributes: [ 'name'  ],
+                                model: model.user,
+                                required: true,
+                            },
+                        ],
+                    },
+                ],
+            },
         ],
         where: {
             mentoring_id: req.body?.mentoring_id,
