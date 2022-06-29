@@ -141,12 +141,12 @@ module.exports.process = async function(req, res) {
         const myform = {
             ...req.body?.myform,
             lecturer_id: req.session?.lecturer_id,
-            datetime: moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
+            datetime: req.body?.myform?.datetime ?? moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
         };
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
         const result = await model.d_student_record_sheet.create(myform);
@@ -159,6 +159,6 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

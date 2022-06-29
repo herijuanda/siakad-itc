@@ -104,10 +104,6 @@ module.exports.process = async function(req, res) {
 
     try {
         const file = req?.file?.filename;
-        
-        if (!file) {
-            return res.status(422).json({ errors: 'Foto kegiatan belum di upload' });
-        }
 
         const myform = {
             ...req.body?.myform,
@@ -116,9 +112,15 @@ module.exports.process = async function(req, res) {
             file: file,
         };
 
+        console.log('haiii', myform);
+
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
+        }
+
+        if (!file) {
+            return res.status(422).json({ errors: 'Foto kegiatan belum di upload' });
         }
 
         const result = await model.d_logbook.create(myform);
@@ -131,7 +133,7 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
 
@@ -154,6 +156,6 @@ module.exports.delete = async function(req, res) {
         throw Error();
         
     } catch (error) {
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

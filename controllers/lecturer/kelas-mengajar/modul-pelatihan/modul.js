@@ -97,9 +97,6 @@ module.exports.process = async function(req, res) {
 
     try {
         const file = req?.file?.filename;
-        if (!file) {
-            res.status(422).json({ errors: 'Bukti Pembayaran Wajib di Upload' });
-        }
 
         const id = req.body?.myform_hide?.id;
         const subject_id = req.body?.myform_hide?.subject_id;
@@ -113,7 +110,11 @@ module.exports.process = async function(req, res) {
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
+        }
+
+        if (!file) {
+            return res.status(422).json({ errors: 'File Dokumen Wajib di Upload' });
         }
 
         let result = {};
@@ -136,7 +137,7 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
 
@@ -159,6 +160,6 @@ module.exports.delete = async function(req, res) {
         throw Error();
         
     } catch (error) {
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

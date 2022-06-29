@@ -64,7 +64,7 @@ module.exports.update_read = async function(req, res) {
 
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
         const result = await model.d_subject_module_read.create(myform);

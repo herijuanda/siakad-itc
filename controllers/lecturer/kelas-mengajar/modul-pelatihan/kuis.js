@@ -132,7 +132,7 @@ module.exports.process = async function(req, res) {
 
         const errors = helper.validator({...myform, ...myanswer});
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
         let result = {};
@@ -175,7 +175,7 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
 
@@ -204,6 +204,6 @@ module.exports.delete = async function(req, res) {
         throw Error();
         
     } catch (error) {
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

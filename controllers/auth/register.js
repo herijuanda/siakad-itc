@@ -30,11 +30,19 @@ module.exports.process = async function(req, res) {
 
         const errors = helper.validator({...myform, ...myuser, ...notused});
         if (errors?.length !== 0) {
-            return res.status(400).json({ errors: errors });
+            return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
         if(!helper.email_validate(myuser?.email)) {
             return res.status(422).json({ errors: 'Format Email Tidak Sesuai' });
+        }
+
+        if(myuser?.password?.length < 8) {
+            return res.status(422).json({ errors: 'Password Kurang dari 8 Angka' });
+        }
+
+        if(notused?.password_confirmation?.length < 8) {
+            return res.status(422).json({ errors: 'Konfirmasi Password Kurang dari 8 Angka' });
         }
 
         if(myuser?.password !== notused?.password_confirmation) {
@@ -95,6 +103,6 @@ module.exports.process = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

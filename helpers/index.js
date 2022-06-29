@@ -59,11 +59,15 @@ module.exports.date = function(data) {
 };
 
 module.exports.datetime = function(data) {
-    const value = data.split(', ');
-    const date  = value?.[0].split('-');
-    const time  = value?.[1].split(':');
-    
-    return date?.[2]+'-'+date?.[1]+'-'+date?.[0]+' '+time?.[0]+':'+time?.[1]+':00.000000';
+    if (data) {
+        const value = data.split(', ');
+        const date  = value?.[0]?.split('-');
+        const time  = value?.[1]?.split(':');
+        
+        return date?.[2]+'-'+date?.[1]+'-'+date?.[0]+' '+time?.[0]+':'+time?.[1]+':00.000000';
+    }
+
+    return null;
 };
 
 module.exports.encrypt = function(text) {
@@ -109,3 +113,50 @@ module.exports.email_validate = function(text) {
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegexp.test(text);
 };
+
+module.exports.english_transleted = {
+    school_year_id: 'Tahun Ajaran',
+    study_program_id: 'Prodi',
+    subject_id: 'Mata Pelatihan',
+    name: 'Nama',
+    register_number: 'Nomor Register',
+    place_of_birth: 'Tempat Lahir',
+    date_of_birth: 'Tanggal Lahir',
+    genre_id: 'Jenis Kelamin',
+    religion: 'Agama',
+    address: 'Alamat',
+    postal_code: 'Kode Pos',
+    phone_number: 'Nomor HP',
+    parent_name: 'Nama Orang Tua',
+    parent_job: 'Pekerjaan Orang Tua',
+    parent_phone_number: 'Nomor HP Orang Tua',
+    parent_address: 'Alamat Orang Tua',
+    parent_postal_code: 'Kode Post Orang Tua',
+    email: 'Email',
+    password: 'Password',
+    password_confirmation: 'Konfirmasi Password',
+    last_education: 'Pendidikan Terakhir',
+    educational_institution: 'Instansi Pendidikan',
+    graduation_year: 'Tahun Lulus',
+    gender_id: 'Jenis Kelamin',
+    major_program: 'Program Jurusan',
+    learner_id: 'Peserta Didik',
+    lecturer_id: 'Instruktur',
+    mentor_id: 'Pembimbing OJT',
+    value: 'Nilai',
+    description: 'Keterangan',
+    day_id: 'Hari',
+    datetime: 'Waktu',
+    date: 'Tanggal',
+    time: 'Waktu',
+    time_in: 'Waktu Masuk',
+    time_out: 'Waktu Keluar',
+    note: 'Catatan',
+    notes: 'Catatan',
+    cost: 'Biaya',
+    step: 'Tahap',
+    code: 'Kode',
+    room: 'Ruangan',
+    event: 'Kegiatan',
+    problem: 'Kendala',
+}

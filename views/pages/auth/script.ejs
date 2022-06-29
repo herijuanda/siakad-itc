@@ -52,14 +52,14 @@
     }
 
     $(document).on('click', '#submit', function () {
-        const password = $('#input_password').val();
-        const password_confirmation = $('#input_password_confirmation').val();
+        // const password = $('#input_password').val();
+        // const password_confirmation = $('#input_password_confirmation').val();
 
-        if (password.length < 8 || password_confirmation.length < 8) {
-            if(password.length < 8) $('#password_valid').show();
-            if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
-            return;
-        }
+        // if (password.length < 8 || password_confirmation.length < 8) {
+        //     if(password.length < 8) $('#password_valid').show();
+        //     if(password_confirmation.length < 8) $('#password_confirmation_valid').show();
+        //     return;
+        // }
 
         $.ajax({
             url  : url+'/register/process',
@@ -75,22 +75,7 @@
                 switch (data.status) {
                     case 400:
                         let result = '';
-                        const arrLabel = {
-                            study_program_id: 'Prodi',
-                            name: 'Nama',
-                            place_of_birth: 'Tempat Lahir',
-                            date_of_birth: 'Tanggal Lahir',
-                            genre_id: 'Jenis Kelamin',
-                            religion: 'Agama',
-                            address: 'Alamat',
-                            postal_code: 'Kode Pos',
-                            phone_number: 'Nomor HP',
-                            parent_name: 'Nama Orang Tua',
-                            parent_job: 'Pekerjaan Orang Tua',
-                            email: 'Email',
-                            password: 'Password',
-                            password_confirmation: 'Konfirmasi Password',
-                        };
+                        const arrLabel = data?.responseJSON?.validate_label;
 
                         errors.forEach(function(v) {
                             result += '<br>- <b>'+(arrLabel[v] || v)+'</b> belum diisi';

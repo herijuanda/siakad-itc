@@ -152,7 +152,7 @@ module.exports.approval = async function(req, res) {
         throw Error();
         
     } catch (error) {
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };
 
@@ -176,6 +176,6 @@ module.exports.update_score = async function(req, res) {
         
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(500).json({ errors: 'Terjadi kesalahan' });
     }
 };

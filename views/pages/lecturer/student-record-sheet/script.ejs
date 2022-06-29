@@ -58,8 +58,10 @@
                     case 400:
                         let result = '';
 
+                        const arrLabel = data?.responseJSON?.validate_label;
+
                         errors.forEach(function(v) {
-                            result += '<br>- '+v+' belum diisi';
+                            result += '<br>- <b>'+(arrLabel[v] || v)+'</b> belum diisi';
                         });
 
                         $('#alert').html(alert_warning(result));
