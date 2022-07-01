@@ -186,7 +186,8 @@
             { 
                 data: 'datetime', 
                 render: function (data) {
-                    return moment(data, "DD-MM-YYYY, H:mm").format("LLLL");
+                    console.log(data);
+                    return moment(data, "YYYY-MM-DD, H:mm").format("LLLL");
                 }  
             },
             {

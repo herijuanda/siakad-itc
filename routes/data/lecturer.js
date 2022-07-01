@@ -43,5 +43,9 @@ module.exports = function(app) {
     app.post('/instruktur/student-record-sheet/select-learner', student_record_sheet.select_learner);
     app.post('/instruktur/student-record-sheet/process', student_record_sheet.process);
     app.post('/instruktur/student-record-sheet/delete', student_record_sheet.delete);
+
+    const logbook = require('../../controllers/lecturer/logbook');
+    app.get('/instruktur/logbook', logbook.index);
+    app.post('/instruktur/logbook', logbook.data);
     
 };

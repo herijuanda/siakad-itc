@@ -10,8 +10,8 @@ module.exports = function(app) {
     const pembayaran = require('../../controllers/learner/pembayaran');
     app.get('/peserta-didik/pembayaran', pembayaran.index);
 
-    const transkip = require('../../controllers/learner/transkip');
-    app.get('/peserta-didik/transkip', transkip.index);
+    const transkrip = require('../../controllers/learner/transkrip');
+    app.get('/peserta-didik/transkrip', transkrip.index);
 
     const modul_pelatihan = require('../../controllers/learner/modul-pelatihan/index');
     app.get('/peserta-didik/modul-pelatihan', modul_pelatihan.index);

@@ -86,6 +86,18 @@ module.exports = [
             'moment',
         ],
     },
+    {
+        module  : 'logbook',
+        route   : 'logbook',
+        path    : 'lecturer/logbook',
+        title   : 'Log Book',
+        icon    : 'book',
+        plugin  : [
+            'datatables',
+            'flatpickr',
+            'moment',
+        ],
+    },
 ];
 
 module.exports.detail = {

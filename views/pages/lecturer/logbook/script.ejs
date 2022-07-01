@@ -1,7 +1,6 @@
 <script type="text/javascript">
 
     const path  = '<%=path%>';
-    const mentoring_id  = '<%=data?.id%>';
 
     $.ajaxSetup({
         headers: {
@@ -32,7 +31,6 @@
         processing: true,
         ajax: {
             url: "<%= base_url + route_now %>",
-            data: { mentoring_id },
             type: 'POST',
         },
         columns: [
@@ -82,11 +80,15 @@
                 }
             },
             {   
-                data: null, 
+                data: 'score', 
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<input value="' + (data?.score || '') + '" type="text" style="width:40px" class="input-score" onkeyup="inputScore(this, \''+ data?.id +'\')" />';
+                    if ( data ){
+                        return '<b>' + data + '</b>';
+                    }
+
+                    return '-';                    
                 }
             },
             { 
@@ -110,103 +112,8 @@
         ],
     });
 
-    function inputScore(
-        e, 
-        id, 
-    ) {
-
-        if (!$.isNumeric(e.value)) {
-            swalWithBootstrapButtons(
-                'Gagal',
-                'Hanya bisa di input angka!',
-                'error'
-            )
-
-            $(e).val('');
-            return;
-        }
-
-        $.ajax({
-            url  : url+'/update-score',
-            data : {
-                id,
-                value : e.value,
-            },
-            type : "post", 
-            success: function(response){
-                console.log('berhasil', response);
-            },
-            error: function (data) {
-                swalWithBootstrapButtons(
-                    'Gagal',
-                    'Dalam memproses update data, silahkan reload dan coba lagi. :)',
-                    'error'
-                )
-            }
-        });
-    }
-
-
     $(document).on('click', '.view_file', function () {
         window.open("<%=base_url%>/uploads/logbooks/" + $(this).data('file'), "_blank");
     });
-
-    $(document).on('click', '.approval', function () {
-        
-        var id  = $(this).data('id');
-        var approval  = $(this).data('approval');
-
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success btn-rounded',
-            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
-            buttonsStyling: false,
-        })
-
-        swalWithBootstrapButtons({
-            title: 'Apakah Anda Yakin ' + (approval == 0 ? 'Tidak Terima' : 'Terima') + ' Logbook Ini?',
-            text: "Logbook ini nantiknya berubah status!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, lanjutkan!',
-            cancelButtonText: 'Tidak, batal!',
-            reverseButtons: true,
-            padding: '2em'
-        }).then(function(result) {
-            if (result.value) {
-
-                $.ajax({
-                    url  : url+'/approval',
-                    data : {id, approval},
-                    type : "post", 
-                    success: function(response){
-                        swalWithBootstrapButtons(
-                            'Berhasil!',
-                            'Status Logbook telah terupdate.',
-                            'success'
-                        )
-                        
-                        $('#zero-config').dataTable().api().ajax.reload();
-                    },
-                    error: function (data) {
-                        swalWithBootstrapButtons(
-                            'Gagal',
-                            'Dalam memproses update Logbook',
-                            'error'
-                        )
-                    }
-                });
-            } else if (
-                // Read more about handling dismissals
-                result.dismiss === swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons(
-                    'Dibatalkan',
-                    'Data masih seperti semula :)',
-                    'error'
-                )
-            }
-        })
-    });
-
 
 </script>

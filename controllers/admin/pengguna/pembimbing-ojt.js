@@ -55,9 +55,23 @@ module.exports.form = async function(req, res) {
 
     let data = {};
     if(req.body?.id){
+
+        model.user.hasOne(model.m_mentor, 
+            { 
+                sourceKey: 'id', 
+                foreignKey: 'user_id' 
+            }
+        );
         
         data = await model.user.findOne({
             attributes: ['id', 'name', 'email'],
+            include: [
+                { 
+                    attributes: [ 'position', 'agency'],
+                    model: model.m_mentor,
+                    required: true,
+                },
+            ],
             where: { 
                 id: req.body.id 
             },

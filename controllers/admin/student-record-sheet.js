@@ -179,7 +179,7 @@ module.exports.process = async function(req, res) {
     try {
         const myform = {
             ...req.body?.myform,
-            datetime: req.body?.myform?.datetime ?? moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
+            datetime: req.body?.myform?.datetime ? moment.utc(helper.datetime(req.body?.myform?.datetime)).format() : null,
         };
 
         const errors = helper.validator(myform);

@@ -175,7 +175,7 @@ module.exports.process = async function(req, res) {
         const myform = {
             ...req.body?.myform,
             value: req.body?.myform?.value?.replace(/\./ig, ''),
-            datetime: req.body?.myform?.datetime ?? moment.utc(helper.datetime(req.body?.myform?.datetime)).format(),
+            datetime: req.body?.myform?.datetime ? moment.utc(helper.datetime(req.body?.myform?.datetime)).format() : null,
             file_payment: file,
         }
 
@@ -184,7 +184,7 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
-        if (!file) {
+        if (!file && id == '') {
             return res.status(422).json({ errors: 'Bukti Pembayaran Wajib di Upload' });
         }
 

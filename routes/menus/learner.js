@@ -30,10 +30,10 @@ module.exports = [
         ],
     },
     {
-        module  : 'transkip',
-        route   : 'transkip',
-        path    : 'learner/transkip',
-        title   : 'Transkip',
+        module  : 'transkrip',
+        route   : 'transkrip',
+        path    : 'learner/transkrip',
+        title   : 'Transkrip',
         icon    : 'clipboard',
         plugin  : [
 

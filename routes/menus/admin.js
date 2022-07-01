@@ -105,7 +105,7 @@ module.exports = [
         module  : 'pengaturan-ojt',
         route   : 'pengaturan-ojt',
         path    : 'admin/pengaturan-ojt',
-        title   : 'Pengaturan OJT',
+        title   : 'Bimbingan OJT',
         icon    : 'user',
         plugin  : [
             'datatables',
@@ -134,7 +134,7 @@ module.exports.detail = {
             parent  : 'kelas',
             route   : false,
             path    : 'admin/data-master/kelas/detail/peserta-didik',
-            title   : 'Peserta Didik',
+            title   : 'Peserta Kelas',
             plugin  : [
                 'datatables',
                 'select2',

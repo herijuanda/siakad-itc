@@ -112,8 +112,6 @@ module.exports.process = async function(req, res) {
             file: file,
         };
 
-        console.log('haiii', myform);
-
         const errors = helper.validator(myform);
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });

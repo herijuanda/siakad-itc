@@ -178,21 +178,21 @@
                     return data.substring(0,80) + '...';
                 }
             },
-            { 
-                data: 'status', 
-                sortable: false, 
-                className: 'text-center', 
-                render: function (data) {
-                    if(data)
-                        return '<span class="text-success">Diterima</span>';
+            // { 
+            //     data: 'status', 
+            //     sortable: false, 
+            //     className: 'text-center', 
+            //     render: function (data) {
+            //         if(data)
+            //             return '<span class="text-success">Diterima</span>';
 
-                    if (data == null) {
-                        return '<span class="text-warning">Menunggu Konfirmasi</span>';
-                    }
+            //         if (data == null) {
+            //             return '<span class="text-warning">Menunggu Konfirmasi</span>';
+            //         }
 
-                    return '<span class="text-danger">Tidak Diterima</span>';
-                }  
-            },
+            //         return '<span class="text-danger">Tidak Diterima</span>';
+            //     }  
+            // },
             {   
                 data: 'score', 
                 className: 'text-center', 
@@ -215,7 +215,7 @@
                     const view_file = '<button class="view_file btn btn-outline-success" data-file="' + data?.file + '">Lihat Foto</button>';
                     let _delete = '<button style="margin-top:5px" class="btn btn-outline-danger delete" data-id="' + data?.id + '">Hapus</button>';
 
-                    if (data?.status){
+                    if (data?.score){
                         _delete = '';
                     }
 
