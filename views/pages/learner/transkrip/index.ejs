@@ -16,6 +16,7 @@
                                         <th rowspan="2">Mata Pelatihan</th>
                                         <th class="text-center" colspan="2">Hasil</th>
                                         <th class="text-center" rowspan="2">Keterangan</th>
+                                        <th class="text-center" rowspan="2">Aksi</th>
                                     </tr>
                                     <tr>
                                         <th class="text-center">Angka</th>
@@ -27,7 +28,7 @@
                                     <tr>
                                         <% if(value?.m_subject?.step != step) { step = value?.m_subject?.step; %> 
                                             <tr bgcolor="#f1f2f3">
-                                                <td colspan="5">
+                                                <td colspan="6">
                                                     <b>
                                                         Tahap <%= step %>
                                                     </b>
@@ -39,6 +40,15 @@
                                         <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total || '-' %></td>
                                         <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total ? value_character(value?.d_classroom_learner?.d_learner_value?.total).charater : '-' %></td>
                                         <td class="text-center"><%= value?.d_classroom_learner?.d_learner_value?.total ? value_character(value?.d_classroom_learner?.d_learner_value?.total).description : '-' %></td>
+                                        <td class="text-center">
+                                            <% if (value?.d_classroom_learner?.d_learner_value?.id) { %> 
+                                                <button type="button" data-file="<%=value?.file_payment%>" class="detail btn btn-success" href="javascript:void(0);" data-id="<%= value?.d_classroom_learner?.d_learner_value?.id %>" data-toggle="modal" data-target="#modal">
+                                                    <b>Detail</b>
+                                                </button>
+                                            <% } else { %>
+                                                -
+                                            <% } %> 
+                                        </td>
                                     </tr>
                                     <% total += (value?.d_classroom_learner?.d_learner_value?.total || 0)  }); %>
                                 </tbody>

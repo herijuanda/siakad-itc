@@ -8,4 +8,14 @@
         }
     });
 
+    $(document).on('click', '.detail', function () {
+        
+        var id  = $(this).data('id');
+
+        $.post(url+'/detail', { id, path }, function (data) {
+            $("#modal-label").html('Detail Nilai');
+            $("#show-modal").html(data);
+        });
+    });
+
 </script>

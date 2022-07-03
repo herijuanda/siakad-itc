@@ -59,6 +59,13 @@ module.exports.data = async function(req, res) {
         }
     );
 
+    model.m_learner.hasOne(model.m_study_program, 
+        { 
+            sourceKey: 'study_program_id', 
+            foreignKey: 'id' 
+        }
+    );
+
     let filter = {};
 
     if(req.body?.learner_id){
@@ -68,6 +75,15 @@ module.exports.data = async function(req, res) {
     const results = await model.d_payment.findAndCountAll({
         ...{
             ...helper.dt_clean_params(datatableObj),
+            attributes: helper.dt_clean_params(datatableObj)?.attributes.concat([[
+                model.sequelize.literal(`(
+                    SELECT SUM(pay.value) 
+                    FROM d_payments AS pay 
+                    WHERE 
+                        pay.learner_id = d_payment.learner_id
+                )`),
+                'total'
+            ]]),
             where: { 
                 ...helper.dt_clean_params(datatableObj)?.where,
                 ...filter,
@@ -79,8 +95,14 @@ module.exports.data = async function(req, res) {
                 model: model.m_learner,
                 include: [
                     { 
+                        attributes: [ 'cost' ],
+                        model: model.m_study_program,
+                        required: true,
+                    },
+                    { 
                         attributes: [ 'name' ],
                         model: model.user,
+                        required: true,
                     },
                 ],
             },

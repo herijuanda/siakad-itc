@@ -113,7 +113,7 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
-        if (!file) {
+        if (!file && id === '') {
             return res.status(422).json({ errors: 'File Dokumen Wajib di Upload' });
         }
 

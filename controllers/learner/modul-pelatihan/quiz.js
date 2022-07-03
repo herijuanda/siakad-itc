@@ -142,7 +142,7 @@ module.exports.next = async function(req, res) {
                     answer: [],
                 };
             }
-
+            
             req.session?.quiz?.answer.push({
                 classroom_id: req.session?.quiz?.classroom?.classroom_id,
                 classroom_learner_id: req.session?.quiz?.classroom?.classroom_learner_id,

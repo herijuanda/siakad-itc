@@ -1,0 +1,41 @@
+<div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing mt-3">
+    <h5><%= data?.m_subject?.name %></h5>
+    <div class="table-responsive mb-4 mt-4">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Keterangan</th>
+                    <th>Nilai</th>
+                </tr>
+                <tr>
+                    <td>Absen</td>
+                    <td><%= data?.absen || '-' %></td>
+                </tr>
+                <tr>
+                    <td>Tugas</td>
+                    <td><%= data?.tugas || '-' %></td>
+                </tr>
+                <tr>
+                    <td>Midterm</td>
+                    <td><%= data?.midterm || '-' %></td>
+                </tr>
+                <tr>
+                    <td>Sikap</td>
+                    <td><%= data?.sikap || '-' %></td>
+                </tr>
+                <tr>
+                    <td>Final</td>
+                    <td><%= data?.final || '-' %></td>
+                </tr>
+                <tr>
+                    <td>Kuis</td>
+                    <td><%= data?.kuis || '-' %></td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <th><%= (data?.total || '-') %> </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

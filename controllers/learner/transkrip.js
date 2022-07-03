@@ -53,7 +53,7 @@ module.exports.index = async function(req, res) {
                 },
                 include: [
                     { 
-                        attributes: [ 'total' ],
+                        attributes: [ 'id', 'total' ],
                         model: model.d_learner_value,
                         required: false,
                     },
@@ -77,5 +77,36 @@ module.exports.index = async function(req, res) {
         value_character : helper.value_character,
         base_url : helper.base_url(req),
         route_now : helper.route_now(req),
+    });
+};
+
+module.exports.detail = async function(req, res) {
+    helper.auth(req, res);
+
+    if(!req.body?.id){
+        return res.status(422).json({ errors: 'Foto kegiatan belum di upload' });
+    }
+
+    model.d_learner_value.hasOne(model.m_subject, 
+        { 
+            sourceKey: 'subject_id', 
+            foreignKey: 'id' 
+        }
+    );
+
+    const data = await model.d_learner_value.findOne({
+        attributes: [ 'id', 'absen', 'tugas', 'midterm', 'sikap', 'final', 'kuis', 'total' ],
+        include: [
+            { 
+                attributes: [ 'name' ],
+                model: model.m_subject,
+                required: true,
+            },
+        ],
+        where: { id: req.body.id },
+    });
+
+    res.render('pages/'+req?.body?.path+'/detail', {
+        data,
     });
 };

@@ -12,6 +12,7 @@ module.exports = function(app) {
 
     const transkrip = require('../../controllers/learner/transkrip');
     app.get('/peserta-didik/transkrip', transkrip.index);
+    app.post('/peserta-didik/transkrip/detail', transkrip.detail);
 
     const modul_pelatihan = require('../../controllers/learner/modul-pelatihan/index');
     app.get('/peserta-didik/modul-pelatihan', modul_pelatihan.index);

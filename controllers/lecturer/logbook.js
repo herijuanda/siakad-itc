@@ -88,6 +88,9 @@ module.exports.data = async function(req, res) {
                                 attributes: [ 'name'  ],
                                 model: model.user,
                                 required: true,
+                                where: { 
+                                    status: 1,
+                                }
                             },
                         ],
                     },

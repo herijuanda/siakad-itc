@@ -184,6 +184,13 @@
                 }  
             },
             { 
+                data: null, 
+                sortable: false, 
+                render: function (data) {
+                    return rupiah.format(data?.m_learner?.m_study_program?.cost - data?.total);
+                }  
+            },
+            { 
                 data: 'datetime', 
                 render: function (data) {
                     console.log(data);
