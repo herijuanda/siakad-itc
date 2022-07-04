@@ -57,6 +57,16 @@ module.exports.process = async function(req, res) {
             return res.status(422).json({ errors: 'Email sudah didaftarkan' });
         }
 
+        const existRegisterNumber = await model.m_learner.count({
+            where: {
+                register_number: myform?.register_number,
+            },
+        });
+
+        if(existRegisterNumber){
+            return res.status(422).json({ errors: 'No. Register Sudah Terdaftar.' });
+        }
+
         const school_year = await model.m_school_year.findOne({
             attributes: ['id'],
             where: { year: new Date().getFullYear() },

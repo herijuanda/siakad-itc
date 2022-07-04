@@ -21,7 +21,7 @@ module.exports.index = async function(req, res) {
 };
 
 module.exports.process = async function(req, res) {
-    // try {
+    try {
         
         if(req?.session?.id) {
             return res.status(422).json({ errors: 'Anda Sudah Login' });
@@ -82,7 +82,7 @@ module.exports.process = async function(req, res) {
         });    
 
         if(!user){
-            return res.status(422).json({ errors: 'Email Ditemukan !' });
+            return res.status(422).json({ errors: 'Email Tidak Ditemukan !' });
         }
 
         if(password.verify(req.body.password, user?.password)){
@@ -116,9 +116,9 @@ module.exports.process = async function(req, res) {
         }else{
             return res.status(422).json({ errors: 'Password Anda Salah !' });
         }
-    // } catch (error) {
-    //     return res.status(500).json({ errors: 'Terjadi Kesalahan' });
-    // }
+    } catch (error) {
+        return res.status(500).json({ errors: 'Terjadi Kesalahan' });
+    }
 };
 
 module.exports.logout = async function(req, res) {

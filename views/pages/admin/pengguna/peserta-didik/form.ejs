@@ -5,7 +5,7 @@
         <div id="alert"></div>
         <div class="form-row">
             <div class="col-md-6 mb-4">
-                <%- form.select('study_program_id as prodi', '*', study_program, study_program_value) %>
+                <%- form.select('study_program_id as prodi', '*', study_program, study_program_value, 'myform', null, data?.id ? 'disabled' : '') %>
             </div>
             <div class="col-md-6 mb-4">
                 <%- form.input('name as nama', '*', data?.name, 'text', 'myuser') %>

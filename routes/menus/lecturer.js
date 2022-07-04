@@ -28,7 +28,7 @@ module.exports = [
         sub     : [
             {
                 module  : 'kelas-mengajar',
-                route   : 'daftar-nilai/kelas',
+                route   : 'daftar-nilai',
                 path    : 'lecturer/kelas-mengajar/daftar-nilai/kelas',
                 title   : 'Daftar Nilai',
                 plugin  : [

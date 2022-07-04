@@ -268,6 +268,18 @@ module.exports.process = async function(req, res) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
+        if(!id){
+            const exist = await model.d_classroom.count({
+                where: {
+                    code: myform?.code
+                },
+            });
+    
+            if(exist){
+                return res.status(422).json({ errors: 'Kode Kelas Sudah Ada.' });
+            }
+        }
+
         let result = {};
 
         if(id === '') {

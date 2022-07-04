@@ -150,8 +150,18 @@ module.exports.process = async function(req, res) {
                 },
             });
     
-            if(exist > 0){
+            if(exist){
                 return res.status(422).json({ errors: 'Email Sudah Ada.' });
+            }
+
+            const existNIP = await model.m_lecturer.count({
+                where: {
+                    nip: mylecturer?.nip
+                },
+            });
+    
+            if(existNIP){
+                return res.status(422).json({ errors: 'NIP Sudah Ada.' });
             }
         }
 

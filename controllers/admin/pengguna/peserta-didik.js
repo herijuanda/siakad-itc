@@ -180,6 +180,18 @@ module.exports.process = async function(req, res) {
             delete myuser.password;
         }
 
+        if(!myform_hide?.id){
+            const exist = await model.m_learner.count({
+                where: {
+                    nis: myform?.nis
+                },
+            });
+    
+            if(exist){
+                return res.status(422).json({ errors: 'NIS Sudah Ada.' });
+            }
+        }
+
         await model.user.update({ ...myuser, status: true }, { where: { id: myform_hide?.id } });
 
         // const last_data = await model.m_learner.findOne({

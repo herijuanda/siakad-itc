@@ -97,6 +97,7 @@ module.exports.detail = {
                 path    : 'learner/modul-pelatihan/quiz',
                 title   : 'Quiz',
                 plugin  : [
+                    'moment'
                     // 'datatables',
                     // 'select2',
                 ],

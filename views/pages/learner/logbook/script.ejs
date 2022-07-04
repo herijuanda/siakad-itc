@@ -175,7 +175,8 @@
             {   data: 'note', 
                 sortable: false,
                 render: function (data) {
-                    return data.substring(0,80) + '...';
+                    // return data.substring(0,80) + '...';
+                    return data;
                 }
             },
             // { 
@@ -212,7 +213,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    const view_file = '<button class="view_file btn btn-outline-success" data-file="' + data?.file + '">Lihat Foto</button>';
+                    const view_file = '<button class="view_file btn btn-outline-success" data-file="' + data?.file + '">Unduh Foto</button>';
                     let _delete = '<button style="margin-top:5px" class="btn btn-outline-danger delete" data-id="' + data?.id + '">Hapus</button>';
 
                     if (data?.score){

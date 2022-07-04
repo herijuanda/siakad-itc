@@ -11,10 +11,11 @@
             <% if (data?.d_subject_quiz_answers) { %>
                 <% data?.d_subject_quiz_answers.forEach(function(v, i) { %>
                     <div class="col-md-6 mb-4">
-                        <%- form.input('answer_' + i + ' as jawaban: ' + alpha[(i-1)] + '.', '*', v?.answer, 'text', 'myanswer') %>
+                        <%- form.input_hide('answer_id_' + (i+1), v?.id) %>
+                        <%- form.input('answer_' + (i+1) + ' as jawaban: ' + alpha[(i)] + '.', '*', v?.answer, 'text', 'myanswer') %>
                         <div class="custom-control custom-radio">
-                            <input <%= v?.correct ? 'checked' : '' %> type="radio" id="customRadio<%= i %>" name="mycorrect" class="custom-control-input" value="<%= i %>">
-                            <label class="custom-control-label" for="customRadio<%= i %>">Pilih Jawaban Benar</label>
+                            <input <%= v?.correct ? 'checked' : '' %> type="radio" id="customRadio<%= (i+1) %>" name="mycorrect" class="custom-control-input" value="<%= (i+1) %>">
+                            <label class="custom-control-label" for="customRadio<%= (i+1) %>">Pilih Jawaban Benar</label>
                         </div>
                     </div>
                 <% }) %>

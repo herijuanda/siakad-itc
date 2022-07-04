@@ -1,6 +1,7 @@
 <script type="text/javascript">
 
     const path = '<%=path%>';
+    const quiz_time = '<%=session?.quiz_time%>';
 
     $.ajaxSetup({
         headers: {
@@ -52,6 +53,74 @@
             }
         });
     });
+
+    if(!quiz_time){
+        var now = new Date().getTime();
+        var minute = moment(now).add(2, 'm').toDate();
+
+        $.ajax({
+            url: url+'/set_time',
+            data : {minute:minute},
+            type : "post",
+            success: function(response){
+                if(response)
+                    console.log('berhasil');
+            }
+        });
+    }else var minute = moment(quiz_time);
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      // Find the distance between now and the count down date
+      var distance = minute - now;
+      // Time calculations for days, hours, minutes and seconds
+      //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="demo"
+      document.getElementById("response").innerHTML = hours + ":"
+      + minutes + ":" + seconds;
+      
+      if (distance < 0) {
+        clearInterval(x);
+        $.ajax({
+            url  : url+'/next',
+            data : { status, choose },
+            type : "post", 
+            success: function(response){
+                $('#question-value').html(response);
+            },
+            error: function (response) {
+
+                if(response?.status === 300) {
+                    $.ajax({
+                        url  : url+'/done',
+                        type : "post", 
+                        success: function(response){
+                            window.location.href = url+'/result';
+                        },
+                        error: function (response) {
+                            swalWithBootstrapButtons(
+                                'Gagal',
+                                'Terjadi Kesalahan Saat Menyelesaikan Ujian',
+                                'error'
+                            )
+                        }
+                    });
+                } else {
+                    swalWithBootstrapButtons(
+                        'Gagal',
+                        response?.responseJSON?.message,
+                        'error'
+                    )
+                }
+            }
+        });
+      }
+    }, 0);
 
 
 </script>

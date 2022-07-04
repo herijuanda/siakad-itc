@@ -100,7 +100,7 @@ module.exports.form = async function(req, res) {
             ],
             include: [
                 { 
-                    attributes: [ 'answer', 'correct' ],
+                    attributes: [ 'id', 'answer', 'correct' ],
                     model: model.d_subject_quiz_answer,
                 },
             ],
@@ -120,8 +120,9 @@ module.exports.process = async function(req, res) {
 
     try {
         
-        let id = req.body?.myform_hide?.id;
-        const subject_id = req.body?.myform_hide?.subject_id;
+        const myhide = req.body?.myform_hide;
+        let id = myhide?.id;
+        const subject_id = myhide?.subject_id;
         const myform = {
             ...req.body?.myform,
             lecturer_id: req.session?.lecturer_id,
@@ -146,26 +147,23 @@ module.exports.process = async function(req, res) {
                 where: {
                     id: id
                 }
-            });
-
-            await model.d_subject_quiz_answer.destroy({
-                where: {
-                    quiz_id: id
-                }
-            });            
+            });          
         }
 
         const answer = [];
 
         for (let i = 1; i <= 4; i++) {
             answer.push({
+                id: myhide['answer_id_' + i] || null,
                 quiz_id: id,
                 answer: myanswer['answer_' + i],
                 correct: mycorrect == i,
             });
         }
 
-        await model.d_subject_quiz_answer.bulkCreate(answer);
+        await model.d_subject_quiz_answer.bulkCreate(answer, {
+            updateOnDuplicate: ['answer', 'correct'],
+        });
 
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
@@ -204,6 +202,6 @@ module.exports.delete = async function(req, res) {
         throw Error();
         
     } catch (error) {
-        return res.status(500).json({ errors: 'Terjadi kesalahan' });
+        return res.status(422).json({ errors: 'Tidak Bisa di Hapus, Kuis Telah Terpakai' });
     }
 };

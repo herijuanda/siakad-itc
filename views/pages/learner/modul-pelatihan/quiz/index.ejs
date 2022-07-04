@@ -5,7 +5,14 @@
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
             <div class="widget-content widget-content-area widget-content-basic br-6">
-                <h5 class="mb-0">Kuis Mata Pelatihan : <b><%= session?.quiz?.subject?.name %></b></h5>
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-sm-8">
+                        <h5 class="mb-0">Kuis Mata Pelatihan : <b><%= session?.quiz?.subject?.name %></b></h5>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-sm-4 text-right">
+                        <h5 class="mb-0">02:00</b></h5>
+                    </div>
+                </div>
             </div>
             <div id="question-value" class="widget-content widget-content-area widget-content-basic br-6">
                 <%- include('./question') %>

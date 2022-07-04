@@ -76,7 +76,8 @@
             {   data: 'note', 
                 sortable: false,
                 render: function (data) {
-                    return data.substring(0,80) + '...';
+                    // return data.substring(0,80) + '...';
+                    return data;
                 }
             },
             {   
@@ -98,7 +99,7 @@
                 className: 'text-center', 
                 'bSortable' : false,
                 render: function (data) {
-                    const view_file = '<button class="view_file btn btn-outline-secondary" data-file="' + data?.file + '">Lihat Foto</button>';
+                    const view_file = '<button class="view_file btn btn-outline-secondary" data-file="' + data?.file + '">Unduh Foto</button>';
                     let approval = '';
 
                     // if ( data?.status == null ) {

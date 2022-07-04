@@ -9,13 +9,13 @@ module.exports = function(app) {
 
     // KELAS MENGAJAR
     const daftar_nilai_kelas = require('../../controllers/lecturer/kelas-mengajar/daftar-nilai/kelas');
-    app.get('/instruktur/kelas-mengajar/daftar-nilai/kelas', daftar_nilai_kelas.index);
-    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas', daftar_nilai_kelas.data);
+    app.get('/instruktur/kelas-mengajar/daftar-nilai', daftar_nilai_kelas.index);
+    app.post('/instruktur/kelas-mengajar/daftar-nilai', daftar_nilai_kelas.data);
 
     const daftar_nilai_peserta_didik = require('../../controllers/lecturer/kelas-mengajar/daftar-nilai/peserta-didik');
-    app.get('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik', daftar_nilai_peserta_didik.index);
-    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik', daftar_nilai_peserta_didik.data);
-    app.post('/instruktur/kelas-mengajar/daftar-nilai/kelas/peserta-didik/update-nilai', daftar_nilai_peserta_didik.update_nilai);
+    app.get('/instruktur/kelas-mengajar/daftar-nilai/peserta-didik', daftar_nilai_peserta_didik.index);
+    app.post('/instruktur/kelas-mengajar/daftar-nilai/peserta-didik', daftar_nilai_peserta_didik.data);
+    app.post('/instruktur/kelas-mengajar/daftar-nilai/peserta-didik/update-nilai', daftar_nilai_peserta_didik.update_nilai);
 
     const modul_pelatihan = require('../../controllers/lecturer/kelas-mengajar/modul-pelatihan');
     app.get('/instruktur/kelas-mengajar/modul-pelatihan', modul_pelatihan.index);

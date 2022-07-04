@@ -193,7 +193,6 @@
             { 
                 data: 'datetime', 
                 render: function (data) {
-                    console.log(data);
                     return moment(data, "YYYY-MM-DD, H:mm").format("LLLL");
                 }  
             },
@@ -215,7 +214,7 @@
 
                     return '<button type="button" data-file="'+ data +'" class="view_proof_payment btn btn-warning">'+
                                 '<i data-feather="image"></i> '+
-                                '<b>Lihat Bukti</b>'+
+                                '<b>Unduh Bukti</b>'+
                             '</button>';
                 }  
             },
