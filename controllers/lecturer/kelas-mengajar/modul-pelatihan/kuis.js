@@ -132,17 +132,21 @@ module.exports.process = async function(req, res) {
         const mycorrect = req.body?.mycorrect;
 
         const errors = helper.validator({...myform, ...myanswer});
+        // Kondisi apabila field form ada yang kosong
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
         let result = {};
 
+        // Kondisi apabila sebuah proses edit, dikarena adanya id database yang dikirim
         if(id === '') {
+            // Proses tambah baru soal
             result = await model.d_subject_quiz.create(myform);
 
             id = result?.id;
         }else{
+            // Proses update data soal
             result = await model.d_subject_quiz.update(myform, {
                 where: {
                     id: id
@@ -152,6 +156,7 @@ module.exports.process = async function(req, res) {
 
         const answer = [];
 
+        // Proses deklarasi variable array untuk menampung seluruh data jawaban
         for (let i = 1; i <= 4; i++) {
             answer.push({
                 id: myhide['answer_id_' + i] || null,
@@ -161,10 +166,12 @@ module.exports.process = async function(req, res) {
             });
         }
 
+        // Proses tambah secara sekalian untuk seluruh data jawaban yang diisi, tapi apabila id yang duplikat maka akan di update
         await model.d_subject_quiz_answer.bulkCreate(answer, {
             updateOnDuplicate: ['answer', 'correct'],
         });
 
+        // Kondisi apabila proses tambah / edi berhasil
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
         }

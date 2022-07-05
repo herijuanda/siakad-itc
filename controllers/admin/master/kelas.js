@@ -264,10 +264,13 @@ module.exports.process = async function(req, res) {
         const myform = req.body?.myform;
 
         const errors = helper.validator(myform);
+
+        // Kondisi apabila field form ada yang kosong
         if (errors?.length !== 0) {
             return res.status(400).json({ errors: errors, validate_label: helper.english_transleted });
         }
 
+        // Kondisi apabila aksi yang diterima merupakan data baru
         if(!id){
             const exist = await model.d_classroom.count({
                 where: {
@@ -275,6 +278,7 @@ module.exports.process = async function(req, res) {
                 },
             });
     
+            // Kondisi apabila kode kelas telah ada
             if(exist){
                 return res.status(422).json({ errors: 'Kode Kelas Sudah Ada.' });
             }
@@ -282,9 +286,12 @@ module.exports.process = async function(req, res) {
 
         let result = {};
 
+        // Kondisi apabila sebuah proses edit, dikarena adanya id database yang dikirim
         if(id === '') {
+            // Proses tambah baru
             result = await model.d_classroom.create(myform);
         }else{
+            // Proses update data
             result = await model.d_classroom.update(myform, {
                 where: {
                     id: id
@@ -292,6 +299,7 @@ module.exports.process = async function(req, res) {
             });
         }
 
+        // Kondisi apabila proses tambah / edi berhasil
         if(result){
             return res.status(200).json({ message: 'Berhasil di Simpan' })
         }

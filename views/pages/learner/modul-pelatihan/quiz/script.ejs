@@ -103,7 +103,21 @@
                     data : { status, choose },
                     type : "post", 
                     success: function(response){
-                        $('#question-value').html(response);
+                        var now = new Date().getTime();
+                        var minute = moment(now).add(2, 'm').toDate();
+
+                        $.ajax({
+                            url: url+'/set_time',
+                            data : {minute:minute},
+                            type : "post",
+                            success: function(response){
+                                if(response)
+                                    console.log('berhasil');
+                            }
+                        });
+
+                        // $('#question-value').html(response);
+                        window.location.reload();
                     },
                     error: function (response) {
 

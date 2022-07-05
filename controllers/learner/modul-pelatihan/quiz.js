@@ -135,6 +135,7 @@ module.exports.next = async function(req, res) {
         const status = req?.body?.status;
         let choose = req?.body?.choose;
 
+        // Deklarasi session untuk jawaban apabila belum dibuat
         if (!req.session?.quiz?.answer) {
             req.session.quiz = {
                 ...req.session.quiz,
@@ -151,6 +152,8 @@ module.exports.next = async function(req, res) {
             quiz_id: req.session?.quiz?.question?.id,
         }
 
+        // Status = true maka pilihan dari buttonnya simpan, apabila status = false maka pilihannya lewati
+        // Choose merupakan hasil pilihan jawaban dari user
         if(status && choose) {
             choose = JSON.parse(choose);
             
@@ -208,6 +211,7 @@ module.exports.next = async function(req, res) {
             ],
         });
 
+        // Kondisi apabila soal berikutnya kosong maka ujian akan diselesaikan
         if(!result){
             return res.status(300).json({ message: 'Soal Sudah Selesai' });
         }
