@@ -295,6 +295,7 @@ module.exports.done = async function(req, res) {
         }
 
         req.session.quiz = null;
+        req.session.quiz_time = null;
 
         return res.status(200).json({ message: 'Berhasil di proses' })
         
