@@ -2,6 +2,7 @@
 
     const path = '<%=path%>';
     const quiz_time = '<%=session?.quiz_time%>';
+    let x = 0;
 
     $.ajaxSetup({
         headers: {
@@ -9,87 +10,14 @@
         }
     });
 
-    $(document).on('click', '.next', function () {
-        const status  = $(this).data('status');
-        const choose  = $('input[name="answer"]:checked').val() || null;
-
-        const swalWithBootstrapButtons = swal.mixin({
-            confirmButtonClass: 'btn btn-success btn-rounded',
-            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
-            buttonsStyling: false,
-        })
-
-        $.ajax({
-            url  : url+'/next',
-            data : { status, choose },
-            type : "post", 
-            success: function(response){
-                $('#question-value').html(response);
-            },
-            error: function (response) {
-
-                if(response?.status === 300) {
-                    $.ajax({
-                        url  : url+'/done',
-                        type : "post", 
-                        success: function(response){
-                            window.location.href = url+'/result';
-                        },
-                        error: function (response) {
-                            swalWithBootstrapButtons(
-                                'Gagal',
-                                'Terjadi Kesalahan Saat Menyelesaikan Ujian',
-                                'error'
-                            )
-                        }
-                    });
-                } else {
-                    swalWithBootstrapButtons(
-                        'Gagal',
-                        response?.responseJSON?.message,
-                        'error'
-                    )
-                }
-            }
-        });
-    });
-
-    $(document).ready(function(){
-
-        if(!quiz_time){
+    function interval(_minute) {
+        return setInterval(function() {
             var now = new Date().getTime();
-            var minute = moment(now).add(2, 'm').toDate();
-
-            $.ajax({
-                url: url+'/set_time',
-                data : {minute:minute},
-                type : "post",
-                success: function(response){
-                    if(response)
-                        console.log('berhasil');
-                }
-            });
-        }else var minute = moment(quiz_time);
-
-        // var now = new Date().getTime();
-        // var minute = moment(now).add(2, 'm').toDate();
-
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-            var now = new Date().getTime();
-            // Find the distance between now and the count down date
-            var distance = minute - now;
-            // Time calculations for days, hours, minutes and seconds
-            //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var distance = _minute - now;
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Display the result in the element with id="demo"
-            //   document.getElementById("response").innerHTML = hours + ":"
-            //   + minutes + ":" + seconds;
-
-            // $('#quiz-time').html(hours + ":" + minutes + ":" + seconds);
             $('#quiz-time').html(minutes + ":" + seconds);
             
             if (distance < 0) {
@@ -146,7 +74,84 @@
                     }
                 });
             }
-        }, 0);
+        }, 100);
+    }
+
+    $(document).on('click', '.next', function () {
+        const status  = $(this).data('status');
+        const choose  = $('input[name="answer"]:checked').val() || null;
+
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        $.ajax({
+            url  : url+'/next',
+            data : { status, choose },
+            type : "post", 
+            success: function(response){
+                var now = new Date().getTime();
+                var minute = moment(now).add(2, 'm').toDate();
+
+                $.ajax({
+                    url: url+'/set_time',
+                    data : {minute:minute},
+                    type : "post",
+                    success: function(response){
+                        clearInterval(x);
+                        x = interval(minute);
+                    }
+                });
+                $('#question-value').html(response);
+            },
+            error: function (response) {
+
+                if(response?.status === 300) {
+                    $.ajax({
+                        url  : url+'/done',
+                        type : "post", 
+                        success: function(response){
+                            window.location.href = url+'/result';
+                        },
+                        error: function (response) {
+                            swalWithBootstrapButtons(
+                                'Gagal',
+                                'Terjadi Kesalahan Saat Menyelesaikan Ujian',
+                                'error'
+                            )
+                        }
+                    });
+                } else {
+                    swalWithBootstrapButtons(
+                        'Gagal',
+                        response?.responseJSON?.message,
+                        'error'
+                    )
+                }
+            }
+        });
+    });
+
+    $(document).ready(function(){
+
+        if(!quiz_time){
+            var now = new Date().getTime();
+            var minute = moment(now).add(2, 'm').toDate();
+
+            $.ajax({
+                url: url+'/set_time',
+                data : {minute:minute},
+                type : "post",
+                success: function(response){
+                    if(response)
+                        console.log('berhasil');
+                }
+            });
+        }else var minute = moment(quiz_time);
+
+        x = interval(minute);
 
     });
 

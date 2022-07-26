@@ -322,5 +322,5 @@ module.exports.set_time = async function(req, res) {
         ...req.session,
         quiz_time: req?.body?.minute,
     };
-    return res.status(200).json({ message: 'Berhasil di proses' })
+    return res.status(200).json({ message: 'Berhasil di proses', quiz_time: req?.body?.minute })
 };
