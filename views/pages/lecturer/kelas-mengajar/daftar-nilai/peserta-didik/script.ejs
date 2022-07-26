@@ -124,7 +124,7 @@
                 className: 'text-center', 
                 sortable: false, 
                 render: function (data) {
-                    return '<b>' + data?.d_learner_value?.kuis + '</b>';
+                    return '<b>' + (data?.d_learner_value?.kuis || '-') + '</b>';
                 }  
             },
             {   data: null, 
